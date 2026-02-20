@@ -1,0 +1,40 @@
+[12-Jan-2026 01:26:37 Asia/Jakarta] PHP Warning:  require(/home/smtd7629/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/smtd7629/public_html/index.php on line 34
+[12-Jan-2026 01:26:37 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smtd7629/public_html/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smtd7629/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/smtd7629/public_html/index.php on line 34
+[12-Jan-2026 01:26:40 Asia/Jakarta] PHP Warning:  require(/home/smtd7629/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/smtd7629/public_html/index.php on line 34
+[12-Jan-2026 01:26:40 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smtd7629/public_html/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smtd7629/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/smtd7629/public_html/index.php on line 34
+[12-Jan-2026 01:26:40 Asia/Jakarta] PHP Warning:  require(/home/smtd7629/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/smtd7629/public_html/index.php on line 34
+[12-Jan-2026 01:26:40 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smtd7629/public_html/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smtd7629/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/smtd7629/public_html/index.php on line 34
+[12-Jan-2026 01:26:40 Asia/Jakarta] PHP Warning:  require(/home/smtd7629/public_html/../vendor/autoload.php): Failed to open stream: No such file or directory in /home/smtd7629/public_html/index.php on line 34
+[12-Jan-2026 01:26:40 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smtd7629/public_html/../vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smtd7629/public_html/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/smtd7629/public_html/index.php on line 34
+[15-Jan-2026 10:46:03 Asia/Jakarta] PHP Warning:  require(/home/smtd7629/public_html/inovasipim/public/../../inovasipim/vendor/autoload.php): Failed to open stream: No such file or directory in /home/smtd7629/public_html/inovasipim/public/index.php on line 34
+[15-Jan-2026 10:46:03 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smtd7629/public_html/inovasipim/public/../../inovasipim/vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smtd7629/public_html/inovasipim/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/smtd7629/public_html/inovasipim/public/index.php on line 34
+[15-Jan-2026 10:46:06 Asia/Jakarta] PHP Warning:  require(/home/smtd7629/public_html/inovasipim/public/../../inovasipim/vendor/autoload.php): Failed to open stream: No such file or directory in /home/smtd7629/public_html/inovasipim/public/index.php on line 34
+[15-Jan-2026 10:46:06 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smtd7629/public_html/inovasipim/public/../../inovasipim/vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smtd7629/public_html/inovasipim/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/smtd7629/public_html/inovasipim/public/index.php on line 34
+[15-Jan-2026 10:46:07 Asia/Jakarta] PHP Warning:  require(/home/smtd7629/public_html/inovasipim/public/../../inovasipim/vendor/autoload.php): Failed to open stream: No such file or directory in /home/smtd7629/public_html/inovasipim/public/index.php on line 34
+[15-Jan-2026 10:46:07 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smtd7629/public_html/inovasipim/public/../../inovasipim/vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smtd7629/public_html/inovasipim/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/smtd7629/public_html/inovasipim/public/index.php on line 34
+[15-Jan-2026 10:46:08 Asia/Jakarta] PHP Warning:  require(/home/smtd7629/public_html/inovasipim/public/../../inovasipim/vendor/autoload.php): Failed to open stream: No such file or directory in /home/smtd7629/public_html/inovasipim/public/index.php on line 34
+[15-Jan-2026 10:46:08 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required '/home/smtd7629/public_html/inovasipim/public/../../inovasipim/vendor/autoload.php' (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/smtd7629/public_html/inovasipim/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /home/smtd7629/public_html/inovasipim/public/index.php on line 34
