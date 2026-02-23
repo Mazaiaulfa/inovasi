@@ -37,6 +37,13 @@ class ProposalController extends Controller
                 return back()->with('error', 'Data tidak valid.');
             }
 
+                        if ($karya->status !== 'disetujui') {
+                Alert::error('Gagal', 'Makalah hanya bisa diajukan jika judul sudah disetujui.');
+                return back()->withErrors([
+                    'karya_id' => 'Makalah hanya bisa diajukan jika judul sudah disetujui.'
+                ]);
+            }
+
             // Cek apakah sudah ada proposal untuk tahap ini
             $existing = Proposal::where('karya_id', $karya->id)
                 ->where('tahap_id', $tahapan->id)
@@ -47,24 +54,24 @@ class ProposalController extends Controller
                 Alert::error('Gagal', 'Proposal untuk tahapan ini sedang diproses atau sudah disetujui.');
                 return back()->withErrors(['tahap_id' => 'Proposal untuk tahapan ini sedang diproses atau sudah disetujui.']);
             }
-            
+
                         // Folder tujuan
             $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/file_makalah';
-            
+
             if (!is_dir($targetPath)) {
                 mkdir($targetPath, 0777, true);
             }
-            
+
             // Ambil file
             $file = $request->file('file');
-            
+
             // Nama asli + sanitasi
             $originalName = $file->getClientOriginalName();
             $safeName = time() . '_' . preg_replace('/[^A-Za-z0-9_\-\.]/', '_', $originalName);
-            
+
             // Pindahkan file
             $file->move($targetPath, $safeName);
-            
+
             // Path yang disimpan ke DB (RELATIF DARI PUBLIC)
             $filePath = 'uploads/file_makalah/' . $safeName;
 
@@ -149,11 +156,11 @@ class ProposalController extends Controller
             }
 
                       $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $proposal->file_path;
-            
+
             if ($proposal->file_path && file_exists($fullPath)) {
                 unlink($fullPath);
             }
-            
+
                         // Hapus proposal dari database
             $proposal->delete();
 

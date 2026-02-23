@@ -83,8 +83,6 @@
                         </div>
                     </div>
                 </div>
-
-
                 <!-- DELETE ACCOUNT -->
                 <div class="col-md-4">
                     <div class="card border-danger">
