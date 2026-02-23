@@ -186,7 +186,7 @@
         }
 
     } else {
-        Swal.fire('Gagal', 'Terjadi kesalahan server', 'error');
+        Swal.fire('Gagal', 'Terjadi kesalahan pengisian data', 'error');
     }
 }
             });

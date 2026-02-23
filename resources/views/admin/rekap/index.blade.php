@@ -78,7 +78,7 @@
             type: 'GET'
         },
         columns: [
-            { 
+            {
                 data: 'id',
                 name: 'id',
                 render: function(data, type, row, meta) {
@@ -95,8 +95,8 @@
         initComplete: function() {
             //  handle button export to left
             let exportBtn = `
-                <a href="{{ route('rekap.exportAll') }}" 
-                   class="btn btn-success btn-sm" 
+                <a href="{{ route('rekap.exportAll') }}"
+                   class="btn btn-success btn-sm"
                    style="white-space: nowrap;">
                     <i class="fas fa-file-excel"></i> Export Semua
                 </a>`;

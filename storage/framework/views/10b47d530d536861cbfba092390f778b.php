@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Rekap Data'); ?>
 
 <?php $__env->startPush('style'); ?>
@@ -78,7 +76,7 @@
             type: 'GET'
         },
         columns: [
-            { 
+            {
                 data: 'id',
                 name: 'id',
                 render: function(data, type, row, meta) {
@@ -95,8 +93,8 @@
         initComplete: function() {
             //  handle button export to left
             let exportBtn = `
-                <a href="<?php echo e(route('rekap.exportAll')); ?>" 
-                   class="btn btn-success btn-sm" 
+                <a href="<?php echo e(route('rekap.exportAll')); ?>"
+                   class="btn btn-success btn-sm"
                    style="white-space: nowrap;">
                     <i class="fas fa-file-excel"></i> Export Semua
                 </a>`;
@@ -107,4 +105,5 @@
 });
 </script>
 <?php $__env->stopPush(); ?>
+
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/admin/rekap/index.blade.php ENDPATH**/ ?>
