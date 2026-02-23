@@ -95,6 +95,13 @@
                 </a>
             </li>
 
+            <li class="<?php echo e(Request::is('admin/profile*') ? 'active' : ''); ?>">
+    <a class="nav-link" href="<?php echo e(route('admin.profile.index')); ?>">
+        <i class="fas fa-user-circle"></i>
+        <span>Profile</span>
+    </a>
+</li>
+
 
             
             <?php elseif(Auth::user()->role === 'user'): ?>
@@ -134,6 +141,13 @@
                     <i class="fas fa-users"></i> <span>Tambah Anggota Team</span>
                 </a>
             </li>
+
+                    <li class="<?php echo e(Request::is('user/profile*') ? 'active' : ''); ?>">
+            <a class="nav-link" href="<?php echo e(route('user.profile.index')); ?>">
+                <i class="fas fa-user-circle"></i>
+                <span>Profile</span>
+            </a>
+        </li>
             <?php endif; ?>
 
             <li class="<?php echo e(Request::is('logout') ? 'active' : ''); ?>">

@@ -105,6 +105,15 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/rekap', [RekapController::class, 'index'])->name('admin.rekap.index');
     Route::get('/rekap/export/{id}', [RekapController::class, 'export'])->name('rekap.export');
     Route::get('/rekap/export-all', [RekapController::class, 'exportAll'])->name('rekap.exportAll');
+
+     Route::get('/admin/profile', [ProfileController::class, 'index'])
+        ->name('admin.profile.index');
+
+    Route::put('/admin/profile', [ProfileController::class, 'update'])
+        ->name('admin.profile.update');
+
+    Route::delete('/admin/profile', [ProfileController::class, 'destroy'])
+        ->name('admin.profile.destroy');
 });
 
 
@@ -125,6 +134,16 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::delete('finalkarya/{id}', [FinalKaryaController::class, 'destroy'])->name('finalkarya.destroy');
 
     Route::resource('/user/anggota', TeamController::class);
+
+    Route::get('/user/profile', [ProfileController::class, 'index'])
+        ->name('user.profile.index');
+
+    Route::put('/user/profile', [ProfileController::class, 'update'])
+        ->name('user.profile.update');
+
+    Route::delete('/user/profile', [ProfileController::class, 'destroy'])
+        ->name('user.profile.destroy');
+
 });
 
 

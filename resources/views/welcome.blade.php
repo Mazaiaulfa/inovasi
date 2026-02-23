@@ -55,6 +55,22 @@
 
         }
     </style>
+
+    <style>
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.animate-fadeInUp {
+    animation: fadeInUp 1s ease forwards;
+}
+</style>
 </head>
 
 <body class="bg-gray-50 text-gray-800">
@@ -97,104 +113,69 @@
 <!-- ================= SLIDER PENGUMUMAN ================= -->
 <!-- ================= SLIDER PENGUMUMAN DINAMIS ================= -->
 <!-- ================= SLIDER PENGUMUMAN DINAMIS ================= -->
-<section class="pt-20 relative">
+<!-- ================= SLIDER ================= -->
+<section class="pt-16 relative">
 
-    @php
-        $bgImages = [
-            asset('img/slide1.png'),
-            asset('img/slide2.png'),
-            asset('img/slide3.png'),
-            asset('img/slide4.png'),
-            asset('img/slide5.png'),
-            asset('img/slide6.png'),
-        ];
-    @endphp
+<div class="relative overflow-hidden">
 
-    <div class="relative overflow-hidden">
+<div id="bannerSlider" class="relative w-full">
 
-        <div id="bannerSlider" class="relative w-full">
+@forelse($pengumuman as $key => $item)
+<div class="banner-slide {{ $key == 0 ? '' : 'hidden' }} transition-opacity duration-700 ease-in-out">
 
-            @forelse($pengumuman as $key => $item)
+    <div class="h-[85vh] bg-cover bg-center flex items-center justify-center relative transform transition duration-[2000ms] hover:scale-105"
+         style="background-image: url('{{ asset('img/slide'.(($key%6)+1).'.png') }}');">
 
-            @php
-                $bg = $bgImages[$key % count($bgImages)];
-            @endphp
+        <div class="absolute inset-0 bg-black/40"></div>
 
-            <div class="banner-slide {{ $key == 0 ? 'block' : 'hidden' }} relative transition-all duration-700">
+        <div class="relative text-center text-white max-w-3xl px-6 animate-fadeInUp">
 
-                <div class="h-[85vh] bg-cover bg-center flex items-center justify-center relative"
-                    style="background-image: url('{{ $bg }}');">
-
-                    <!-- Overlay -->
-                    <div class="absolute inset-0
-                        {{ $item->urgent
-                            ? 'bg-gradient-to-r from-red-900/80 via-black/70 to-red-900/80'
-                            : 'bg-gradient-to-r from-black/80 via-black/70 to-black/80' }}">
-                    </div>
-
-                    <div class="relative text-center text-white px-6 max-w-4xl">
-
-                        @if($item->urgent)
-                        <div class="inline-block bg-red-600 px-5 py-1.5 rounded-full text-xs font-semibold mb-6 shadow-md animate-pulse">
-                            🔴 Pengumuman Penting
-                        </div>
-                        @endif
-
-                        <h2 class="text-3xl md:text-4xl font-bold mb-5 leading-tight">
-                            {{ $item->judul }}
-                        </h2>
-
-                        @if($item->ringkasan)
-                        <p class="mb-6 text-base md:text-lg text-gray-200">
-                            {{ $item->ringkasan }}
-                        </p>
-                        @endif
-
-                        <a href="{{ route('pengumuman.detail', $item->id) }}"
-                            class="inline-block bg-blue-600 hover:bg-blue-700 px-7 py-3 rounded-lg font-semibold text-base transition shadow-lg hover:scale-105">
-                            Lihat Detail
-                        </a>
-
-                    </div>
-                </div>
+            @if($item->urgent)
+            <div class="inline-block bg-red-500/90 px-4 py-1 rounded-full text-xs mb-5 tracking-wide">
+                Pengumuman Penting
             </div>
+            @endif
 
-            @empty
+            <h2 class="text-4xl font-semibold mb-4 leading-snug">
+                {{ $item->judul }}
+            </h2>
 
-            <div class="banner-slide block relative">
-                <div class="h-[85vh] bg-cover bg-center flex items-center justify-center relative"
-                    style="background-image: url('{{ asset('img/slide1.png') }}');">
-                    <div class="absolute inset-0 bg-black/70"></div>
-                    <div class="relative text-center text-white">
-                        <h2 class="text-3xl font-bold">Selamat Datang di PIM Innovation Fest</h2>
-                    </div>
-                </div>
-            </div>
+            <p class="text-gray-200 mb-6 text-base">
+                {{ $item->ringkasan }}
+            </p>
 
-            @endforelse
+            <a href="{{ route('pengumuman.detail', $item->id) }}"
+               class="inline-block px-6 py-2 text-sm bg-white text-indigo-600 rounded-full hover:bg-gray-100 transition shadow-md">
+                Lihat Detail
+            </a>
 
         </div>
-
-        <!-- Tombol -->
-        <button onclick="prevSlide()"
-            class="absolute left-5 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-3 rounded-full backdrop-blur">
-            ❮
-        </button>
-
-        <button onclick="nextSlide()"
-            class="absolute right-5 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 text-white p-3 rounded-full backdrop-blur">
-            ❯
-        </button>
-
-        <!-- Dots -->
-        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-3">
-            @foreach($pengumuman as $key => $item)
-                <span class="dot w-3 h-3 bg-white rounded-full cursor-pointer {{ $key == 0 ? 'opacity-100' : 'opacity-50' }}"></span>
-            @endforeach
-        </div>
-
     </div>
+</div>
+@empty
+<div class="h-[85vh] bg-cover bg-center flex items-center justify-center relative"
+     style="background-image: url('{{ asset('img/slide1.png') }}');">
+    <div class="absolute inset-0 bg-black/60"></div>
+    <h2 class="relative text-white text-3xl font-semibold">
+        Selamat Datang di PIM Innovation Fest
+    </h2>
+</div>
+@endforelse
 
+</div>
+
+<!-- NAVIGATION BUTTON -->
+<button onclick="prevSlide()"
+class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-2 rounded-full text-white text-sm transition">
+‹
+</button>
+
+<button onclick="nextSlide()"
+class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-2 rounded-full text-white text-sm transition">
+›
+</button>
+
+</div>
 </section>
 
 

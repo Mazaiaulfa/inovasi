@@ -95,6 +95,13 @@
                 </a>
             </li>
 
+            <li class="{{ Request::is('admin/profile*') ? 'active' : '' }}">
+    <a class="nav-link" href="{{ route('admin.profile.index') }}">
+        <i class="fas fa-user-circle"></i>
+        <span>Profile</span>
+    </a>
+</li>
+
 
             {{-- USER --}}
             @elseif(Auth::user()->role === 'user')
@@ -134,6 +141,13 @@
                     <i class="fas fa-users"></i> <span>Tambah Anggota Team</span>
                 </a>
             </li>
+
+                    <li class="{{ Request::is('user/profile*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('user.profile.index') }}">
+                <i class="fas fa-user-circle"></i>
+                <span>Profile</span>
+            </a>
+        </li>
             @endif
 
             <li class="{{ Request::is('logout') ? 'active' : '' }}">

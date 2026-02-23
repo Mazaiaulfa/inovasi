@@ -57,7 +57,8 @@
     </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800">
+
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 text-gray-800">
 
     <!-- Navbar -->
     <header class="bg-white shadow-md fixed w-full top-0 left-0 z-50">
@@ -92,125 +93,106 @@
             </a>
         </div>
     </header>
-<body class="bg-gray-100">
-
 @php
 use Illuminate\Support\Str;
-$file = $pengumuman->gambar; // karena kamu simpan di kolom gambar
+$file = $pengumuman->gambar;
 @endphp
 
-
-
-
-
-
 <!-- CONTENT -->
-<section class="pt-28 pb-20">
-    <div class="max-w-5xl mx-auto px-6">
+<section class="pt-32 pb-24 px-6 md:px-16">
 
-        <div class="bg-white rounded-2xl shadow-xl p-10">
+<div class="w-full bg-white/95 backdrop-blur-md rounded-3xl shadow-xl p-8 md:p-14 border border-gray-100">
 
-            {{-- Badge Urgent --}}
-            @if($pengumuman->urgent)
-            <div class="inline-block bg-red-600 text-white text-xs px-4 py-1 rounded-full mb-4">
-                🔴 Pengumuman Penting
+    {{-- Badge Urgent --}}
+    @if($pengumuman->urgent)
+    <div class="inline-block bg-red-500/90 text-white text-xs px-4 py-1.5 rounded-full mb-6 tracking-wide">
+        Pengumuman Penting
+    </div>
+    @endif
+
+    {{-- Judul --}}
+    <h1 class="text-3xl md:text-4xl font-semibold text-gray-900 mb-4 leading-snug">
+        {{ $pengumuman->judul }}
+    </h1>
+
+    {{-- Tanggal --}}
+    <p class="text-sm text-gray-400 mb-10">
+        Dipublikasikan {{ \Carbon\Carbon::parse($pengumuman->created_at)->translatedFormat('d F Y') }}
+    </p>
+
+    {{-- Ringkasan --}}
+    @if($pengumuman->ringkasan)
+    <div class="mb-10 text-gray-600 italic border-l-4 border-indigo-500 pl-5 text-base leading-relaxed">
+        {{ $pengumuman->ringkasan }}
+    </div>
+    @endif
+
+    {{-- Isi --}}
+    <div class="text-gray-700 leading-relaxed space-y-5 text-[17px]">
+        {!! nl2br(e($pengumuman->isi)) !!}
+    </div>
+
+    {{-- ================= LAMPIRAN ================= --}}
+    @if($file)
+    <div class="mt-16 border-t border-gray-200 pt-12">
+
+        <h3 class="text-xl font-semibold mb-8 text-gray-800">
+            Lampiran Dokumen
+        </h3>
+
+        <div class="bg-gray-50 rounded-2xl overflow-hidden border border-gray-200">
+
+            {{-- Gambar --}}
+            @if(Str::endsWith($file, ['.jpg', '.jpeg', '.png', '.webp']))
+
+            <div class="p-6 bg-white">
+                <img src="{{ asset($file) }}"
+                     class="w-full max-h-[800px] object-contain mx-auto rounded-2xl shadow-md transition duration-500 hover:scale-[1.02]">
             </div>
-            @endif
 
-            {{-- Judul --}}
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3 leading-tight">
-                {{ $pengumuman->judul }}
-            </h1>
+            {{-- PDF --}}
+            @elseif(Str::endsWith($file, '.pdf'))
 
-            {{-- Tanggal --}}
-            <p class="text-sm text-gray-500 mb-8">
-                Dipublikasikan:
-                {{ \Carbon\Carbon::parse($pengumuman->created_at)->translatedFormat('d F Y') }}
-            </p>
+            <iframe src="{{ asset($file) }}"
+                    class="w-full h-[850px] border-0 bg-white">
+            </iframe>
 
-            {{-- Ringkasan --}}
-            @if($pengumuman->ringkasan)
-            <div class="mb-8 text-gray-600 italic border-l-4 border-indigo-500 pl-4 text-lg">
-                {{ $pengumuman->ringkasan }}
-            </div>
-            @endif
+            {{-- File lain --}}
+            @else
 
-            {{-- Isi --}}
-            <div class="text-gray-700 leading-relaxed space-y-4 text-lg">
-                {!! nl2br(e($pengumuman->isi)) !!}
-            </div>
+            <div class="p-12 text-center bg-white">
 
-            {{-- ===================== --}}
-            {{-- SECTION FILE / LAMPIRAN --}}
-            {{-- ===================== --}}
-            @if($file)
-            <div class="mt-12 border-t pt-10">
+                <h4 class="text-lg font-medium mb-3 text-gray-800">
+                    {{ basename($file) }}
+                </h4>
 
-                <h3 class="text-2xl font-semibold mb-6 text-gray-800">
-                    📎 Lampiran Dokumen
-                </h3>
+                <p class="text-gray-500 mb-6 text-sm">
+                    File tersedia untuk diunduh.
+                </p>
 
-                <div class="bg-gray-50 rounded-2xl shadow-inner overflow-hidden border">
-
-                    {{-- Jika File Gambar --}}
-                    @if(Str::endsWith($file, ['.jpg', '.jpeg', '.png', '.webp']))
-
-                        <div class="p-6 bg-white">
-                            <img src="{{ asset($file) }}"
-                                 class="w-full max-h-[800px] object-contain mx-auto rounded-xl shadow-lg">
-                        </div>
-
-                    {{-- Jika PDF --}}
-                    @elseif(Str::endsWith($file, '.pdf'))
-
-                        <iframe src="{{ asset($file) }}"
-                                class="w-full h-[850px] border-0">
-                        </iframe>
-
-                    {{-- Jika Word / Excel / File Lain --}}
-                    @else
-
-                        <div class="p-12 text-center bg-white">
-
-                            <div class="text-6xl mb-6">
-                                📄
-                            </div>
-
-                            <h4 class="text-xl font-semibold mb-3">
-                                {{ basename($file) }}
-                            </h4>
-
-                            <p class="text-gray-500 mb-6">
-                                Dokumen tersedia untuk diunduh.
-                            </p>
-
-                            <a href="{{ asset($file) }}"
-                               download
-                               class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl shadow-md transition">
-                                Download File
-                            </a>
-
-                        </div>
-
-                    @endif
-
-                </div>
-
-            </div>
-            @endif
-
-
-            {{-- Tombol Kembali --}}
-            <div class="mt-14 text-center">
-                <a href="{{ route('landing') }}"
-                   class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl transition shadow-md">
-                    ← Kembali ke Beranda
+                <a href="{{ asset($file) }}"
+                   download
+                   class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-6 py-2 rounded-full shadow-md transition">
+                    Download File
                 </a>
+
             </div>
+
+            @endif
 
         </div>
     </div>
+    @endif
+
+    {{-- Tombol Kembali --}}
+    <div class="mt-16">
+        <a href="{{ route('landing') }}"
+           class="inline-block text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-full shadow-md transition">
+            Kembali ke Beranda
+        </a>
+    </div>
+
+</div>
 </section>
 
 </body>
-</html>

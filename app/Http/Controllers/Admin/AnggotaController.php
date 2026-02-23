@@ -39,29 +39,88 @@ class AnggotaController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
-            'nama' => 'required|string|max:255',
-            'badge' => 'required|string|max:50',
-            'jabatan' => 'required|in:ketua,sekretaris,fasilitator,anggota'
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'user_id' => 'required|exists:users,id',
+        'nama' => 'required|string|max:255',
+        'badge' => 'required|string|max:50',
+        'jabatan' => 'required|in:ketua,sekretaris,fasilitator,anggota'
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json(['status' => false, 'errors' => $validator->errors()], 422);
-        }
-
-        // Cek 1 ketua per user
-        if ($request->jabatan == 'ketua') {
-            $cekKetua = Anggota::where('user_id', $request->user_id)->where('jabatan', 'ketua')->exists();
-            if ($cekKetua) {
-                return response()->json(['status' => false, 'message' => 'Team ini sudah memiliki Ketua.'], 422);
-            }
-        }
-
-        $anggota = Anggota::create($request->only('user_id', 'nama', 'jabatan','badge'));
-        return response()->json(['status' => true, 'message' => 'Anggota berhasil ditambahkan', 'data' => $anggota]);
+    if ($validator->fails()) {
+        return response()->json(['status' => false, 'errors' => $validator->errors()], 422);
     }
+
+    // ==============================
+    // BATASAN PER TEAM (per user_id)
+    // ==============================
+
+    $userId = $request->user_id;
+
+    // 1️⃣ Maksimal 1 Ketua
+    if ($request->jabatan == 'ketua') {
+        $cekKetua = Anggota::where('user_id', $userId)
+            ->where('jabatan', 'ketua')
+            ->exists();
+
+        if ($cekKetua) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Team ini sudah memiliki Ketua.'
+            ], 422);
+        }
+    }
+
+    // 2️⃣ Maksimal 1 Fasilitator
+    if ($request->jabatan == 'fasilitator') {
+        $cekFasilitator = Anggota::where('user_id', $userId)
+            ->where('jabatan', 'fasilitator')
+            ->exists();
+
+        if ($cekFasilitator) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Team ini sudah memiliki Fasilitator.'
+            ], 422);
+        }
+    }
+
+    // 3️⃣ Maksimal 5 Anggota Biasa
+    if ($request->jabatan == 'anggota') {
+        $jumlahAnggota = Anggota::where('user_id', $userId)
+            ->where('jabatan', 'anggota')
+            ->count();
+
+        if ($jumlahAnggota >= 5) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Maksimal 5 anggota per team.'
+            ], 422);
+        }
+    }
+
+    // 4️⃣ Maksimal total 7 orang (opsional tapi disarankan)
+    $total = Anggota::where('user_id', $userId)->count();
+
+    if ($total >= 7) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Total maksimal 7 orang per team (termasuk ketua & fasilitator).'
+        ], 422);
+    }
+
+    // ==============================
+
+    $anggota = Anggota::create(
+        $request->only('user_id', 'nama', 'jabatan', 'badge')
+    );
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Anggota berhasil ditambahkan',
+        'data' => $anggota
+    ]);
+}
 
     public function update(Request $request, $id)
     {

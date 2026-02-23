@@ -166,17 +166,31 @@
                     table.ajax.reload(null, false);
                     Swal.fire('Berhasil', response.message, 'success');
                 },
-                error: function(xhr) {
-                    if (xhr.status === 422) {
-                        let errors = xhr.responseJSON.errors;
-                        $.each(errors, function(key, val) {
-                            $('#' + key).addClass('is-invalid');
-                            $('#' + key + '-error').text(val[0]);
-                        });
-                    } else {
-                        Swal.fire('Gagal', xhr.responseJSON.message || 'Terjadi kesalahan', 'error');
-                    }
-                }
+               error: function(xhr) {
+    if (xhr.status === 422) {
+
+        let response = xhr.responseJSON;
+
+        // ✅ Jika ada validasi biasa (field error)
+        if (response.errors) {
+            $.each(response.errors, function(key, val) {
+                $('#' + key).addClass('is-invalid');
+                $('#' + key + '-error').text(val[0]);
+            });
+        }
+        // ✅ Jika error custom seperti "Ketua sudah ada"
+        else if (response.message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: response.message
+            });
+        }
+
+    } else {
+        Swal.fire('Gagal', 'Terjadi kesalahan pengisian data', 'error');
+    }
+}
             });
         });
 
