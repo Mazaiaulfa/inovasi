@@ -4,6 +4,44 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+<style>
+.modern-tabs {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tab-item {
+    padding: 12px 5px;
+    cursor: pointer;
+    color: #6b7280;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.25s ease;
+}
+
+.tab-item i {
+    opacity: 0.7;
+}
+
+.tab-item:hover {
+    color: #6366f1;
+}
+
+.tab-item.active {
+    color: #6366f1;
+}
+
+.tab-item.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #6366f1;
+    border-radius: 3px 3px 0 0;
+}
+</style>
+
 <?php $__env->stopPush(); ?>
 
 <?php $__env->startSection('main'); ?>
@@ -16,6 +54,26 @@
                         <div class="card-header">
                             <h4>Verifikasi Judul Makalah</h4>
                         </div>
+
+<div class="mb-4">
+    <div class="modern-tabs d-flex gap-4">
+
+        <div class="tab-item active" data-filter="all">
+            <i class="fas fa-layer-group me-2"></i> Semua
+        </div>
+
+        <div class="tab-item" data-filter="EIF">
+            <i class="fas fa-user me-2"></i> EIF
+        </div>
+
+        <div class="tab-item" data-filter="GKM">
+            <i class="fas fa-users me-2"></i> GKM
+        </div>
+
+    </div>
+</div>
+
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="verifikasi-table" class="table table-bordered table-hover w-100">
@@ -23,6 +81,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Nama Gugus</th>
+                                            <th>Jenis Peserta</th>
                                             <th>Judul Makalah</th>
                                             <th>File Judul</th>
                                             <th>Catatan</th>
@@ -259,32 +318,43 @@ $(document).ready(function () {
     const baseUrl = '<?php echo e(url("/")); ?>';
 
     // Inisialisasi DataTable
+    let jenisFilter = 'all';
     let table = $('#verifikasi-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: baseUrl + '/admin/verifikasi',
+        ajax: {
+    url: baseUrl + '/admin/verifikasi',
+    data: function (d) {
+        d.jenis = jenisFilter;
+    }
+},
         columns: [
-            { data: 'id', name: 'id', render: (data, type, row, meta) => meta.row + 1 },
-            { data: 'user.name', name: 'user.name' },
-            { data: 'judul', name: 'judul' },
+    { data: 'id', name: 'id', render: (data, type, row, meta) => meta.row + 1 },
 
-            {
-                data: 'file_ajukan',
-                name: 'file_ajukan',
-                render: function(data) {
-                    if (!data) return '-';
-                    return `
-                        <a href="${data}" target="_blank"
-                           class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-file-pdf"></i> Lihat PDF
-                        </a>`;
-                }
-            },
+    { data: 'user.name', name: 'user.name' },
 
-            { data: 'catatan', name: 'catatan' },
-            { data: 'status_judul', name: 'status_judul' },
-            { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
-        ]
+    // ✅ TAMBAH INI
+    { data: 'jenis_peserta', name: 'jenis_peserta' },
+
+    { data: 'judul', name: 'judul' },
+
+    {
+        data: 'file_ajukan',
+        name: 'file_ajukan',
+        render: function(data) {
+            if (!data) return '-';
+            return `
+                <a href="${data}" target="_blank"
+                   class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-file-pdf"></i> Lihat PDF
+                </a>`;
+        }
+    },
+
+    { data: 'catatan', name: 'catatan' },
+    { data: 'status_judul', name: 'status_judul' },
+    { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
+]
     });
 
     // Inisialisasi modal
@@ -408,8 +478,18 @@ $(document).ready(function () {
     $('#previewModal, #editModal').on('hidden.bs.modal', function() {
         $(this).find('form')[0].reset();
     });
+$('.tab-item').on('click', function () {
 
+    $('.tab-item').removeClass('active');
+    $(this).addClass('active');
+
+    jenisFilter = $(this).data('filter'); // set filter
+    table.ajax.reload(null, false); // reload data
 });
+});
+
+
+
 </script>
 
 <?php $__env->stopPush(); ?>

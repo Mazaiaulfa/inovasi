@@ -28,4 +28,5 @@ class Proposal extends Model
     {
         return $this->belongsTo(Tahapan::class, 'tahap_id');
     }
+    
 }

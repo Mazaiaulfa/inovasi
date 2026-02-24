@@ -136,11 +136,13 @@
                 </ul>
             </li>
 
+                        @if(Auth::user()->jenis_peserta == 'GKM')
             <li class="{{ Request::is('user/anggota*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('anggota.index') }}">
                     <i class="fas fa-users"></i> <span>Tambah Anggota Team</span>
                 </a>
             </li>
+            @endif
 
                     <li class="{{ Request::is('user/profile*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('user.profile.index') }}">

@@ -136,11 +136,13 @@
                 </ul>
             </li>
 
+                        <?php if(Auth::user()->jenis_peserta == 'GKM'): ?>
             <li class="<?php echo e(Request::is('user/anggota*') ? 'active' : ''); ?>">
                 <a class="nav-link" href="<?php echo e(route('anggota.index')); ?>">
                     <i class="fas fa-users"></i> <span>Tambah Anggota Team</span>
                 </a>
             </li>
+            <?php endif; ?>
 
                     <li class="<?php echo e(Request::is('user/profile*') ? 'active' : ''); ?>">
             <a class="nav-link" href="<?php echo e(route('user.profile.index')); ?>">

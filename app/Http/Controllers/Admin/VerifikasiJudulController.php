@@ -18,10 +18,28 @@ class VerifikasiJudulController extends Controller
         if ($request->ajax()) {
             $karya = KaryaTulis::with('user')->latest();
 
+// 🔥 TAMBAHKAN INI
+if ($request->jenis && $request->jenis != 'all') {
+    $karya->whereHas('user', function ($q) use ($request) {
+        $q->where('jenis_peserta', $request->jenis);
+    });
+}
+
             return DataTables::of($karya)
-            
+
                 ->addIndexColumn()
-                
+                ->addColumn('jenis_peserta', function ($row) {
+
+    $jenis = $row->user->jenis_peserta ?? null;
+
+    if ($jenis == 'EIF') {
+        return '<span class="badge bg-primary">EIF</span>';
+    } elseif ($jenis == 'GKM') {
+        return '<span class="badge bg-success">GKM</span>';
+    }
+
+    return '-';
+})
                 ->addColumn('file_ajukan', function ($row) {
                 return asset($row->file_ajukan); // file sudah ada di public/uploads/file_judul
             })
@@ -62,7 +80,7 @@ class VerifikasiJudulController extends Controller
 
                     return '<span class="badge bg-' . $color . '">' . $row->status_judul . '</span>';
                 })
-                ->rawColumns(['aksi', 'status_judul', 'catatan_judul'])
+                ->rawColumns(['aksi', 'status_judul', 'jenis_peserta'])
                 ->make(true);
         }
 
