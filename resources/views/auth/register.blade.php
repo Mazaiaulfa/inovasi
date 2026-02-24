@@ -43,23 +43,53 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        {{-- Nama Team --}}
-        <div class="form-group mb-1">
-            <label for="name" class="font-weight-bold"><i class="fas fa-users mr-1"></i> Nama Team</label>
-            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                value="{{ old('name') }}" required autofocus placeholder="Masukkan Nama Team">
-            @error('name')
-            <div class="invalid-feedback" style="display:block">
-                {{ $message }}
-            </div>
-            @enderror
-        </div>
+{{-- Jenis Peserta --}}
+<div class="form-group mb-1">
+    <label class="font-weight-bold">
+        <i class="fas fa-layer-group mr-1"></i> Jenis Peserta
+    </label>
+    <select name="jenis_peserta" id="jenisPeserta"
+        class="form-control @error('jenis_peserta') is-invalid @enderror" required>
+        <option value="">-- Pilih Jenis Peserta --</option>
+        <option value="EIF" {{ old('jenis_peserta') == 'EIF' ? 'selected' : '' }}>
+            EIF (Individu)
+        </option>
+        <option value="GKM" {{ old('jenis_peserta') == 'GKM' ? 'selected' : '' }}>
+            GKM (Team)
+        </option>
+    </select>
 
-     <div class="form-group mb-1">
+    @error('jenis_peserta')
+    <div class="invalid-feedback" style="display:block">
+        {{ $message }}
+    </div>
+    @enderror
+</div>
+
+        {{-- Nama Team --}}
+<div class="form-group mb-1">
+    <label id="labelName" for="name" class="font-weight-bold">
+        <i class="fas fa-users mr-1"></i> Nama Team
+    </label>
+
+    <input id="name"
+        type="text"
+        class="form-control @error('name') is-invalid @enderror"
+        name="name"
+        value="{{ old('name') }}"
+        required
+        placeholder="Masukkan Nama Team">
+
+    @error('name')
+    <div class="invalid-feedback" style="display:block">
+        {{ $message }}
+    </div>
+    @enderror
+</div>
+<div class="form-group mb-1">
     <label for="unit_kerja" class="font-weight-bold">
         <i class="fas fa-building mr-1"></i> Unit Kerja
     </label>
-
     <select id="unit_kerja"
         name="unit_kerja"
         class="form-control select2 @error('unit_kerja') is-invalid @enderror"
@@ -233,7 +263,7 @@
         {{ $message }}
     </div>
     @enderror
-</div>
+
 
 
         {{-- Email Team --}}
@@ -290,5 +320,31 @@
 @endsection
 
 @push('scripts')
-<!-- JS Libraries -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const jenis = document.getElementById("jenisPeserta");
+    const label = document.getElementById("labelName");
+    const input = document.getElementById("name");
+
+    function ubahLabel() {
+        if (jenis.value === "EIF") {
+            label.innerHTML = '<i class="fas fa-user mr-1"></i> Nama Peserta';
+            input.placeholder = "Masukkan Nama Peserta";
+        } else if (jenis.value === "GKM") {
+            label.innerHTML = '<i class="fas fa-users mr-1"></i> Nama Team';
+            input.placeholder = "Masukkan Nama Team";
+        }
+    }
+
+    jenis.addEventListener("change", ubahLabel);
+
+    ubahLabel(); // supaya tetap sesuai kalau reload
+});
+</script>
+
 @endpush
+
+
+
+

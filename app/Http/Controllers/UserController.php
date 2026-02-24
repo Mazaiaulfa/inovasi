@@ -67,6 +67,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             'role' => 'required|in:admin,user',
+            'jenis_peserta' => 'required|in:EIF,GKM',
         ]);
 
         User::create([
@@ -75,6 +76,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role' => $request->role,
+            'jenis_peserta' => $request->jenis_peserta,
         ]);
 
         Alert::success('Berhasil!', 'User baru telah dibuat');
@@ -117,7 +119,8 @@ class UserController extends Controller
             'unit_kerja' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'role' => 'required|in:admin,user',
-            'password' => 'nullable|min:6', // password boleh kosong, tapi jika diisi minimal 6 karakter
+            'password' => 'nullable|min:6',
+            'jenis_peserta' => 'required|in:EIF,GKM',// password boleh kosong, tapi jika diisi minimal 6 karakter
         ]);
 
         $data = [
@@ -125,6 +128,7 @@ class UserController extends Controller
             'unit_kerja' => $request->unit_kerja,
             'email' => $request->email,
             'role' => $request->role,
+        'jenis_peserta' => $request->jenis_peserta,
         ];
 
         // Jika password diisi, tambahkan ke dalam data yang akan di-update

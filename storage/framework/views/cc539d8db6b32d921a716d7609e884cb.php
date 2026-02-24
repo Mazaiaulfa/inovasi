@@ -57,6 +57,28 @@
     </style>
 
     <style>
+/* @keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+} */
+.animate-fadeInUp {
+    animation: fadeInUp 1s ease forwards;
+}
+
+.slider-title {
+    text-shadow: 0 5px 25px rgba(0,0,0,0.8);
+}
+
+.slider-desc {
+    text-shadow: 0 3px 15px rgba(0,0,0,0.7);
+}
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -67,10 +89,13 @@
         transform: translateY(0);
     }
 }
+
 .animate-fadeInUp {
     animation: fadeInUp 1s ease forwards;
 }
 </style>
+
+
 </head>
 
 <body class="bg-gray-50 text-gray-800">
@@ -110,10 +135,7 @@
     </header>
 
 <!-- SLIDER MODERN -->
-<!-- ================= SLIDER PENGUMUMAN ================= -->
-<!-- ================= SLIDER PENGUMUMAN DINAMIS ================= -->
-<!-- ================= SLIDER PENGUMUMAN DINAMIS ================= -->
-<!-- ================= SLIDER ================= -->
+<!-- ================= SLIDER PREMIUM ================= -->
 <section class="pt-16 relative">
 
 <div class="relative overflow-hidden">
@@ -123,44 +145,62 @@
 <?php $__empty_1 = true; $__currentLoopData = $pengumuman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
 <div class="banner-slide <?php echo e($key == 0 ? '' : 'hidden'); ?> transition-opacity duration-700 ease-in-out">
 
-    <div class="h-[85vh] bg-cover bg-center flex items-center justify-center relative transform transition duration-[2000ms] hover:scale-105"
+    <div class="h-[90vh] bg-cover bg-center flex items-center justify-center relative transform transition duration-[2000ms] hover:scale-105"
          style="background-image: url('<?php echo e(asset('img/slide'.(($key%6)+1).'.png')); ?>');">
 
-        <div class="absolute inset-0 bg-black/40"></div>
+        <!-- GRADIENT OVERLAY PREMIUM -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/40"></div>
 
-        <div class="relative text-center text-white max-w-3xl px-6 animate-fadeInUp">
+        <!-- CONTENT -->
+        <div class="relative text-center text-white max-w-4xl px-8 py-10
+                    bg-white/10 backdrop-blur-md rounded-3xl
+                    border border-white/20 shadow-2xl
+                    animate-fadeInUp">
 
             <?php if($item->urgent): ?>
-            <div class="inline-block bg-red-500/90 px-4 py-1 rounded-full text-xs mb-5 tracking-wide">
-                Pengumuman Penting
+            <div class="inline-block bg-red-500 px-4 py-1 rounded-full text-xs mb-6 tracking-wide shadow-lg">
+                🔥 Pengumuman Penting
             </div>
             <?php endif; ?>
 
-            <h2 class="text-4xl font-semibold mb-4 leading-snug">
+            <!-- ACCENT LINE -->
+            <div class="w-24 h-1 bg-indigo-400 mx-auto mb-6 rounded-full"></div>
+
+            <!-- TITLE -->
+            <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight slider-title">
                 <?php echo e($item->judul); ?>
 
             </h2>
 
-            <p class="text-gray-200 mb-6 text-base">
+            <!-- DESCRIPTION -->
+            <p class="text-gray-200 mb-8 text-lg slider-desc">
                 <?php echo e($item->ringkasan); ?>
 
             </p>
 
+            <!-- BUTTON -->
             <a href="<?php echo e(route('pengumuman.detail', $item->id)); ?>"
-               class="inline-block px-6 py-2 text-sm bg-white text-indigo-600 rounded-full hover:bg-gray-100 transition shadow-md">
-                Lihat Detail
+               class="inline-block px-8 py-3 text-sm font-semibold
+                      bg-indigo-600 hover:bg-indigo-700
+                      text-white rounded-full
+                      transition duration-300 shadow-xl hover:scale-105">
+                Lihat Detail →
             </a>
 
         </div>
     </div>
 </div>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-<div class="h-[85vh] bg-cover bg-center flex items-center justify-center relative"
+<div class="h-[90vh] bg-cover bg-center flex items-center justify-center relative"
      style="background-image: url('<?php echo e(asset('img/slide1.png')); ?>');">
-    <div class="absolute inset-0 bg-black/60"></div>
-    <h2 class="relative text-white text-3xl font-semibold">
-        Selamat Datang di PIM Innovation Fest
-    </h2>
+
+    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/40"></div>
+
+    <div class="relative text-center text-white">
+        <h2 class="text-5xl font-bold slider-title">
+            Selamat Datang di PIM Innovation Fest
+        </h2>
+    </div>
 </div>
 <?php endif; ?>
 
@@ -168,12 +208,12 @@
 
 <!-- NAVIGATION BUTTON -->
 <button onclick="prevSlide()"
-class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-2 rounded-full text-white text-sm transition">
+class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-3 rounded-full text-white text-lg transition">
 ‹
 </button>
 
 <button onclick="nextSlide()"
-class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-2 rounded-full text-white text-sm transition">
+class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-3 rounded-full text-white text-lg transition">
 ›
 </button>
 

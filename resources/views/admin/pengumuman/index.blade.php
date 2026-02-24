@@ -55,7 +55,7 @@
             <th>Tanggal Selesai</th>
             <th>Urgent</th>
             <th>Status</th> <!-- is_active -->
-            <th>Gambar</th>
+            <th>File</th>
             <th>Aksi</th>
         </tr>
     </thead>
@@ -82,12 +82,47 @@
                 @endif
             </td>
             <td>
-                @if($item->gambar)
-                    <img src="{{ asset($item->gambar) }}" alt="Gambar" class="img-thumbnail" style="width:100px;">
-                @else
-                    -
-                @endif
-            </td>
+    @if($item->file)
+        @php
+            $extension = pathinfo($item->file, PATHINFO_EXTENSION);
+        @endphp
+
+        {{-- Jika file gambar --}}
+        @if(in_array(strtolower($extension), ['jpg','jpeg','png','gif','webp']))
+            <img src="{{ asset($item->file) }}"
+                 class="img-thumbnail"
+                 style="width:100px; height:80px; object-fit:cover;">
+
+        {{-- Jika file PDF --}}
+        @elseif(strtolower($extension) == 'pdf')
+            <div class="d-flex flex-column align-items-center">
+                <i class="fas fa-file-pdf text-danger" style="font-size:40px;"></i>
+                <a href="{{ asset($item->file) }}"
+                   target="_blank"
+                   class="btn btn-sm btn-outline-danger mt-1">
+                   Lihat PDF
+                </a>
+            </div>
+
+        {{-- Jika file Word --}}
+        @elseif(in_array(strtolower($extension), ['doc','docx']))
+            <div class="d-flex flex-column align-items-center">
+                <i class="fas fa-file-word text-primary" style="font-size:40px;"></i>
+                <a href="{{ asset($item->file) }}"
+                   class="btn btn-sm btn-outline-primary mt-1">
+                   Download
+                </a>
+            </div>
+
+        @else
+            <a href="{{ asset($item->file) }}" class="btn btn-sm btn-secondary">
+                Download File
+            </a>
+        @endif
+    @else
+        -
+    @endif
+</td>
             <td class="d-flex gap-2">
                 <a href="{{ route('admin.pengumuman.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
                 <form action="{{ route('admin.pengumuman.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin hapus?')">

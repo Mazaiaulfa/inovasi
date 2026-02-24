@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Register'); ?>
 
 <?php $__env->startPush('style'); ?>
@@ -43,38 +41,83 @@
     <form method="POST" action="<?php echo e(route('register')); ?>">
         <?php echo csrf_field(); ?>
 
-        
-        <div class="form-group mb-1">
-            <label for="name" class="font-weight-bold"><i class="fas fa-users mr-1"></i> Nama Team</label>
-            <input id="name" type="text" class="form-control <?php $__errorArgs = ['name'];
+
+<div class="form-group mb-1">
+    <label class="font-weight-bold">
+        <i class="fas fa-layer-group mr-1"></i> Jenis Peserta
+    </label>
+    <select name="jenis_peserta" id="jenisPeserta"
+        class="form-control <?php $__errorArgs = ['jenis_peserta'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="name"
-                value="<?php echo e(old('name')); ?>" required autofocus placeholder="Masukkan Nama Team">
-            <?php $__errorArgs = ['name'];
+unset($__errorArgs, $__bag); ?>" required>
+        <option value="">-- Pilih Jenis Peserta --</option>
+        <option value="EIF" <?php echo e(old('jenis_peserta') == 'EIF' ? 'selected' : ''); ?>>
+            EIF (Individu)
+        </option>
+        <option value="GKM" <?php echo e(old('jenis_peserta') == 'GKM' ? 'selected' : ''); ?>>
+            GKM (Team)
+        </option>
+    </select>
+
+    <?php $__errorArgs = ['jenis_peserta'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-            <div class="invalid-feedback" style="display:block">
-                <?php echo e($message); ?>
+    <div class="invalid-feedback" style="display:block">
+        <?php echo e($message); ?>
 
-            </div>
-            <?php unset($message);
+    </div>
+    <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-        </div>
+</div>
 
-     <div class="form-group mb-1">
+        
+<div class="form-group mb-1">
+    <label id="labelName" for="name" class="font-weight-bold">
+        <i class="fas fa-users mr-1"></i> Nama Team
+    </label>
+
+    <input id="name"
+        type="text"
+        class="form-control <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+        name="name"
+        value="<?php echo e(old('name')); ?>"
+        required
+        placeholder="Masukkan Nama Team">
+
+    <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+    <div class="invalid-feedback" style="display:block">
+        <?php echo e($message); ?>
+
+    </div>
+    <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+</div>
+<div class="form-group mb-1">
     <label for="unit_kerja" class="font-weight-bold">
         <i class="fas fa-building mr-1"></i> Unit Kerja
     </label>
-
     <select id="unit_kerja"
         name="unit_kerja"
         class="form-control select2 <?php $__errorArgs = ['unit_kerja'];
@@ -263,7 +306,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-</div>
+
 
 
         
@@ -365,7 +408,33 @@ unset($__errorArgs, $__bag); ?>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startPush('scripts'); ?>
-<!-- JS Libraries -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const jenis = document.getElementById("jenisPeserta");
+    const label = document.getElementById("labelName");
+    const input = document.getElementById("name");
+
+    function ubahLabel() {
+        if (jenis.value === "EIF") {
+            label.innerHTML = '<i class="fas fa-user mr-1"></i> Nama Peserta';
+            input.placeholder = "Masukkan Nama Peserta";
+        } else if (jenis.value === "GKM") {
+            label.innerHTML = '<i class="fas fa-users mr-1"></i> Nama Team';
+            input.placeholder = "Masukkan Nama Team";
+        }
+    }
+
+    jenis.addEventListener("change", ubahLabel);
+
+    ubahLabel(); // supaya tetap sesuai kalau reload
+});
+</script>
+
 <?php $__env->stopPush(); ?>
+
+
+
+
 
 <?php echo $__env->make('layouts.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/auth/register.blade.php ENDPATH**/ ?>
