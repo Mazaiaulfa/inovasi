@@ -15,13 +15,14 @@
         </div>
 
         <!-- Statistik Singkat -->
-       <!-- ==========================
 
+<!-- ==========================
+     Statistik GKM
 =========================== -->
 <div class="row g-2 mt-0">
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
-            <div class="card-icon bg-primary text-white">
+        <div class="card card-statistic-1 shadow-lg">
+            <div class="card-icon" style="background: linear-gradient(135deg, #6f42c1, #a471f7); color: white;">
                 <i class="fas fa-users"></i>
             </div>
             <div class="card-wrap">
@@ -37,8 +38,8 @@
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
-            <div class="card-icon bg-success text-white">
+        <div class="card card-statistic-1 shadow-lg">
+            <div class="card-icon" style="background: #4dc0b5; color: white;">
                 <i class="far fa-file-alt"></i>
             </div>
             <div class="card-wrap">
@@ -54,8 +55,8 @@
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
-            <div class="card-icon bg-warning text-white">
+        <div class="card card-statistic-1 shadow-lg">
+            <div class="card-icon" style="background: #ffb100; color: white;">
                 <i class="fas fa-file-upload"></i>
             </div>
             <div class="card-wrap">
@@ -71,8 +72,8 @@
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
-            <div class="card-icon bg-danger text-white">
+        <div class="card card-statistic-1 shadow-lg">
+            <div class="card-icon" style="background: #ff6b81; color: white;">
                 <i class="fas fa-book"></i>
             </div>
             <div class="card-wrap">
@@ -93,8 +94,8 @@
 =========================== -->
 <div class="row g-2 mt-0">
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
-            <div class="card-icon bg-primary text-white">
+        <div class="card card-statistic-1 shadow-lg">
+            <div class="card-icon" style="background: #20c997; color: white;">
                 <i class="fas fa-user-graduate"></i>
             </div>
             <div class="card-wrap">
@@ -110,8 +111,8 @@
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
-            <div class="card-icon bg-success text-white">
+        <div class="card card-statistic-1 shadow-lg">
+            <div class="card-icon" style="background: #fd7e14; color: white;">
                 <i class="far fa-file-alt"></i>
             </div>
             <div class="card-wrap">
@@ -127,8 +128,8 @@
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
-            <div class="card-icon bg-warning text-white">
+        <div class="card card-statistic-1 shadow-lg">
+            <div class="card-icon" style="background: #a3e635; color: white;">
                 <i class="fas fa-file-upload"></i>
             </div>
             <div class="card-wrap">
@@ -144,8 +145,8 @@
     </div>
 
     <div class="col-lg-3 col-md-6 col-sm-6 col-12">
-        <div class="card card-statistic-1">
-            <div class="card-icon bg-danger text-white">
+        <div class="card card-statistic-1 shadow-lg">
+            <div class="card-icon" style="background: #6610f2; color: white;">
                 <i class="fas fa-book"></i>
             </div>
             <div class="card-wrap">

@@ -21,11 +21,17 @@ class VerifProposalController extends Controller
             if ($request->has('status') && $request->status != '') {
                 $proposal->where('status', $request->status);
             }
-
+           if ($request->has('jenis') && $request->jenis != 'all') {
+    $proposal->whereHas('karya.user', function($q) use ($request) {
+        $q->where('jenis_peserta', $request->jenis);
+    });
+}
             return DataTables::of($proposal)
                 ->addIndexColumn()
                 ->addColumn('judul', fn($row) => $row->karya->judul ?? '-')
                 ->addColumn('nama', fn($row) => $row->karya->user->name ?? '-')
+                 ->addColumn('jenis_peserta', function($row){
+            return $row->karya->user->jenis_peserta ?? '-';})
                 ->addColumn('tahapan', function ($row) {
                     if (!$row->tahapan) return '-';
                     return "<strong>{$row->tahapan->nama}</strong><br><small>{$row->tahapan->deskripsi}</small>";
@@ -33,7 +39,7 @@ class VerifProposalController extends Controller
                ->addColumn('file', fn($row) =>
              '<a href="' . asset($row->file_path) . '" target="_blank">Lihat</a>'
 )
-               
+
                 ->addColumn('catatan', function ($row) {
                     return $row->catatan ?: '-';
                 })
@@ -54,7 +60,7 @@ class VerifProposalController extends Controller
                         data-tahap_id="' . $row->tahap_id . '"
                          data-status="' . $row->status . '"
                        data-file="' . asset($row->file_path) . '">
-                       
+
                       <i class="fas fa-edit"></i>
                      </button>
 

@@ -37,7 +37,7 @@ class ProposalController extends Controller
                 return back()->with('error', 'Data tidak valid.');
             }
 
-                        if ($karya->status !== 'disetujui') {
+                    if (strtolower(trim($karya->status_judul)) !== 'disetujui') {
                 Alert::error('Gagal', 'Makalah hanya bisa diajukan jika judul sudah disetujui.');
                 return back()->withErrors([
                     'karya_id' => 'Makalah hanya bisa diajukan jika judul sudah disetujui.'

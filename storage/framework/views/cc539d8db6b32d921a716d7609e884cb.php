@@ -493,7 +493,7 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
         });
     });
 
-    setInterval(nextSlide, 8000);
+    setInterval(nextSlide, 10000);
 </script>
 
 

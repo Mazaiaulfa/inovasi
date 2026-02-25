@@ -6,6 +6,43 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <style>
+.modern-tabs {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tab-item {
+    padding: 12px 5px;
+    cursor: pointer;
+    color: #6b7280;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.25s ease;
+}
+
+.tab-item i {
+    opacity: 0.7;
+}
+
+.tab-item:hover {
+    color: #6366f1;
+}
+
+.tab-item.active {
+    color: #6366f1;
+}
+
+.tab-item.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #6366f1;
+    border-radius: 3px 3px 0 0;
+}
+</style>
+<style>
     /* Flex container untuk search + filter */
     .dataTables_wrapper .dataTables_filter {
         display: flex !important;
@@ -39,6 +76,19 @@
                         <div class="card-header">
                             <h4>Verifikasi Makalah</h4>
                         </div>
+                        <div class="mb-4">
+    <div class="modern-tabs d-flex gap-4">
+        <div class="tab-item active" data-filter="all">
+            <i class="fas fa-layer-group me-2"></i> Semua
+        </div>
+        <div class="tab-item" data-filter="EIF">
+            <i class="fas fa-user me-2"></i> EIF
+        </div>
+        <div class="tab-item" data-filter="GKM">
+            <i class="fas fa-users me-2"></i> GKM
+        </div>
+    </div>
+</div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="proposalTable" class="table table-striped table-bordered table-hover w-100">
@@ -47,6 +97,7 @@
                                             <th>No</th>
                                             <th>Judul Makalah</th>
                                             <th>Nama Gugus</th>
+                                            <th>Jenis Peserta</th>
                                             <th>Tahapan</th>
                                             <th>File</th>
                                             <th>Catatan</th>
@@ -186,21 +237,23 @@
 
 <script>
 $(function () {
-
+    let jenisFilter = 'all';
     let table = $('#proposalTable').DataTable({
         processing: true,
         serverSide: true,
         responsive: true,
         ajax: {
-            url: '{{ route('admin.proposal.index') }}',
-            data: function (d) {
-                d.status = $('#filter-status').val();
-            }
-        },
+        url: '{{ route('admin.proposal.index') }}',
+        data: function (d) {
+        d.jenis = jenisFilter;
+        d.status = $('#filter-status').val();
+    }
+},
         columns: [
             { data: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'judul' },
             { data: 'nama' },
+            { data: 'jenis_peserta' },
             { data: 'tahapan' },
             { data: 'file', orderable: false, searchable: false },
             { data: 'catatan' },
@@ -349,6 +402,13 @@ $(function () {
         });
     });
 
+$('.tab-item').on('click', function () {
+    $('.tab-item').removeClass('active');
+    $(this).addClass('active');
+
+    jenisFilter = $(this).data('filter'); // set filter
+    table.ajax.reload(null, false); // reload data
+});
 });
 </script>
 
