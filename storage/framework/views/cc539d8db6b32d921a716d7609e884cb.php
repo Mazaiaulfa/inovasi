@@ -136,6 +136,7 @@
 
 <!-- SLIDER MODERN -->
 <!-- ================= SLIDER PREMIUM ================= -->
+<!-- ================= SLIDER PREMIUM FIXED ================= -->
 <section class="pt-16 relative">
 
 <div class="relative overflow-hidden">
@@ -143,19 +144,24 @@
 <div id="bannerSlider" class="relative w-full">
 
 <?php $__empty_1 = true; $__currentLoopData = $pengumuman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-<div class="banner-slide <?php echo e($key == 0 ? '' : 'hidden'); ?> transition-opacity duration-700 ease-in-out">
+<div class="banner-slide <?php echo e($key == 0 ? '' : 'hidden'); ?> relative h-[90vh]">
 
-    <div class="h-[90vh] bg-cover bg-center flex items-center justify-center relative transform transition duration-[2000ms] hover:scale-105"
-         style="background-image: url('<?php echo e(asset('img/slide'.(($key%6)+1).'.png')); ?>');">
+    <!-- BACKGROUND IMAGE -->
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed transition-opacity duration-700"
+     style="background-image: url('<?php echo e(asset('img/slide'.(($key%6)+1).'.png')); ?>');
+            background-size: cover;
+            background-position: center;
+            image-rendering: auto;">
+</div>
+    <!-- OVERLAY -->
+    <div class="absolute inset-0 bg-black/5"></div>
 
-        <!-- GRADIENT OVERLAY PREMIUM -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/40"></div>
-
-        <!-- CONTENT -->
-        <div class="relative text-center text-white max-w-4xl px-8 py-10
-                    bg-white/10 backdrop-blur-md rounded-3xl
-                    border border-white/20 shadow-2xl
-                    animate-fadeInUp">
+    <!-- CONTENT -->
+    <div class="relative h-full flex items-center justify-center px-6">
+        <div class="slide-content opacity-0 translate-y-8 transition-all duration-700
+                    text-center text-white max-w-4xl px-8 py-10
+                   bg-black/40 rounded-3xl
+                    border border-white/20 shadow-2xl">
 
             <?php if($item->urgent): ?>
             <div class="inline-block bg-red-500 px-4 py-1 rounded-full text-xs mb-6 tracking-wide shadow-lg">
@@ -163,82 +169,189 @@
             </div>
             <?php endif; ?>
 
-            <!-- ACCENT LINE -->
             <div class="w-24 h-1 bg-indigo-400 mx-auto mb-6 rounded-full"></div>
 
-            <!-- TITLE -->
-            <h2 class="text-5xl md:text-6xl font-bold mb-6 leading-tight slider-title">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                 <?php echo e($item->judul); ?>
 
             </h2>
 
-            <!-- DESCRIPTION -->
-            <p class="text-gray-200 mb-8 text-lg slider-desc">
+            <p class="text-gray-200 mb-8 text-lg">
                 <?php echo e($item->ringkasan); ?>
 
             </p>
 
-            <!-- BUTTON -->
             <a href="<?php echo e(route('pengumuman.detail', $item->id)); ?>"
                class="inline-block px-8 py-3 text-sm font-semibold
                       bg-indigo-600 hover:bg-indigo-700
-                      text-white rounded-full
-                      transition duration-300 shadow-xl hover:scale-105">
+                      text-white rounded-full transition duration-300 hover:scale-105">
                 Lihat Detail →
             </a>
 
         </div>
     </div>
+
 </div>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-<div class="h-[90vh] bg-cover bg-center flex items-center justify-center relative"
-     style="background-image: url('<?php echo e(asset('img/slide1.png')); ?>');">
 
-    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/40"></div>
-
-    <div class="relative text-center text-white">
-        <h2 class="text-5xl font-bold slider-title">
+<div class="banner-slide relative h-[90vh]">
+    <div class="absolute inset-0 bg-cover bg-center"
+         style="background-image: url('<?php echo e(asset('img/slide1.png')); ?>');">
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-black/30"></div>
+    <div class="relative h-full flex items-center justify-center text-white">
+        <h2 class="text-5xl font-bold">
             Selamat Datang di PIM Innovation Fest
         </h2>
     </div>
 </div>
+
 <?php endif; ?>
 
 </div>
 
-<!-- NAVIGATION BUTTON -->
+<!-- PREV BUTTON -->
 <button onclick="prevSlide()"
-class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-3 rounded-full text-white text-lg transition">
+class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-3 rounded-full text-white text-lg transition z-20">
 ‹
 </button>
 
+<!-- NEXT BUTTON -->
 <button onclick="nextSlide()"
-class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-3 rounded-full text-white text-lg transition">
+class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-3 rounded-full text-white text-lg transition z-20">
 ›
 </button>
+
+<!-- DOT INDICATORS -->
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+    <?php $__currentLoopData = $pengumuman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <button
+            class="dot w-3 h-3 rounded-full bg-white/50 hover:bg-white transition"
+            onclick="goToSlide(<?php echo e($key); ?>)">
+        </button>
+    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+</div>
 
 </div>
 </section>
 
 
+    
 
-    <!-- Hero Section -->
-    <section id="hero" class="pt-24 pb-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2" data-aos="fade-right">
-                <h2 class="text-4xl font-bold mb-4">Sistem Pengelolaan Inovasii</h2>
-                <p class="mb-6">Daftarkan tim Anda, unggah proposal, dan pantau status verifikasii secara real-time dalam
-                    satu platform.</p>
-                <a href="<?php echo e(route('register')); ?>"
-                    class="bg-white text-indigo-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100 hover-scale">
-                    <i class="fas fa-user-plus mr-1 mt-5"></i>Daftar Sekarang
-                </a>
+
+<!-- Timeline Section -->
+<section id="timeline" class="py-20 bg-gray-100 overflow-hidden">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+
+        <h2 class="text-4xl font-bold text-blue-900 mb-16">
+            Timeline Gerakan Inovasi Tahun 2026
+        </h2>
+
+        <div class="relative">
+
+            <!-- SVG Curve Line -->
+            <svg class="absolute top-0 left-0 w-full h-full" viewBox="0 0 1200 400" preserveAspectRatio="none">
+                <path d="M50,150
+                         C250,50 400,300 600,150
+                         S900,50 1150,200"
+                      fill="none"
+                      stroke="#cbd5e1"
+                      stroke-width="4"
+                      stroke-linecap="round"/>
+            </svg>
+
+            <!-- Timeline Points -->
+            <div class="relative grid grid-cols-1 md:grid-cols-7 gap-8 items-center">
+
+                <!-- Point 1 -->
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
+                                rounded-full shadow-md text-sm">
+                        1
+                    </div>
+                    <p class="mt-4 font-semibold text-blue-900">
+                        Registrasi Ide
+                    </p>
+                    <p class="text-xs text-gray-600">19 Jan – 20 Feb 2026</p>
+                </div>
+
+                <!-- Point 2 -->
+                <div class="text-center mt-10 md:mt-24">
+                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
+                                rounded-full shadow-md text-sm">
+                        2
+                    </div>
+                    <p class="mt-4 font-semibold text-blue-900">
+                        Penyampaian Proposal
+                    </p>
+                    <p class="text-xs text-gray-600">20 Jan – 31 Agu 2026</p>
+                </div>
+
+                <!-- Point 3 -->
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
+                                rounded-full shadow-md text-sm">
+                        3
+                    </div>
+                    <p class="mt-4 font-semibold text-blue-900">
+                        Seleksi Administrasi
+                    </p>
+                    <p class="text-xs text-gray-600">5 – 10 Sep 2026</p>
+                </div>
+
+                <!-- Point 4 -->
+                <div class="text-center mt-10 md:mt-24">
+                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
+                                rounded-full shadow-md text-sm">
+                        4
+                    </div>
+                    <p class="mt-4 font-semibold text-blue-900">
+                        Executive Innovation Forum
+                    </p>
+                    <p class="text-xs text-gray-600">15 Sep 2026</p>
+                </div>
+
+                <!-- Point 5 -->
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
+                                rounded-full shadow-md text-sm">
+                        5
+                    </div>
+                    <p class="mt-4 font-semibold text-blue-900">
+                        Konvensi Internal
+                    </p>
+                    <p class="text-xs text-gray-600">20 Sep 2026</p>
+                </div>
+
+                <!-- Point 6 -->
+                <div class="text-center mt-10 md:mt-24">
+                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
+                                rounded-full shadow-md text-sm">
+                        6
+                    </div>
+                    <p class="mt-4 font-semibold text-blue-900">
+                        Anugerah Inovasi
+                    </p>
+                    <p class="text-xs text-gray-600">25 Sep 2026</p>
+                </div>
+
+                <!-- Point 7 -->
+                <div class="text-center">
+                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
+                                rounded-full shadow-md text-sm">
+                        7
+                    </div>
+                    <p class="mt-4 font-semibold text-blue-900">
+                        Publikasi & Implementasi
+                    </p>
+                    <p class="text-xs text-gray-600">Okt 2026</p>
+                </div>
+
             </div>
-            <div class="md:w-1/2 mt-6 md:mt-0" data-aos="fade-left">
-                <img src="<?php echo e(asset('img/landing.png')); ?>" alt="Ilustrasi Karya Tulis" class="rounded-lg shadow-lg">
-            </div>
+
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Features Section -->
     <section id="features" class="py-16 bg-white">
@@ -454,48 +567,78 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
 
 </body>
 <script>
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.banner-slide');
-    const dots = document.querySelectorAll('.dot');
+let currentSlide = 0;
+const slides = document.querySelectorAll('.banner-slide');
+const dots = document.querySelectorAll('.dot');
 
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.add('hidden');
-            if (i === index) {
-                slide.classList.remove('hidden');
-            }
-        });
+let slideInterval;
 
-        dots.forEach((dot, i) => {
-            dot.classList.remove('opacity-100');
-            dot.classList.add('opacity-50');
-            if (i === index) {
-                dot.classList.remove('opacity-50');
-                dot.classList.add('opacity-100');
-            }
-        });
-    }
+// ================= SHOW SLIDE =================
+function showSlide(index) {
 
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % slides.length;
-        showSlide(currentSlide);
-    }
-
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-        showSlide(currentSlide);
-    }
-
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            currentSlide = index;
-            showSlide(currentSlide);
-        });
+    slides.forEach((slide) => {
+        slide.classList.add('hidden');
     });
 
-    setInterval(nextSlide, 10000);
+    slides[index].classList.remove('hidden');
+
+    const content = slides[index].querySelector('.slide-content');
+
+    if(content){
+        content.classList.remove('opacity-100','translate-y-0');
+        content.classList.add('opacity-0','translate-y-8');
+
+        setTimeout(() => {
+            content.classList.remove('opacity-0','translate-y-8');
+            content.classList.add('opacity-100','translate-y-0');
+        }, 300);
+    }
+
+    dots.forEach((dot, i) => {
+        dot.classList.remove('bg-white');
+        dot.classList.add('bg-blue-200/60');
+
+        if (i === index) {
+            dot.classList.remove('bg-blue-200/60');
+            dot.classList.add('bg-white');
+        }
+    });
+}
+
+// ================= NEXT =================
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+    resetAutoSlide();
+}
+
+// ================= PREV =================
+function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+    resetAutoSlide();
+}
+
+// ================= DOT CLICK =================
+function goToSlide(index) {
+    currentSlide = index;
+    showSlide(currentSlide);
+    resetAutoSlide();
+}
+
+// ================= AUTO SLIDE =================
+function startAutoSlide() {
+    slideInterval = setInterval(nextSlide, 60000); // 60 detik = 1 menit
+}
+
+function resetAutoSlide() {
+    clearInterval(slideInterval);
+    startAutoSlide();
+}
+
+// ================= INIT =================
+showSlide(0);
+startAutoSlide();
 </script>
-
-
 </html>
 <?php /**PATH C:\laragon\www\inovasirev\resources\views/welcome.blade.php ENDPATH**/ ?>

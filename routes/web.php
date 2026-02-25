@@ -30,6 +30,7 @@ Route::get('/storage-link', function(){
     }
 });
 
+Route::view('/timeline', 'timeline');
 Route::view('/detail-pengumuman', 'detail_pengumuman');
 Route::get('/pengumuman/{id}', [LandingController::class, 'detail'])
     ->name('pengumuman.detail');

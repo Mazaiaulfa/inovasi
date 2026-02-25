@@ -7,7 +7,7 @@
     <title>PIM Inovation Fest</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link rel="icon" href="{{ asset('img/iconpim.png') }}">
+    <link rel="icon" href="<?php echo e(asset('img/iconpim.png')); ?>">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- AOS -->
@@ -63,7 +63,7 @@
     <header class="bg-white shadow-md fixed w-full top-0 left-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <h1 class="text-xl font-bold text-indigo-600 flex items-center gap-3">
-                <img src="{{ asset('img/iconLogo.png') }}" alt="Logo" class="w-16 h-16">
+                <img src="<?php echo e(asset('img/iconLogo.png')); ?>" alt="Logo" class="w-16 h-16">
                 <div class="leading-tight">
                     <div>PUPUK ISKANDAR MUDA</div>
                     <div class="text-lg">INNOVATION FEST</div>
@@ -87,7 +87,7 @@
                     <i class="fas fa-chart-bar mr-1"></i>Statistik
                 </a>
             </nav>
-            <a href="{{ route('login') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover-scale">
+            <a href="<?php echo e(route('login')); ?>" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover-scale">
                 <i class="fas fa-sign-in-alt mr-1"></i>Login
             </a>
         </div>
@@ -329,44 +329,8 @@
     </div>
 </section>
 
-        {{-- <!-- Gambar -->
-        <div class="mb-10">
-            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644"
-                class="rounded-xl shadow-lg w-full object-cover h-[400px]">
-        </div> --}}
-{{--
-        <!-- Isi Artikel -->
-        <div class="bg-white p-10 rounded-xl shadow-md leading-relaxed text-gray-700 space-y-6">
+        
 
-            <p>
-                Inovasi PIM 2026 resmi dibuka untuk seluruh mahasiswa aktif di Indonesia.
-                Program ini bertujuan untuk mendorong kreativitas dan inovasi di berbagai bidang.
-            </p>
-
-            <p>
-                Peserta dapat mengirimkan proposal inovasi mulai tanggal
-                <strong>10 Januari 2026</strong> hingga
-                <strong>30 Maret 2026</strong>.
-            </p>
-
-            <h3 class="text-xl font-semibold text-gray-900">Tahapan Seleksi</h3>
-
-            <ul class="list-disc pl-6 space-y-2">
-                <li>Seleksi Administrasi</li>
-                <li>Penilaian Proposal</li>
-                <li>Presentasi Final</li>
-                <li>Pengumuman Pemenang</li>
-            </ul>
-
-            <h3 class="text-xl font-semibold text-gray-900">Benefit</h3>
-
-            <ul class="list-disc pl-6 space-y-2">
-                <li>Sertifikat Nasional</li>
-                <li>Dana Pembinaan</li>
-                <li>Kesempatan Inkubasi Bisnis</li>
-            </ul>
-
-        </div> --}}
 
 
 <!-- Timeline Section -->
@@ -461,7 +425,7 @@
 
         <!-- Tombol -->
         <div class="mt-12 text-center">
-            <a href="{{ url('/') }}"
+            <a href="<?php echo e(url('/')); ?>"
                 class="bg-gray-800 text-white px-6 py-3 rounded-md hover:bg-black transition">
                 ← Kembali ke Beranda
             </a>
@@ -516,3 +480,4 @@
 
 </html>
 
+<?php /**PATH C:\laragon\www\inovasirev\resources\views/timeline.blade.php ENDPATH**/ ?>
