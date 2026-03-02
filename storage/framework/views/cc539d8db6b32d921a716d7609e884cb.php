@@ -135,8 +135,6 @@
     </header>
 
 <!-- SLIDER MODERN -->
-<!-- ================= SLIDER PREMIUM ================= -->
-<!-- ================= SLIDER PREMIUM FIXED ================= -->
 <section class="pt-16 relative">
 
 <div class="relative overflow-hidden">
@@ -235,11 +233,11 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
 </div>
 </section>
 
-
     
 
 
-<!-- Timeline Section -->
+<!-- resources/views/landing.blade.php -->
+
 <section id="timeline" class="py-20 bg-gray-100 overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 text-center">
 
@@ -263,96 +261,46 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
             <!-- Timeline Points -->
             <div class="relative grid grid-cols-1 md:grid-cols-7 gap-8 items-center">
 
-                <!-- Point 1 -->
-                <div class="text-center">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        1
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Registrasi Ide
-                    </p>
-                    <p class="text-xs text-gray-600">19 Jan – 20 Feb 2026</p>
-                </div>
+                <?php $__currentLoopData = $timelines; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $timeline): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="text-center <?php echo e($index % 2 != 0 ? 'mt-10 md:mt-24' : ''); ?>">
+                        <!-- Circle Number -->
+                        <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
+                                    rounded-full shadow-md text-sm">
+                            <?php echo e($timeline->urutan); ?>
 
-                <!-- Point 2 -->
-                <div class="text-center mt-10 md:mt-24">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        2
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Penyampaian Proposal
-                    </p>
-                    <p class="text-xs text-gray-600">20 Jan – 31 Agu 2026</p>
-                </div>
+                        </div>
 
-                <!-- Point 3 -->
-                <div class="text-center">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        3
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Seleksi Administrasi
-                    </p>
-                    <p class="text-xs text-gray-600">5 – 10 Sep 2026</p>
-                </div>
+                        <!-- Title -->
+                        <p class="mt-4 font-semibold text-blue-900">
+                            <?php echo e($timeline->tahap); ?>
 
-                <!-- Point 4 -->
-                <div class="text-center mt-10 md:mt-24">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        4
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Executive Innovation Forum
-                    </p>
-                    <p class="text-xs text-gray-600">15 Sep 2026</p>
-                </div>
+                        </p>
 
-                <!-- Point 5 -->
-                <div class="text-center">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        5
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Konvensi Internal
-                    </p>
-                    <p class="text-xs text-gray-600">20 Sep 2026</p>
-                </div>
+                        <!-- Date -->
+                        <p class="text-xs text-gray-600">
+                            <?php echo e(\Carbon\Carbon::parse($timeline->tanggal_mulai)->format('d M')); ?>
 
-                <!-- Point 6 -->
-                <div class="text-center mt-10 md:mt-24">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        6
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Anugerah Inovasi
-                    </p>
-                    <p class="text-xs text-gray-600">25 Sep 2026</p>
-                </div>
+                            <?php if($timeline->tanggal_selesai): ?>
+                                – <?php echo e(\Carbon\Carbon::parse($timeline->tanggal_selesai)->format('d M Y')); ?>
 
-                <!-- Point 7 -->
-                <div class="text-center">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        7
+                            <?php endif; ?>
+                        </p>
+
+                        <!-- Optional Description -->
+                        <?php if($timeline->deskripsi): ?>
+                            <p class="text-xs text-gray-500 mt-1">
+                                <?php echo e($timeline->deskripsi); ?>
+
+                            </p>
+                        <?php endif; ?>
                     </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Publikasi & Implementasi
-                    </p>
-                    <p class="text-xs text-gray-600">Okt 2026</p>
-                </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
             </div>
 
         </div>
     </div>
 </section>
-
     <!-- Features Section -->
     <section id="features" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-6 text-center">

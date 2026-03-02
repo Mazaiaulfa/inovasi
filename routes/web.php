@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TimelineController;
 use App\Http\Controllers\User\KaryaTulisController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\VerifikasiJudulController;
@@ -86,6 +87,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::delete('/{id}', [PengumumanController::class, 'destroy'])->name('destroy');// Hapus
         Route::get('/{id}', [PengumumanController::class, 'show'])->name('show');        // Detail pengumuman
     });
+
+    Route::prefix('admin/timeline')->name('admin.timeline.')->group(function () {
+    Route::get('/create', [TimelineController::class, 'create'])->name('create');
+    Route::post('/', [TimelineController::class, 'store'])->name('store');
+    Route::get('/{id}/edit', [TimelineController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [TimelineController::class, 'update'])->name('update');
+    Route::delete('/{id}', [TimelineController::class, 'destroy'])->name('destroy');
+});
     // Proposal
     Route::get('/admin/proposal', [VerifProposalController::class, 'index'])->name('admin.proposal.index');
     Route::put('/admin/proposal/verifikasi/{proposal}', [VerifProposalController::class, 'verifikasi'])->name('admin.proposal.verifikasi');

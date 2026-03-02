@@ -135,8 +135,6 @@
     </header>
 
 <!-- SLIDER MODERN -->
-<!-- ================= SLIDER PREMIUM ================= -->
-<!-- ================= SLIDER PREMIUM FIXED ================= -->
 <section class="pt-16 relative">
 
 <div class="relative overflow-hidden">
@@ -233,7 +231,6 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
 </div>
 </section>
 
-
     {{-- <!-- Hero Section -->
     <section id="hero" class="pt-24 pb-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
@@ -253,7 +250,8 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
     </section> --}}
 
 
-<!-- Timeline Section -->
+<!-- resources/views/landing.blade.php -->
+
 <section id="timeline" class="py-20 bg-gray-100 overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 text-center">
 
@@ -277,96 +275,41 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
             <!-- Timeline Points -->
             <div class="relative grid grid-cols-1 md:grid-cols-7 gap-8 items-center">
 
-                <!-- Point 1 -->
-                <div class="text-center">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        1
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Registrasi Ide
-                    </p>
-                    <p class="text-xs text-gray-600">19 Jan – 20 Feb 2026</p>
-                </div>
+                @foreach($timelines as $index => $timeline)
+                    <div class="text-center {{ $index % 2 != 0 ? 'mt-10 md:mt-24' : '' }}">
+                        <!-- Circle Number -->
+                        <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
+                                    rounded-full shadow-md text-sm">
+                            {{ $timeline->urutan }}
+                        </div>
 
-                <!-- Point 2 -->
-                <div class="text-center mt-10 md:mt-24">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        2
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Penyampaian Proposal
-                    </p>
-                    <p class="text-xs text-gray-600">20 Jan – 31 Agu 2026</p>
-                </div>
+                        <!-- Title -->
+                        <p class="mt-4 font-semibold text-blue-900">
+                            {{ $timeline->tahap }}
+                        </p>
 
-                <!-- Point 3 -->
-                <div class="text-center">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        3
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Seleksi Administrasi
-                    </p>
-                    <p class="text-xs text-gray-600">5 – 10 Sep 2026</p>
-                </div>
+                        <!-- Date -->
+                        <p class="text-xs text-gray-600">
+                            {{ \Carbon\Carbon::parse($timeline->tanggal_mulai)->format('d M') }}
+                            @if($timeline->tanggal_selesai)
+                                – {{ \Carbon\Carbon::parse($timeline->tanggal_selesai)->format('d M Y') }}
+                            @endif
+                        </p>
 
-                <!-- Point 4 -->
-                <div class="text-center mt-10 md:mt-24">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        4
+                        <!-- Optional Description -->
+                        @if($timeline->deskripsi)
+                            <p class="text-xs text-gray-500 mt-1">
+                                {{ $timeline->deskripsi }}
+                            </p>
+                        @endif
                     </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Executive Innovation Forum
-                    </p>
-                    <p class="text-xs text-gray-600">15 Sep 2026</p>
-                </div>
-
-                <!-- Point 5 -->
-                <div class="text-center">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        5
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Konvensi Internal
-                    </p>
-                    <p class="text-xs text-gray-600">20 Sep 2026</p>
-                </div>
-
-                <!-- Point 6 -->
-                <div class="text-center mt-10 md:mt-24">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        6
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Anugerah Inovasi
-                    </p>
-                    <p class="text-xs text-gray-600">25 Sep 2026</p>
-                </div>
-
-                <!-- Point 7 -->
-                <div class="text-center">
-                    <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
-                                rounded-full shadow-md text-sm">
-                        7
-                    </div>
-                    <p class="mt-4 font-semibold text-blue-900">
-                        Publikasi & Implementasi
-                    </p>
-                    <p class="text-xs text-gray-600">Okt 2026</p>
-                </div>
+                @endforeach
 
             </div>
 
         </div>
     </div>
 </section>
-
     <!-- Features Section -->
     <section id="features" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-6 text-center">

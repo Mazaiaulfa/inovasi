@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pengumuman;
+use App\Models\Timeline;
 use Illuminate\Support\Str;
 
 class PengumumanController extends Controller
@@ -24,7 +25,8 @@ class PengumumanController extends Controller
     public function index()
     {
         $pengumumans = Pengumuman::latest()->paginate(10);
-        return view('admin.pengumuman.index', compact('pengumumans'));
+        $timelines = Timeline::orderBy('urutan')->paginate(10);
+        return view('admin.pengumuman.index', compact('pengumumans','timelines'));
     }
 
     // Form create

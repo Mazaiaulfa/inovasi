@@ -6,6 +6,7 @@ use App\Models\KaryaTulis;
 use App\Models\Proposal;
 use App\Models\FinalKarya;
 use App\Models\User;
+use App\Models\Timeline;
 use Illuminate\Http\Request;
 use App\Models\Pengumuman;
 use Carbon\Carbon;
@@ -38,13 +39,20 @@ public function index()
         ->take(6) // maksimal 6 slide
         ->get();
 
+    // =========================
+    // TAMBAHAN TIMELINE
+    // =========================
+    $timelines = Timeline::orderBy('urutan')->get(); // ambil timeline dari database
+
     return view('welcome', compact(
         'totalJudul',
         'pendingProposal',
         'totalFinalisasi',
         'totalUser',
-        'pengumuman' // tambahin ini aja
+        'pengumuman',
+        'timelines' // tambahkan ini
     ));
+
 }
 
 public function detail($id)
