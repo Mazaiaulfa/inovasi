@@ -10,6 +10,7 @@ class Timeline extends Model
     use HasFactory;
     protected $fillable = [
         'tahap',
+        'judul',
         'deskripsi',
         'tanggal_mulai',
         'tanggal_selesai',
