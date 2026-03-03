@@ -237,6 +237,55 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
 
 
 <!-- resources/views/landing.blade.php -->
+<div class="relative">
+
+    <!-- GARIS TENGAH -->
+    <div class="hidden md:block absolute top-6 left-0 w-full h-1 bg-gray-300"></div>
+
+    <!-- Timeline -->
+    <div class="flex flex-col md:flex-row justify-center items-start gap-10 relative">
+
+        <?php $__currentLoopData = $timelines; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $timeline): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+            <div class="text-center relative">
+
+                <!-- Circle -->
+                <div class="w-12 h-12 mx-auto bg-blue-500 text-white
+                            flex items-center justify-center
+                            rounded-full shadow-md text-sm relative z-10">
+                    <?php echo e($timeline->urutan); ?>
+
+                </div>
+
+                <!-- Title -->
+                <p class="mt-4 font-semibold text-blue-900">
+                    <?php echo e($timeline->tahap); ?>
+
+                </p>
+
+                <!-- Date -->
+                <p class="text-xs text-gray-600">
+                    <?php echo e(\Carbon\Carbon::parse($timeline->tanggal_mulai)->format('d M')); ?>
+
+                    <?php if($timeline->tanggal_selesai): ?>
+                        – <?php echo e(\Carbon\Carbon::parse($timeline->tanggal_selesai)->format('d M Y')); ?>
+
+                    <?php endif; ?>
+                </p>
+
+                <!-- Description -->
+                <?php if($timeline->deskripsi): ?>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <?php echo e($timeline->deskripsi); ?>
+
+                    </p>
+                <?php endif; ?>
+
+            </div>
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+    </div>
+
+</div>
 
 <section id="timeline" class="py-20 bg-gray-100 overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 text-center">

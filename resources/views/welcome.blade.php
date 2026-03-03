@@ -251,6 +251,50 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
 
 
 <!-- resources/views/landing.blade.php -->
+<div class="relative">
+
+    <!-- GARIS TENGAH -->
+    <div class="hidden md:block absolute top-6 left-0 w-full h-1 bg-gray-300"></div>
+
+    <!-- Timeline -->
+    <div class="flex flex-col md:flex-row justify-center items-start gap-10 relative">
+
+        @foreach($timelines as $index => $timeline)
+            <div class="text-center relative">
+
+                <!-- Circle -->
+                <div class="w-12 h-12 mx-auto bg-blue-500 text-white
+                            flex items-center justify-center
+                            rounded-full shadow-md text-sm relative z-10">
+                    {{ $timeline->urutan }}
+                </div>
+
+                <!-- Title -->
+                <p class="mt-4 font-semibold text-blue-900">
+                    {{ $timeline->tahap }}
+                </p>
+
+                <!-- Date -->
+                <p class="text-xs text-gray-600">
+                    {{ \Carbon\Carbon::parse($timeline->tanggal_mulai)->format('d M') }}
+                    @if($timeline->tanggal_selesai)
+                        – {{ \Carbon\Carbon::parse($timeline->tanggal_selesai)->format('d M Y') }}
+                    @endif
+                </p>
+
+                <!-- Description -->
+                @if($timeline->deskripsi)
+                    <p class="text-xs text-gray-500 mt-1">
+                        {{ $timeline->deskripsi }}
+                    </p>
+                @endif
+
+            </div>
+        @endforeach
+
+    </div>
+
+</div>
 
 <section id="timeline" class="py-20 bg-gray-100 overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 text-center">

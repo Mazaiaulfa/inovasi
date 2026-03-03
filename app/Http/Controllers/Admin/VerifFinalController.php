@@ -21,22 +21,27 @@ class VerifFinalController extends Controller
                 $final = FinalKarya::with(['karya.user'])
                     ->whereHas('karya.user')
                     ->latest();
-
+             if ($request->jenis && $request->jenis != 'all') {
+            $final->whereHas('karya.user', function($query) use ($request) {
+                $query->where('jenis_peserta', $request->jenis);
+            });
+        }
                 return DataTables::of($final)
                     ->addIndexColumn()
                     ->addColumn('judul', fn($row) => $row->karya->judul ?? '-')
                     ->addColumn('nama', fn($row) => $row->karya->user->name ?? '-')
+                    ->addColumn('jenis_peserta', fn($row) => $row->karya->user->jenis_peserta ?? '-')
                    ->addColumn('file', function ($row) {
                     if ($row->file_path) {
                         $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $row->file_path;
-                
+
                         if (file_exists($fullPath)) {
                             return '<a href="' . asset($row->file_path) . '"
                                 target="_blank" class="btn btn-sm btn-outline-primary">
                                 <i class="fas fa-eye"></i> Lihat</a>';
                         }
                     }
-                
+
                     return '<span class="text-muted">File tidak tersedia</span>';
                 })
 
