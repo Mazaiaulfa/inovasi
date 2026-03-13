@@ -17,21 +17,33 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 
 class RekapExport implements FromCollection, WithHeadings, WithStyles, WithColumnWidths,WithTitle
 {
-    protected $userId;
+protected $userId;
+protected $tahun;
 
-    public function __construct($userId = null)
-    {
-        $this->userId = $userId;
-    }
+public function __construct($userId = null, $tahun = null)
+{
+    $this->userId = $userId;
+    $this->tahun = $tahun;
+}
 
     public function collection()
     {
-        $query = User::with(['karyaTulis', 'anggota'])
-                    ->where('role', '!=', 'admin');
+        $query = User::with(['karyaTulis' => function ($q) {
+    if ($this->tahun) {
+        $q->whereYear('created_at', $this->tahun);
+    }
+}, 'anggota'])
+->where('role', '!=', 'admin');
 
-        if ($this->userId) {
-            $query->where('id', $this->userId);
-        }
+if ($this->tahun) {
+    $query->whereHas('karyaTulis', function ($q) {
+        $q->whereYear('created_at', $this->tahun);
+    });
+}
+
+if ($this->userId) {
+    $query->where('id', $this->userId);
+}
 
         $users = $query->get();
 

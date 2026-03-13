@@ -78,7 +78,13 @@ class RekapController extends Controller
 public function history(Request $request)
 {
     if ($request->ajax()) {
-        $users = User::with(['karyaTulis','anggota'])->latest();
+        $users = User::with(['karyaTulis','anggota'])
+    ->when($request->tahun, function($query) use ($request) {
+        $query->whereHas('karyaTulis', function($q) use ($request){
+            $q->whereYear('created_at', $request->tahun);
+        });
+    })
+    ->latest();
 
         return DataTables::of($users)
             ->addColumn('judul', function($user){
@@ -124,7 +130,19 @@ public function history(Request $request)
                     ->implode('<br>');
                 return $anggotaLain ?: '-';
             })
-            ->rawColumns(['judul','tanggal_upload','status','ketua','fasilitator','anggota_lain'])
+                                ->addColumn('aksi', function ($row) {
+
+                    return '
+                    <a href="'.route('admin.history.show',$row->id).'"
+                    class="btn btn-sm btn-primary">
+                    <i class="fas fa-eye"></i> Detail
+                    </a>
+
+                    ';
+
+                    })
+
+            ->rawColumns(['judul','tanggal_upload','status','ketua','fasilitator','anggota_lain','aksi'])
             ->make(true);
     }
 
@@ -159,14 +177,26 @@ public function show($id)
 
     return view('admin.rekap.history.detail', compact('gugus'));
 }
-    public function export($id)
-    {
-        return Excel::download(new RekapExport($id), 'rekap.xlsx');
-    }
+   public function export($id)
+{
+    return Excel::download(
+        new RekapExport($id, null),
+        'rekap_user.xlsx'
+    );
+}
 
-    public function exportAll()
-    {
-        return Excel::download(new RekapExport(null), 'rekap_all.xlsx');
-    }
+public function exportAll(Request $request)
+{
+    $tahun = $request->tahun;
+
+    $namaFile = $tahun
+        ? 'rekap_inovasi_'.$tahun.'.xlsx'
+        : 'rekap_semua_inovasi.xlsx';
+
+    return Excel::download(
+        new RekapExport(null, $tahun),
+        $namaFile
+    );
+}
 
 }
