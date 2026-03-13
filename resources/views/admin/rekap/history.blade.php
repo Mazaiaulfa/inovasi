@@ -66,6 +66,36 @@ height:31px;
 font-size:13px;
 border-radius:5px;
 }
+.modern-tabs {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tab-item {
+    padding: 10px 5px;
+    cursor: pointer;
+    color: #6b7280;
+    font-weight: 500;
+    position: relative;
+    transition: all 0.25s ease;
+}
+
+.tab-item:hover {
+    color: #6366f1;
+}
+
+.tab-item.active {
+    color: #6366f1;
+}
+
+.tab-item.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #6366f1;
+}
 </style>
 @endpush
 
@@ -88,6 +118,27 @@ border-radius:5px;
 <i class="fas fa-file-excel"></i> Export Excel
 </a>
 
+</div>
+<div class="mb-3">
+    <div class="modern-tabs d-flex gap-4">
+
+        <div class="tab-item active" data-filter="all">
+            <i class="fas fa-layer-group me-2"></i> Semua
+        </div>
+
+        <div class="tab-item" data-filter="EIF">
+            <i class="fas fa-user me-2"></i> EIF
+        </div>
+
+        <div class="tab-item" data-filter="GKM">
+            <i class="fas fa-users me-2"></i> GKM
+        </div>
+
+        <div class="tab-item" data-filter="SS">
+            <i class="fas fa-lightbulb me-2"></i> SS
+        </div>
+
+    </div>
 </div>
 <div class="card-body">
 
@@ -134,6 +185,8 @@ border-radius:5px;
 
 <script>
 
+let jenisFilter = 'all';
+
 $(function() {
 
 let table = $('#historyTable').DataTable({
@@ -146,6 +199,7 @@ ajax: {
     type: 'GET',
     data: function(d){
         d.tahun = $('#filterTahun').val();
+        d.jenis = jenisFilter;
     }
 },
 
@@ -165,11 +219,11 @@ return meta.row + meta.settings._iDisplayStart + 1;
 
 { data: 'tanggal_upload', name: 'tanggal_upload' },
 
-{ data: 'ketua', name: 'ketua', orderable: false, searchable: false, className: 'anggota-cell' },
+{ data: 'ketua', name: 'ketua', orderable: false, searchable: false },
 
-{ data: 'fasilitator', name: 'fasilitator', orderable: false, searchable: false, className: 'anggota-cell' },
+{ data: 'fasilitator', name: 'fasilitator', orderable: false, searchable: false },
 
-{ data: 'anggota_lain', name: 'anggota_lain', orderable: false, searchable: false, className: 'anggota-cell' },
+{ data: 'anggota_lain', name: 'anggota_lain', orderable: false, searchable: false },
 
 {
 data: 'aksi',
@@ -182,14 +236,14 @@ searchable: false
 
 order: [[3, 'desc']]
 
-})
+});
 
-/* Tambahkan filter tahun setelah DataTables muncul */
+
+/* FILTER TAHUN */
 
 $('.dataTables_filter').prepend(`
 
 <select id="filterTahun" class="form-select form-select-sm me-2" style="width:120px;">
-
 <option value="">Semua Tahun</option>
 
 @for($i=date('Y'); $i>=2020; $i--)
@@ -198,30 +252,54 @@ $('.dataTables_filter').prepend(`
 
 </select>
 
-`)
-
-/* reload saat filter berubah */
+`);
 
 $(document).on('change','#filterTahun',function(){
+table.ajax.reload();
+updateExportLink();
+});
 
-table.ajax.reload()
 
-updateExportLink()
+/* FILTER TAB EIF GKM SS */
 
-})
+$('.tab-item').on('click', function () {
 
-})
+$('.tab-item').removeClass('active');
+$(this).addClass('active');
+
+jenisFilter = $(this).data('filter');
+
+table.ajax.reload();
+
+updateExportLink(); // tambahkan ini
+
+});
+
+}); // akhir $(function())
 
 function updateExportLink(){
-    let tahun = $('#filterTahun').val();
 
-    let url = "{{ route('rekap.exportAll') }}";
+let tahun = $('#filterTahun').val();
+let jenis = jenisFilter;
 
-    if(tahun){
-        url += "?tahun=" + tahun;
-    }
+let url = "{{ route('rekap.exportAll') }}";
 
-    $('#btnExport').attr('href', url);
+let params = [];
+
+if(tahun){
+params.push("tahun=" + tahun);
+}
+
+if(jenis && jenis !== 'all'){
+params.push("jenis=" + jenis);
+}
+
+if(params.length){
+url += "?" + params.join("&");
+}
+
+$('#btnExport').attr('href', url);
+
 }
 </script>
 

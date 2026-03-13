@@ -79,11 +79,19 @@ public function history(Request $request)
 {
     if ($request->ajax()) {
         $users = User::with(['karyaTulis','anggota'])
+
+    // filter tahun
     ->when($request->tahun, function($query) use ($request) {
         $query->whereHas('karyaTulis', function($q) use ($request){
             $q->whereYear('created_at', $request->tahun);
         });
     })
+
+    // filter jenis peserta (EIF / GKM / SS)
+    ->when($request->jenis && $request->jenis != 'all', function($query) use ($request){
+        $query->where('jenis_peserta', $request->jenis);
+    })
+
     ->latest();
 
         return DataTables::of($users)
@@ -177,10 +185,10 @@ public function show($id)
 
     return view('admin.rekap.history.detail', compact('gugus'));
 }
-   public function export($id)
+  public function export($id)
 {
     return Excel::download(
-        new RekapExport($id, null),
+        new RekapExport($id, null, null),
         'rekap_user.xlsx'
     );
 }
@@ -188,15 +196,23 @@ public function show($id)
 public function exportAll(Request $request)
 {
     $tahun = $request->tahun;
+    $jenis = $request->jenis;
 
-    $namaFile = $tahun
-        ? 'rekap_inovasi_'.$tahun.'.xlsx'
-        : 'rekap_semua_inovasi.xlsx';
+    $namaFile = 'rekap_inovasi';
+
+    if ($jenis && $jenis != 'all') {
+        $namaFile .= '_' . strtolower($jenis);
+    }
+
+    if ($tahun) {
+        $namaFile .= '_' . $tahun;
+    }
+
+    $namaFile .= '.xlsx';
 
     return Excel::download(
-        new RekapExport(null, $tahun),
+        new RekapExport(null, $tahun, $jenis),
         $namaFile
     );
 }
-
 }

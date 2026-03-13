@@ -17,35 +17,46 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 
 class RekapExport implements FromCollection, WithHeadings, WithStyles, WithColumnWidths,WithTitle
 {
-protected $userId;
+protected $id;
 protected $tahun;
+protected $jenis;
 
-public function __construct($userId = null, $tahun = null)
+public function __construct($id = null, $tahun = null, $jenis = null)
 {
-    $this->userId = $userId;
+    $this->id = $id;
     $this->tahun = $tahun;
+    $this->jenis = $jenis;
 }
 
-    public function collection()
-    {
-        $query = User::with(['karyaTulis' => function ($q) {
+   public function collection()
+{
+    $query = User::with(['karyaTulis' => function ($q) {
+
+        if ($this->tahun) {
+            $q->whereYear('created_at', $this->tahun);
+        }
+
+    }, 'anggota'])
+    ->where('role', '!=', 'admin');
+
+    // Filter tahun karya tulis
     if ($this->tahun) {
-        $q->whereYear('created_at', $this->tahun);
+        $query->whereHas('karyaTulis', function ($q) {
+            $q->whereYear('created_at', $this->tahun);
+        });
     }
-}, 'anggota'])
-->where('role', '!=', 'admin');
 
-if ($this->tahun) {
-    $query->whereHas('karyaTulis', function ($q) {
-        $q->whereYear('created_at', $this->tahun);
-    });
-}
+    // Filter jenis peserta (EIF / GKM / SS)
+    if ($this->jenis && $this->jenis != 'all') {
+        $query->where('jenis_peserta', $this->jenis);
+    }
 
-if ($this->userId) {
-    $query->where('id', $this->userId);
-}
+    // Filter user tertentu
+    if ($this->id) {
+        $query->where('id', $this->id);
+    }
 
-        $users = $query->get();
+    $users = $query->get();
 
         $rows = collect();
         $no = 1;
