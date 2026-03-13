@@ -115,7 +115,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/rekap', [RekapController::class, 'index'])->name('admin.rekap.index');
     Route::get('/rekap/export/{id}', [RekapController::class, 'export'])->name('rekap.export');
     Route::get('/rekap/export-all', [RekapController::class, 'exportAll'])->name('rekap.exportAll');
-
+    Route::get('/admin/history', [RekapController::class, 'history'])->name('admin.history.index');
+    Route::get('/admin/history/{gugus}', [RekapController::class, 'show'])->name('admin.history.show');
      Route::get('/admin/profile', [ProfileController::class, 'index'])
         ->name('admin.profile.index');
 

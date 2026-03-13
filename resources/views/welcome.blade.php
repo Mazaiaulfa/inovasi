@@ -54,6 +54,42 @@
             scroll-margin-top: 80px;
 
         }
+
+
+.banner-slide{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    transition:transform .7s ease;
+}
+
+.slide-active{
+    transform:translateX(0);
+    z-index:2;
+}
+
+.slide-next{
+    transform:translateX(100%);
+}
+
+.slide-prev{
+    transform:translateX(-100%);
+}
+.slider-dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.5);
+    cursor:pointer;
+    transition:all .3s ease;
+}
+
+.slider-dot.active{
+    background:white;
+    transform:scale(1.3);
+}
     </style>
 
     <style>
@@ -134,100 +170,93 @@
         </div>
     </header>
 
-<!-- SLIDER MODERN -->
 <section class="pt-16 relative">
 
-<div class="relative overflow-hidden">
+<div class="relative overflow-hidden h-[90vh]">
 
-<div id="bannerSlider" class="relative w-full">
+<div id="bannerSlider" class="relative w-full h-full">
 
 @forelse($pengumuman as $key => $item)
-<div class="banner-slide {{ $key == 0 ? '' : 'hidden' }} relative h-[90vh]">
 
-    <!-- BACKGROUND IMAGE -->
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-fixed transition-opacity duration-700"
-     style="background-image: url('{{ asset('img/slide'.(($key%6)+1).'.png') }}');
-            background-size: cover;
-            background-position: center;
-            image-rendering: auto;">
-</div>
-    <!-- OVERLAY -->
-    <div class="absolute inset-0 bg-black/5"></div>
+<div class="banner-slide">
 
-    <!-- CONTENT -->
-    <div class="relative h-full flex items-center justify-center px-6">
-        <div class="slide-content opacity-0 translate-y-8 transition-all duration-700
-                    text-center text-white max-w-4xl px-8 py-10
-                   bg-black/40 rounded-3xl
-                    border border-white/20 shadow-2xl">
+    <!-- background -->
+    <div class="absolute inset-0 bg-cover bg-center"
+         style="background-image:url('{{ asset('img/slide'.(($key%6)+1).'.png') }}')">
+    </div>
+
+    <!-- overlay -->
+    <div class="absolute inset-0 bg-black/40"></div>
+
+    <!-- content -->
+    <div class="relative h-full flex items-center justify-center text-center text-white px-6">
+
+        <div class="max-w-3xl">
 
             @if($item->urgent)
-            <div class="inline-block bg-red-500 px-4 py-1 rounded-full text-xs mb-6 tracking-wide shadow-lg">
+            <div class="inline-block bg-red-500 px-4 py-1 rounded-full text-xs mb-5">
                 🔥 Pengumuman Penting
             </div>
             @endif
 
-            <div class="w-24 h-1 bg-indigo-400 mx-auto mb-6 rounded-full"></div>
-
-            <h2 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6">
                 {{ $item->judul }}
             </h2>
 
-            <p class="text-gray-200 mb-8 text-lg">
+            <p class="text-lg mb-8">
                 {{ $item->ringkasan }}
             </p>
 
-            <a href="{{ route('pengumuman.detail', $item->id) }}"
-               class="inline-block px-8 py-3 text-sm font-semibold
-                      bg-indigo-600 hover:bg-indigo-700
-                      text-white rounded-full transition duration-300 hover:scale-105">
-                Lihat Detail →
+            <a href="{{ route('pengumuman.detail',$item->id) }}"
+               class="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-full">
+               Lihat Detail
             </a>
 
         </div>
+
     </div>
 
 </div>
+
 @empty
 
-<div class="banner-slide relative h-[90vh]">
+<div class="banner-slide">
+
     <div class="absolute inset-0 bg-cover bg-center"
-         style="background-image: url('{{ asset('img/slide1.png') }}');">
+         style="background-image:url('{{ asset('img/slide1.png') }}')">
     </div>
-    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/60 to-black/30"></div>
+
+    <div class="absolute inset-0 bg-black/40"></div>
+
     <div class="relative h-full flex items-center justify-center text-white">
         <h2 class="text-5xl font-bold">
             Selamat Datang di PIM Innovation Fest
         </h2>
     </div>
+
 </div>
 
 @endforelse
 
 </div>
 
-<!-- PREV BUTTON -->
+
+<!-- prev -->
 <button onclick="prevSlide()"
-class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-3 rounded-full text-white text-lg transition z-20">
-‹
+class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full text-white text-xl z-20">
+❮
 </button>
 
-<!-- NEXT BUTTON -->
+<!-- next -->
 <button onclick="nextSlide()"
-class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 backdrop-blur p-3 rounded-full text-white text-lg transition z-20">
-›
+class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full text-white text-xl z-20">
+❯
 </button>
 
-<!-- DOT INDICATORS -->
-<div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-    @foreach($pengumuman as $key => $item)
-        <button
-            class="dot w-3 h-3 rounded-full bg-white/50 hover:bg-white transition"
-            onclick="goToSlide({{ $key }})">
-        </button>
-    @endforeach
+<!-- DOT INDICATOR -->
+<div id="sliderDots"
+class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
 </div>
-
 </div>
 </section>
 
@@ -251,7 +280,7 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
 
 
 <!-- resources/views/landing.blade.php -->
-<div class="relative">
+{{-- <div class="relative">
 
     <!-- GARIS TENGAH -->
     <div class="hidden md:block absolute top-6 left-0 w-full h-1 bg-gray-300"></div>
@@ -294,7 +323,7 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
 
     </div>
 
-</div>
+</div> --}}
 
 <section id="timeline" class="py-20 bg-gray-100 overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 text-center">
@@ -564,77 +593,117 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/50 b
 
 </body>
 <script>
-let currentSlide = 0;
-const slides = document.querySelectorAll('.banner-slide');
-const dots = document.querySelectorAll('.dot');
 
+let slides = document.querySelectorAll(".banner-slide");
+let dotsContainer = document.getElementById("sliderDots");
+let dots = [];
+let currentSlide = 0;
 let slideInterval;
 
-// ================= SHOW SLIDE =================
-function showSlide(index) {
 
-    slides.forEach((slide) => {
-        slide.classList.add('hidden');
+// set posisi awal
+function initSlides(){
+
+    slides.forEach((slide,i)=>{
+
+        slide.classList.remove("slide-active","slide-next","slide-prev");
+
+        if(i === 0){
+            slide.classList.add("slide-active");
+        }
+        else{
+            slide.classList.add("slide-next");
+        }
+
     });
 
-    slides[index].classList.remove('hidden');
+}
 
-    const content = slides[index].querySelector('.slide-content');
 
-    if(content){
-        content.classList.remove('opacity-100','translate-y-0');
-        content.classList.add('opacity-0','translate-y-8');
+// tampilkan slide
+function showSlide(index){
 
-        setTimeout(() => {
-            content.classList.remove('opacity-0','translate-y-8');
-            content.classList.add('opacity-100','translate-y-0');
-        }, 300);
+    slides.forEach((slide,i)=>{
+
+        slide.classList.remove("slide-active","slide-next","slide-prev");
+
+        if(i === index){
+            slide.classList.add("slide-active");
+        }
+        else if(i < index){
+            slide.classList.add("slide-prev");
+        }
+        else{
+            slide.classList.add("slide-next");
+        }
+
+    });
+
+    dots.forEach(d=>d.classList.remove("active"));
+    dots[index].classList.add("active");
+
+}
+// next
+function nextSlide(){
+
+    currentSlide++;
+
+    if(currentSlide >= slides.length){
+        currentSlide = 0;
     }
 
-    dots.forEach((dot, i) => {
-        dot.classList.remove('bg-white');
-        dot.classList.add('bg-blue-200/60');
+    showSlide(currentSlide);
 
-        if (i === index) {
-            dot.classList.remove('bg-blue-200/60');
-            dot.classList.add('bg-white');
-        }
+}
+
+
+// prev
+function prevSlide(){
+
+    currentSlide--;
+
+    if(currentSlide < 0){
+        currentSlide = slides.length - 1;
+    }
+
+    showSlide(currentSlide);
+
+}
+
+
+// auto slide
+function startAutoSlide(){
+
+    slideInterval = setInterval(()=>{
+        nextSlide();
+    },60000);
+
+}
+
+function createDots(){
+
+    slides.forEach((_,i)=>{
+
+        let dot = document.createElement("div");
+
+        dot.classList.add("slider-dot");
+
+        dot.addEventListener("click",()=>{
+            currentSlide = i;
+            showSlide(currentSlide);
+        });
+
+        dotsContainer.appendChild(dot);
+        dots.push(dot);
+
     });
+
 }
 
-// ================= NEXT =================
-function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    showSlide(currentSlide);
-    resetAutoSlide();
-}
-
-// ================= PREV =================
-function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    showSlide(currentSlide);
-    resetAutoSlide();
-}
-
-// ================= DOT CLICK =================
-function goToSlide(index) {
-    currentSlide = index;
-    showSlide(currentSlide);
-    resetAutoSlide();
-}
-
-// ================= AUTO SLIDE =================
-function startAutoSlide() {
-    slideInterval = setInterval(nextSlide, 60000); // 60 detik = 1 menit
-}
-
-function resetAutoSlide() {
-    clearInterval(slideInterval);
-    startAutoSlide();
-}
-
-// ================= INIT =================
-showSlide(0);
+// init
+createDots();
+initSlides();
+initSlides();
 startAutoSlide();
+
 </script>
-</html>

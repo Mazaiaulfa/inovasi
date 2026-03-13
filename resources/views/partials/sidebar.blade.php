@@ -47,8 +47,6 @@
                 </ul>
             </li>
 
-
-
             <li
                 class="nav-item dropdown {{ Request::is('admin/user*') || Request::is('admin/rekap*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown">
@@ -60,9 +58,13 @@
                             <i class="fas fa-clipboard-list"></i> Data Inovasi
                         </a>
                     </li>
+                    <li class="{{ Request::is('admin/history') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ url('/admin/history') }}">
+                                    <i class="fas fa-clipboard-list"></i> History Inovasi
+                                </a>
+                            </li>
                 </ul>
             </li>
-
             {{-- Dropdown Kelola Akun --}}
             <li
                 class="nav-item dropdown {{ Request::is('admin/user*') || Request::is('admin/anggota*') ? 'active' : '' }}">
@@ -95,7 +97,7 @@
                 </a>
             </li>
 
-            <li class="{{ Request::is('admin/profile*') ? 'active' : '' }}">
+<li class="{{ Request::is('admin/profile*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('admin.profile.index') }}">
         <i class="fas fa-user-circle"></i>
         <span>Profile</span>
@@ -136,7 +138,7 @@
                 </ul>
             </li>
 
-                        @if(Auth::user()->jenis_peserta == 'GKM')
+            @if(Auth::user()->jenis_peserta == 'GKM')
             <li class="{{ Request::is('user/anggota*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('anggota.index') }}">
                     <i class="fas fa-users"></i> <span>Tambah Anggota Team</span>

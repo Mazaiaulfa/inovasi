@@ -75,6 +75,90 @@ class RekapController extends Controller
         return view('admin.rekap.index');
     }
 
+public function history(Request $request)
+{
+    if ($request->ajax()) {
+        $users = User::with(['karyaTulis','anggota'])->latest();
+
+        return DataTables::of($users)
+            ->addColumn('judul', function($user){
+                return $user->karyaTulis->isEmpty()
+                    ? '<span class="text-muted">Tidak ada karya tulis</span>'
+                    : $user->karyaTulis->map(fn($k)=>"<div>{$k->judul}</div>")->implode('<hr>');
+            })
+            ->addColumn('tanggal_upload', function($user){
+                return $user->karyaTulis->isEmpty()
+                    ? '-'
+                    : $user->karyaTulis->map(fn($k)=>"<div>".$k->created_at->translatedFormat('d F Y')."</div>")->implode('');
+            })
+            ->addColumn('status', function($user){
+                return $user->karyaTulis->map(function($k){
+                    $color = match($k->status_judul){
+                        'pending'=>'warning',
+                        'disetujui'=>'success',
+                        'ditolak'=>'danger',
+                        default=>'secondary'
+                    };
+                    return "<span class='badge bg-$color text-capitalize'>{$k->status_judul}</span>";
+                })->implode('<br>');
+            })
+            ->addColumn('ketua', function($user){
+                $ketua = $user->anggota
+                    ->filter(fn($a) => strtolower($a->jabatan) === 'ketua')
+                    ->map(fn($a) => "{$a->nama} ({$a->badge})")
+                    ->implode('<br>');
+                return $ketua ?: '-';
+            })
+            ->addColumn('fasilitator', function($user){
+                $fasilitator = $user->anggota
+                    ->filter(fn($a) => strtolower($a->jabatan) === 'fasilitator')
+                    ->map(fn($a) => "{$a->nama} ({$a->badge})")
+                    ->implode('<br>');
+                return $fasilitator ?: '-';
+            })
+            ->addColumn('anggota_lain', function($user){
+                $anggotaLain = $user->anggota
+                    ->filter(fn($a) => !in_array(strtolower($a->jabatan), ['ketua','fasilitator']))
+                    ->values()
+                    ->map(fn($a, $index) => ($index+1).". {$a->nama} ({$a->badge})")
+                    ->implode('<br>');
+                return $anggotaLain ?: '-';
+            })
+            ->rawColumns(['judul','tanggal_upload','status','ketua','fasilitator','anggota_lain'])
+            ->make(true);
+    }
+
+    return view('admin.rekap.history');
+}
+
+public function show($id)
+{
+    $gugus = User::with([
+    'karyaTulis.proposals.tahapan',
+    'karyaTulis.finalKarya',
+    'anggota'
+])->findOrFail($id);
+
+    $gugus->ketua = $gugus->anggota
+        ->firstWhere('jabatan', 'ketua')?->nama ?? '-';
+
+    $gugus->fasilitator = $gugus->anggota
+        ->firstWhere('jabatan', 'fasilitator')?->nama ?? '-';
+
+    $gugus->anggota_lain = $gugus->anggota
+        ->whereNotIn('jabatan', ['ketua','fasilitator']);
+
+    $gugus->karyaTulis->each(function($k){
+        $k->status_color = match($k->status_judul){
+            'pending'=>'warning',
+            'disetujui'=>'success',
+            'ditolak'=>'danger',
+            default=>'secondary'
+        };
+    });
+
+    return view('admin.rekap.history.detail', compact('gugus'));
+}
     public function export($id)
     {
         return Excel::download(new RekapExport($id), 'rekap.xlsx');
@@ -84,4 +168,5 @@ class RekapController extends Controller
     {
         return Excel::download(new RekapExport(null), 'rekap_all.xlsx');
     }
+
 }

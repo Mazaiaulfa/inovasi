@@ -36,6 +36,39 @@
 .main-content {
     padding-top: 20px;
 }
+.modern-tabs {
+    display: flex;
+    gap: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tab-item {
+    padding: 12px 5px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #6b7280;
+    position: relative;
+    transition: all 0.25s ease;
+}
+
+.tab-item:hover {
+    color: #4f46e5;
+}
+
+.tab-item.active {
+    color: #4f46e5;
+}
+
+.tab-item.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #4f46e5;
+    border-radius: 3px 3px 0 0;
+}
 </style>
 <?php $__env->stopPush(); ?>
 
@@ -52,18 +85,32 @@
                 <div class="card-body">
 
                     <!-- Nav Tabs di dalam card -->
-                    <ul class="nav nav-tabs mb-3" id="dataTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="pengumuman-tab" data-bs-toggle="tab" data-bs-target="#pengumuman" type="button" role="tab" aria-controls="pengumuman" aria-selected="true">
-                                Pengumuman
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="timeline-tab" data-bs-toggle="tab" data-bs-target="#timeline" type="button" role="tab" aria-controls="timeline" aria-selected="false">
-                                Timeline
-                            </button>
-                        </li>
-                    </ul>
+                   <!-- MODERN TAB -->
+    <div class="mb-4">
+    <ul class="modern-tabs nav" role="tablist">
+
+        <li class="nav-item">
+            <button class="tab-item nav-link active"
+                    data-bs-toggle="tab"
+                    data-bs-target="#pengumuman"
+                    type="button">
+                <i class="fas fa-bullhorn me-2"></i>
+                Pengumuman
+            </button>
+        </li>
+
+        <li class="nav-item">
+            <button class="tab-item nav-link"
+                    data-bs-toggle="tab"
+                    data-bs-target="#timeline"
+                    type="button">
+                <i class="fas fa-calendar-alt me-2"></i>
+                Timeline
+            </button>
+        </li>
+
+    </ul>
+</div>
 
                     <!-- Tab Content -->
                     <div class="tab-content" id="dataTabContent">
@@ -196,6 +243,7 @@
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
 <script>
+
 $(function () {
     $('#pengumumanTable').DataTable({
         responsive: true,
@@ -211,7 +259,9 @@ $(function () {
         ]
     });
 });
+
 </script>
+
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/admin/pengumuman/index.blade.php ENDPATH**/ ?>

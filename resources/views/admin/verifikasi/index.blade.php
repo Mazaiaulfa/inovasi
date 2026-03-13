@@ -70,6 +70,9 @@
         <div class="tab-item" data-filter="GKM">
             <i class="fas fa-users me-2"></i> GKM
         </div>
+        <div class="tab-item" data-filter="SS">
+        <i class="fas fa-lightbulb me-2"></i> SS
+    </div>
 
     </div>
 </div>

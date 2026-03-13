@@ -43,8 +43,15 @@ class AnggotaController extends Controller
     $validator = Validator::make($request->all(), [
         'user_id' => 'required|exists:users,id',
         'nama' => 'required|string|max:255',
-        'badge' => 'required|string|max:50',
+         'badge' => [
+    'required',
+    'string',
+    'max:50',
+    'regex:/[0-9]/'
+    ],
         'jabatan' => 'required|in:ketua,sekretaris,fasilitator,anggota'
+    ],[ 
+    'badge.regex' => 'Nomor badge tidak boleh huruf semua, harus mengandung minimal satu angka.'
     ]);
 
     if ($validator->fails()) {
@@ -129,7 +136,12 @@ class AnggotaController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
             'nama' => 'required|string|max:255',
-                     'badge' => 'required|string|max:50',
+                'badge' => [
+    'required',
+    'string',
+    'max:50',
+    'regex:/[0-9]/'
+],
             'jabatan' => 'required|in:ketua,sekretaris,fasilitator,anggota'
         ]);
 

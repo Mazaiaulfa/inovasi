@@ -51,11 +51,14 @@
     <select name="jenis_peserta" id="jenisPeserta"
         class="form-control @error('jenis_peserta') is-invalid @enderror" required>
         <option value="">-- Pilih Jenis Peserta --</option>
-        <option value="EIF" {{ old('jenis_peserta') == 'EIF' ? 'selected' : '' }}>
+                <option value="EIF" {{ old('jenis_peserta') == 'EIF' ? 'selected' : '' }}>
             EIF (Individu)
         </option>
         <option value="GKM" {{ old('jenis_peserta') == 'GKM' ? 'selected' : '' }}>
             GKM (Team)
+        </option>
+        <option value="SS" {{ old('jenis_peserta') == 'SS' ? 'selected' : '' }}>
+            SS (Suggestion System)
         </option>
     </select>
 
@@ -327,14 +330,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const label = document.getElementById("labelName");
     const input = document.getElementById("name");
 
-    function ubahLabel() {
-        if (jenis.value === "EIF") {
-            label.innerHTML = '<i class="fas fa-user mr-1"></i> Nama Peserta';
-            input.placeholder = "Masukkan Nama Peserta";
-        } else if (jenis.value === "GKM") {
-            label.innerHTML = '<i class="fas fa-users mr-1"></i> Nama Team';
-            input.placeholder = "Masukkan Nama Team";
-        }
+   function ubahLabel() {
+
+    if (jenis.value === "EIF") {
+        label.innerHTML = '<i class="fas fa-user mr-1"></i> Nama Peserta';
+        input.placeholder = "Masukkan Nama Peserta";
+
+    } else if (jenis.value === "GKM") {
+        label.innerHTML = '<i class="fas fa-users mr-1"></i> Nama Team';
+        input.placeholder = "Masukkan Nama Team";
+
+    } else if (jenis.value === "SS") {
+        label.innerHTML = '<i class="fas fa-lightbulb mr-1"></i> Nama Pengusul';
+        input.placeholder = "Masukkan Nama Pengusul";
+    }
     }
 
     jenis.addEventListener("change", ubahLabel);

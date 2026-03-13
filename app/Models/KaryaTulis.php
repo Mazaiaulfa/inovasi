@@ -16,9 +16,9 @@ class KaryaTulis extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function proposal()
+      public function proposals()
     {
-        return $this->hasOne(Proposal::class, 'karya_id');
+        return $this->hasMany(Proposal::class, 'karya_id');
     }
     public function karyaTulis()
     {
@@ -28,4 +28,8 @@ class KaryaTulis extends Model
     {
         return $this->hasMany(Anggota::class, 'user_id', 'user_id');
     }
+    public function finalKarya()
+{
+    return $this->hasOne(\App\Models\FinalKarya::class, 'karya_id');
+}
 }

@@ -48,11 +48,20 @@
 </div>
 
 <!-- FILTER TAB -->
-<div class="mb-4 px-4 pt-3">
+<div class="mb-4">
     <div class="modern-tabs d-flex gap-4">
-        <div class="tab-item active" data-filter="all">Semua</div>
-        <div class="tab-item" data-filter="EIF">EIF</div>
-        <div class="tab-item" data-filter="GKM">GKM</div>
+        <div class="tab-item active" data-filter="all">
+            <i class="fas fa-layer-group me-2"></i> Semua
+        </div>
+        <div class="tab-item" data-filter="EIF">
+            <i class="fas fa-user me-2"></i> EIF
+        </div>
+        <div class="tab-item" data-filter="GKM">
+            <i class="fas fa-users me-2"></i> GKM
+        </div>
+        <div class="tab-item" data-filter="SS">
+        <i class="fas fa-lightbulb me-2"></i> SS
+        </div>
     </div>
 </div>
 

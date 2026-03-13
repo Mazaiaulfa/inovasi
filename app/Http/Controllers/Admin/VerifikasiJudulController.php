@@ -28,7 +28,7 @@ if ($request->jenis && $request->jenis != 'all') {
             return DataTables::of($karya)
 
                 ->addIndexColumn()
-                ->addColumn('jenis_peserta', function ($row) {
+            ->addColumn('jenis_peserta', function ($row) {
 
     $jenis = $row->user->jenis_peserta ?? null;
 
@@ -36,6 +36,8 @@ if ($request->jenis && $request->jenis != 'all') {
         return '<span class="badge bg-primary">EIF</span>';
     } elseif ($jenis == 'GKM') {
         return '<span class="badge bg-success">GKM</span>';
+    } elseif ($jenis == 'SS') {
+        return '<span class="badge bg-warning text-dark">SS</span>';
     }
 
     return '-';

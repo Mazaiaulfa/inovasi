@@ -30,8 +30,20 @@ class VerifProposalController extends Controller
                 ->addIndexColumn()
                 ->addColumn('judul', fn($row) => $row->karya->judul ?? '-')
                 ->addColumn('nama', fn($row) => $row->karya->user->name ?? '-')
-                 ->addColumn('jenis_peserta', function($row){
-            return $row->karya->user->jenis_peserta ?? '-';})
+                ->addColumn('jenis_peserta', function ($row) {
+
+    $jenis = $row->karya->user->jenis_peserta ?? null;
+
+    if ($jenis === 'EIF') {
+        return '<span class="badge bg-primary">EIF</span>';
+    } elseif ($jenis === 'GKM') {
+        return '<span class="badge bg-success">GKM</span>';
+    } elseif ($jenis === 'SS') {
+        return '<span class="badge bg-warning text-dark">SS</span>';
+    }
+
+    return '-';
+})
                 ->addColumn('tahapan', function ($row) {
                     if (!$row->tahapan) return '-';
                     return "<strong>{$row->tahapan->nama}</strong><br><small>{$row->tahapan->deskripsi}</small>";
@@ -68,7 +80,7 @@ class VerifProposalController extends Controller
                     <button class="btn btn-sm btn-danger btn-delete" data-id="' . $row->id . '">
                      <i class="fas fa-trash"></i></button>';
                 })
-                ->rawColumns(['file', 'aksi', 'tahapan', 'catatan'])
+                ->rawColumns(['file', 'aksi', 'tahapan', 'catatan','jenis_peserta'])
                 ->make(true);
         }
 

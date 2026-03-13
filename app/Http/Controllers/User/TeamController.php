@@ -44,7 +44,15 @@ class TeamController extends Controller
     $validator = Validator::make($request->all(), [
         'nama' => 'required|string|max:255',
         'jabatan' => 'required|in:ketua,sekretaris,fasilitator,anggota',
-        'badge' => 'required|string|max:50|unique:anggota,badge',
+        'badge' => [
+        'required',
+        'string',
+        'max:50',
+        'unique:anggota,badge',
+        'regex:/[0-9]/'
+    ],
+], [
+    'badge.regex' => 'Nomor badge tidak boleh huruf semua. Harus mengandung minimal satu angka.'
     ]);
 
     if ($validator->fails()) {
@@ -150,7 +158,15 @@ class TeamController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string|max:255',
             'jabatan' => 'required|in:ketua,sekretaris,fasilitator,anggota',
-            'badge' => 'required|string|max:50|unique:anggota,badge,' . $id,
+           'badge' => [
+        'required',
+        'string',
+        'max:50',
+        'unique:anggota,badge,' . $id,
+        'regex:/[0-9]/'
+    ],
+], [
+    'badge.regex' => 'Nomor badge tidak boleh huruf semua. Harus mengandung minimal satu angka.'
         ]);
 
         if ($validator->fails()) {
