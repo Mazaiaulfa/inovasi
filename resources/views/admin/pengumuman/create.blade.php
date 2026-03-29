@@ -38,7 +38,6 @@
                                     @enderror
                                 </div>
 
-
                                 {{-- ================= RINGKASAN ================= --}}
                                 <div class="form-group mb-4">
                                     <label for="ringkasan" class="form-label fw-bold">
@@ -58,7 +57,6 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-
 
                                 {{-- ================= ISI ================= --}}
                                 <div class="form-group mb-4">
@@ -81,7 +79,6 @@
                                     @enderror
                                 </div>
 
-
                                 {{-- ================= FILE / GAMBAR ================= --}}
                                 <div class="form-group mb-4">
                                     <label for="gambar" class="form-label fw-bold">
@@ -94,7 +91,7 @@
                                            accept=".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx">
 
                                     <small class="text-muted">
-                                        Format yang didukung: JPG, PNG, WEBP, PDF, DOC, DOCX.
+                                        Format: JPG, PNG, WEBP, PDF, DOC, DOCX (max 2MB)
                                     </small>
 
                                     @error('gambar')
@@ -102,56 +99,29 @@
                                     @enderror
                                 </div>
 
+                                {{-- ================= URUTAN ================= --}}
+                                <div class="form-group mb-4">
+                                    <label for="urutan" class="form-label fw-bold">
+                                        Urutan Slide
+                                    </label>
+                                    <input type="number"
+                                           name="urutan"
+                                           id="urutan"
+                                           class="form-control @error('urutan') is-invalid @enderror"
+                                           value="{{ old('urutan', 0) }}"
+                                           min="0">
 
-                                {{-- ================= TANGGAL ================= --}}
-                                <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <label for="tanggal_mulai" class="form-label fw-bold">
-                                            Tanggal Mulai
-                                        </label>
-                                        <input type="date"
-                                               name="tanggal_mulai"
-                                               id="tanggal_mulai"
-                                               class="form-control @error('tanggal_mulai') is-invalid @enderror"
-                                               value="{{ old('tanggal_mulai') }}"
-                                               required>
+                                    <small class="text-muted">
+                                        Semakin kecil angka, semakin depan tampilannya.
+                                    </small>
 
-                                        @error('tanggal_mulai')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-6 mb-4">
-                                        <label for="tanggal_selesai" class="form-label fw-bold">
-                                            Tanggal Selesai
-                                        </label>
-                                        <input type="date"
-                                               name="tanggal_selesai"
-                                               id="tanggal_selesai"
-                                               class="form-control @error('tanggal_selesai') is-invalid @enderror"
-                                               value="{{ old('tanggal_selesai') }}">
-
-                                        @error('tanggal_selesai')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
+                                    @error('urutan')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-
 
                                 {{-- ================= STATUS ================= --}}
                                 <hr>
-
-                                <input type="hidden" name="urgent" value="0">
-                                <div class="form-check form-switch mb-3">
-                                    <input type="checkbox"
-                                           name="urgent"
-                                           value="1"
-                                           class="form-check-input"
-                                           {{ old('urgent') ? 'checked' : '' }}>
-                                    <label class="form-check-label">
-                                        Tandai sebagai Pengumuman Penting
-                                    </label>
-                                </div>
 
                                 <input type="hidden" name="is_active" value="0">
                                 <div class="form-check form-switch mb-4">
@@ -164,7 +134,6 @@
                                         Aktifkan Pengumuman
                                     </label>
                                 </div>
-
 
                                 {{-- ================= BUTTON ================= --}}
                                 <div class="text-end">

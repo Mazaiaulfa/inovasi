@@ -1,7 +1,6 @@
-@extends('layouts.app')
-@section('title', 'Edit Pengumuman')
+<?php $__env->startSection('title', 'Edit Pengumuman'); ?>
 
-@section('main')
+<?php $__env->startSection('main'); ?>
 <div class="main-content">
     <div class="container-fluid">
         <div class="section-body">
@@ -15,66 +14,66 @@
 
                         <div class="card-body">
 
-                            {{-- ERROR VALIDATION --}}
-                            @if($errors->any())
+                            
+                            <?php if($errors->any()): ?>
                                 <div class="alert alert-danger">
                                     <ul class="mb-0">
-                                        @foreach($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
+                                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <li><?php echo e($error); ?></li>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </ul>
                                 </div>
-                            @endif
+                            <?php endif; ?>
 
-                            <form action="{{ route('admin.pengumuman.update', $pengumuman) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
+                            <form action="<?php echo e(route('admin.pengumuman.update', $pengumuman)); ?>" method="POST" enctype="multipart/form-data">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('PUT'); ?>
 
-                                {{-- ================= JUDUL ================= --}}
+                                
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Judul</label>
                                     <input type="text"
                                            name="judul"
-                                           value="{{ old('judul', $pengumuman->judul) }}"
+                                           value="<?php echo e(old('judul', $pengumuman->judul)); ?>"
                                            class="form-control">
                                 </div>
 
-                                {{-- ================= RINGKASAN ================= --}}
+                                
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Ringkasan</label>
                                     <textarea name="ringkasan" rows="2"
-                                              class="form-control">{{ old('ringkasan', $pengumuman->ringkasan) }}</textarea>
+                                              class="form-control"><?php echo e(old('ringkasan', $pengumuman->ringkasan)); ?></textarea>
                                 </div>
 
-                                {{-- ================= ISI ================= --}}
+                                
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Isi Pengumuman</label>
                                     <textarea name="isi" rows="5"
-                                              class="form-control">{{ old('isi', $pengumuman->isi) }}</textarea>
+                                              class="form-control"><?php echo e(old('isi', $pengumuman->isi)); ?></textarea>
                                 </div>
 
-                                {{-- ================= GAMBAR ================= --}}
+                                
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Gambar</label>
 
-                                    @if($pengumuman->gambar)
+                                    <?php if($pengumuman->gambar): ?>
                                         <div class="mb-2">
-                                            <img src="{{ asset($pengumuman->gambar) }}"
+                                            <img src="<?php echo e(asset($pengumuman->gambar)); ?>"
                                                  style="max-width:200px"
                                                  class="img-thumbnail">
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
 
                                     <input type="file" name="gambar" class="form-control">
                                     <small class="text-muted">Kosongkan jika tidak ingin mengganti file</small>
                                 </div>
 
-                                {{-- ================= URUTAN ================= --}}
+                                
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Urutan</label>
                                     <input type="number"
                                            name="urutan"
-                                           value="{{ old('urutan', $pengumuman->urutan) }}"
+                                           value="<?php echo e(old('urutan', $pengumuman->urutan)); ?>"
                                            class="form-control"
                                            min="0">
                                     <small class="text-muted">
@@ -82,26 +81,26 @@
                                     </small>
                                 </div>
 
-                                {{-- ================= STATUS ================= --}}
+                                
                                 <div class="form-check form-switch mb-4">
                                     <input type="hidden" name="is_active" value="0">
                                     <input class="form-check-input"
                                            type="checkbox"
                                            name="is_active"
                                            value="1"
-                                           {{ $pengumuman->is_active ? 'checked' : '' }}>
+                                           <?php echo e($pengumuman->is_active ? 'checked' : ''); ?>>
                                     <label class="form-check-label">
                                         Aktifkan Pengumuman
                                     </label>
                                 </div>
 
-                                {{-- ================= BUTTON ================= --}}
+                                
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-primary">
                                         Update Pengumuman
                                     </button>
 
-                                    <a href="{{ route('admin.pengumuman.index') }}"
+                                    <a href="<?php echo e(route('admin.pengumuman.index')); ?>"
                                        class="btn btn-secondary">
                                         Batal
                                     </a>
@@ -117,4 +116,6 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/admin/pengumuman/edit.blade.php ENDPATH**/ ?>

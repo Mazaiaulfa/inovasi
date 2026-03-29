@@ -24,7 +24,7 @@ class PengumumanController extends Controller
     // List pengumuman
     public function index()
     {
-        $pengumumans = Pengumuman::latest()->paginate(10);
+        $pengumumans = Pengumuman::orderBy('urutan', 'asc')->paginate(10);
         $timelines = Timeline::orderBy('urutan')->paginate(10);
         return view('admin.pengumuman.index', compact('pengumumans','timelines'));
     }
@@ -43,8 +43,7 @@ class PengumumanController extends Controller
         'ringkasan' => 'nullable|string',
         'isi' => 'required|string',
         'gambar' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx,xls,xlsx|max:2048',
-        'tanggal_mulai' => 'required|date',
-        'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
+        'urutan' => 'nullable|integer'
     ]);
 
     $filePath = null;
@@ -66,10 +65,9 @@ class PengumumanController extends Controller
         'ringkasan' => $request->ringkasan,
         'isi' => $request->isi,
         'gambar' => $filePath,
-        'urgent' => $request->urgent ?? 0,
+        'urutan' => $request->urutan ?? 0,
         'is_active' => $request->is_active ?? 0,
-        'tanggal_mulai' => $request->tanggal_mulai,
-        'tanggal_selesai' => $request->tanggal_selesai,
+
     ]);
 
     return redirect()->route('admin.pengumuman.index')
@@ -91,9 +89,7 @@ class PengumumanController extends Controller
             'ringkasan' => 'nullable|string',
             'isi' => 'required|string',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png,webp',
-            'urgent' => 'nullable|boolean',
-            'tanggal_mulai' => 'required|date',
-            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
+            'urutan' => 'nullable|integer',
             'is_active' => 'nullable|boolean'
         ]);
 
@@ -112,10 +108,8 @@ class PengumumanController extends Controller
             'judul' => $request->judul,
             'ringkasan' => $request->ringkasan,
             'isi' => $request->isi,
-            'urgent' => $request->urgent ? 1 : 0,
+            'urutan' => $request->urutan ?? 0,
             'is_active' => $request->is_active ? 1 : 0,
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'tanggal_selesai' => $request->tanggal_selesai,
         ]);
 
         return redirect()->route('admin.pengumuman.index')->with('success', 'Pengumuman berhasil diupdate');

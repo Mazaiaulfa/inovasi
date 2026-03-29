@@ -78,15 +78,17 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('/admin/verifikasi', VerifikasiJudulController::class);
 
 
-      Route::prefix('admin/pengumuman')->name('admin.pengumuman.')->group(function () {
-        Route::get('/', [PengumumanController::class, 'index'])->name('index');           // List semua pengumuman
-        Route::get('/create', [PengumumanController::class, 'create'])->name('create');   // Form tambah
-        Route::post('/', [PengumumanController::class, 'store'])->name('store');          // Simpan baru
-        Route::get('/{id}/edit', [PengumumanController::class, 'edit'])->name('edit');    // Form edit
-        Route::put('/{id}', [PengumumanController::class, 'update'])->name('update');     // Update
-        Route::delete('/{id}', [PengumumanController::class, 'destroy'])->name('destroy');// Hapus
-        Route::get('/{id}', [PengumumanController::class, 'show'])->name('show');        // Detail pengumuman
-    });
+    Route::prefix('admin/pengumuman')->name('admin.pengumuman.')->group(function () {
+    Route::get('/', [PengumumanController::class, 'index'])->name('index');
+    Route::get('/create', [PengumumanController::class, 'create'])->name('create');
+    Route::post('/', [PengumumanController::class, 'store'])->name('store');
+
+    Route::get('/{pengumuman}/edit', [PengumumanController::class, 'edit'])->name('edit');
+    Route::put('/{pengumuman}', [PengumumanController::class, 'update'])->name('update');
+    Route::delete('/{pengumuman}', [PengumumanController::class, 'destroy'])->name('destroy');
+    Route::get('/{pengumuman}', [PengumumanController::class, 'show'])->name('show');
+});
+
 
     Route::prefix('admin/timeline')->name('admin.timeline.')->group(function () {
     Route::get('/create', [TimelineController::class, 'create'])->name('create');

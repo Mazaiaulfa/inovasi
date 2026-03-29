@@ -15,9 +15,8 @@ class Pengumuman extends Model
     'ringkasan',
     'isi',
     'gambar',
-    'urgent',
+    'urutan',
     'is_active',
-    'tanggal_mulai',
-    'tanggal_selesai'
+
 ];
 }

@@ -130,9 +130,7 @@
                                             <th>No</th>
                                             <th>Judul</th>
                                             <th>Ringkasan</th>
-                                            <th>Tanggal Mulai</th>
-                                            <th>Tanggal Selesai</th>
-                                            <th>Urgent</th>
+                                            <th>Urutan</th>
                                             <th>Status</th>
                                             <th>File</th>
                                             <th>Aksi</th>
@@ -144,15 +142,7 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->judul }}</td>
                                             <td>{{ Str::limit($item->ringkasan, 50) }}</td>
-                                            <td>{{ $item->tanggal_mulai }}</td>
-                                            <td>{{ $item->tanggal_selesai ?? '-' }}</td>
-                                            <td>
-                                                @if($item->urgent)
-                                                    <span class="badge bg-danger">PENTING</span>
-                                                @else
-                                                    <span class="badge bg-secondary">Normal</span>
-                                                @endif
-                                            </td>
+                                            <td>{{ $item->urutan }}</td>
                                             <td>
                                                 @if($item->is_active)
                                                     <span class="badge bg-success">Aktif</span>
@@ -161,15 +151,17 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if($item->file)
-                                                    <a href="{{ asset($item->file) }}" target="_blank" class="btn btn-sm btn-outline-primary">Lihat File</a>
-                                                @else
-                                                    -
-                                                @endif
+                                           @if($item->gambar)
+                                                <a href="{{ asset($item->gambar) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    Lihat File
+                                                </a>
+                                            @else
+                                                -
+                                            @endif
                                             </td>
                                             <td class="d-flex gap-2">
-                                                <a href="{{ route('admin.pengumuman.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                                <form action="{{ route('admin.pengumuman.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin hapus?')">
+                                                <a href="{{ route('admin.pengumuman.edit', $item) }}" class="btn btn-warning btn-sm">Edit</a>
+                                                <form action="{{ route('admin.pengumuman.destroy', $item) }}" method="POST" onsubmit="return confirm('Yakin ingin hapus?')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
@@ -249,7 +241,7 @@ $(function () {
     $('#pengumumanTable').DataTable({
         responsive: true,
         "columnDefs": [
-            { "orderable": false, "targets": [7,8] } // file & aksi
+            { "orderable": false, "targets": [5,6] } // file & aksi
         ]
     });
 

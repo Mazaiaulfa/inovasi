@@ -129,9 +129,7 @@
                                             <th>No</th>
                                             <th>Judul</th>
                                             <th>Ringkasan</th>
-                                            <th>Tanggal Mulai</th>
-                                            <th>Tanggal Selesai</th>
-                                            <th>Urgent</th>
+                                            <th>Urutan</th>
                                             <th>Status</th>
                                             <th>File</th>
                                             <th>Aksi</th>
@@ -143,15 +141,7 @@
                                             <td><?php echo e($loop->iteration); ?></td>
                                             <td><?php echo e($item->judul); ?></td>
                                             <td><?php echo e(Str::limit($item->ringkasan, 50)); ?></td>
-                                            <td><?php echo e($item->tanggal_mulai); ?></td>
-                                            <td><?php echo e($item->tanggal_selesai ?? '-'); ?></td>
-                                            <td>
-                                                <?php if($item->urgent): ?>
-                                                    <span class="badge bg-danger">PENTING</span>
-                                                <?php else: ?>
-                                                    <span class="badge bg-secondary">Normal</span>
-                                                <?php endif; ?>
-                                            </td>
+                                            <td><?php echo e($item->urutan); ?></td>
                                             <td>
                                                 <?php if($item->is_active): ?>
                                                     <span class="badge bg-success">Aktif</span>
@@ -160,15 +150,17 @@
                                                 <?php endif; ?>
                                             </td>
                                             <td>
-                                                <?php if($item->file): ?>
-                                                    <a href="<?php echo e(asset($item->file)); ?>" target="_blank" class="btn btn-sm btn-outline-primary">Lihat File</a>
-                                                <?php else: ?>
-                                                    -
-                                                <?php endif; ?>
+                                           <?php if($item->gambar): ?>
+                                                <a href="<?php echo e(asset($item->gambar)); ?>" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                    Lihat File
+                                                </a>
+                                            <?php else: ?>
+                                                -
+                                            <?php endif; ?>
                                             </td>
                                             <td class="d-flex gap-2">
-                                                <a href="<?php echo e(route('admin.pengumuman.edit', $item->id)); ?>" class="btn btn-warning btn-sm">Edit</a>
-                                                <form action="<?php echo e(route('admin.pengumuman.destroy', $item->id)); ?>" method="POST" onsubmit="return confirm('Yakin ingin hapus?')">
+                                                <a href="<?php echo e(route('admin.pengumuman.edit', $item)); ?>" class="btn btn-warning btn-sm">Edit</a>
+                                                <form action="<?php echo e(route('admin.pengumuman.destroy', $item)); ?>" method="POST" onsubmit="return confirm('Yakin ingin hapus?')">
                                                     <?php echo csrf_field(); ?>
                                                     <?php echo method_field('DELETE'); ?>
                                                     <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
@@ -248,7 +240,7 @@ $(function () {
     $('#pengumumanTable').DataTable({
         responsive: true,
         "columnDefs": [
-            { "orderable": false, "targets": [7,8] } // file & aksi
+            { "orderable": false, "targets": [5,6] } // file & aksi
         ]
     });
 

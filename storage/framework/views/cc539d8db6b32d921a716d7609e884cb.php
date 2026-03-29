@@ -56,81 +56,59 @@
         }
 
 
-.banner-slide{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    transition:transform .7s ease;
+/* ========================= */
+/* TEXT SLIDER FIX */
+/* ========================= */
+#textSlider {
+    position: relative;
+    overflow: hidden;
+    min-height: 220px;
 }
 
-.slide-active{
-    transform:translateX(0);
-    z-index:2;
+.text-slide {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+
+    opacity: 0;
+    transform: translateX(80px);
+    transition: all 0.6s ease;
 }
 
-.slide-next{
-    transform:translateX(100%);
+/* aktif */
+.text-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 2;
 }
 
-.slide-prev{
-    transform:translateX(-100%);
-}
-.slider-dot{
-    width:12px;
-    height:12px;
-    border-radius:50%;
-    background:rgba(255,255,255,0.5);
-    cursor:pointer;
-    transition:all .3s ease;
+/* keluar kiri */
+.text-slide.exit-left {
+    opacity: 0;
+    transform: translateX(-80px);
 }
 
-.slider-dot.active{
-    background:white;
-    transform:scale(1.3);
+/* keluar kanan */
+.text-slide.exit-right {
+    opacity: 0;
+    transform: translateX(80px);
+}
+
+/* DOT */
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.slider-dot.active {
+    background: white;
+    transform: scale(1.3);
 }
     </style>
-
-    <style>
-/* @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-} */
-.animate-fadeInUp {
-    animation: fadeInUp 1s ease forwards;
-}
-
-.slider-title {
-    text-shadow: 0 5px 25px rgba(0,0,0,0.8);
-}
-
-.slider-desc {
-    text-shadow: 0 3px 15px rgba(0,0,0,0.7);
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.animate-fadeInUp {
-    animation: fadeInUp 1s ease forwards;
-}
-</style>
-
 
 </head>
 
@@ -164,107 +142,104 @@
                     <i class="fas fa-chart-bar mr-1"></i>Statistik
                 </a>
             </nav>
-            <a href="<?php echo e(route('login')); ?>" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover-scale">
-                <i class="fas fa-sign-in-alt mr-1"></i>Login
-            </a>
+           <div class="flex items-center gap-3">
+
+    <!-- REGISTER -->
+    <a href="<?php echo e(route('register')); ?>"
+       class="bg-white text-indigo-600 border border-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-50 hover-scale">
+        <i class="fas fa-user-plus mr-1"></i>Register
+    </a>
+
+    <!-- LOGIN -->
+    <a href="<?php echo e(route('login')); ?>"
+       class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover-scale">
+        <i class="fas fa-sign-in-alt mr-1"></i>Login
+    </a>
+
+</div>
         </div>
     </header>
 
-<section class="pt-16 relative">
 
-<div class="relative overflow-hidden h-[90vh]">
-
-<div id="bannerSlider" class="relative w-full h-full">
-
-<?php $__empty_1 = true; $__currentLoopData = $pengumuman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-
-<div class="banner-slide">
-
-    <!-- background -->
-    <div class="absolute inset-0 bg-cover bg-center"
-         style="background-image:url('<?php echo e(asset('img/slide'.(($key%6)+1).'.png')); ?>')">
-    </div>
-
-    <!-- overlay -->
-    <div class="absolute inset-0 bg-black/40"></div>
-
-    <!-- content -->
-    <div class="relative h-full flex items-center justify-center text-center text-white px-6">
-
-        <div class="max-w-3xl">
-
-            <?php if($item->urgent): ?>
-            <div class="inline-block bg-red-500 px-4 py-1 rounded-full text-xs mb-5">
-                🔥 Pengumuman Penting
-            </div>
-            <?php endif; ?>
-
-            <h2 class="text-4xl md:text-6xl font-bold mb-6">
-                <?php echo e($item->judul); ?>
-
-            </h2>
-
-            <p class="text-lg mb-8">
-                <?php echo e($item->ringkasan); ?>
-
-            </p>
-
-            <a href="<?php echo e(route('pengumuman.detail',$item->id)); ?>"
-               class="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-full">
-               Lihat Detail
-            </a>
-
-        </div>
-
-    </div>
-
-</div>
-
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-
-<div class="banner-slide">
-
-    <div class="absolute inset-0 bg-cover bg-center"
-         style="background-image:url('<?php echo e(asset('img/slide1.png')); ?>')">
-    </div>
-
-    <div class="absolute inset-0 bg-black/40"></div>
-
-    <div class="relative h-full flex items-center justify-center text-white">
-        <h2 class="text-5xl font-bold">
-            Selamat Datang di PIM Innovation Fest
-        </h2>
-    </div>
-
-</div>
-
-<?php endif; ?>
-
-</div>
-
-
-<!-- prev -->
-<button onclick="prevSlide()"
-class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full text-white text-xl z-20">
-❮
-</button>
-
-<!-- next -->
-<button onclick="nextSlide()"
-class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full text-white text-xl z-20">
-❯
-</button>
-
-<!-- DOT INDICATOR -->
-<div id="sliderDots"
-class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-</div>
-</div>
-</section>
 
     
+<section id="hero" class="pt-24 pb-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
 
+        <!-- TEXT SLIDER -->
+        <div class="md:w-1/2" data-aos="fade-right">
 
+            <div id="textSlider">
+
+                <!-- SLIDE PERTAMA (TETAP ADA) -->
+                <div class="text-slide">
+                    <h2 class="text-4xl font-bold mb-4">
+                        Sistem Pengelolaan Inovasi
+                    </h2>
+                    <p class="mb-6">
+                        Daftarkan tim Anda, unggah proposal, dan pantau status verifikasi secara real-time dalam satu platform.
+                    </p>
+
+                    <a href="<?php echo e(route('register')); ?>"
+                        class="bg-white text-indigo-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100">
+                        <i class="fas fa-user-plus mr-1"></i>Daftar Sekarang
+                    </a>
+                </div>
+
+                <!-- SLIDE DARI DATABASE -->
+                <?php $__currentLoopData = $pengumuman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div class="text-slide active">
+                    <h2 class="text-4xl font-bold mb-4">
+                        <?php echo e($item->judul); ?>
+
+                    </h2>
+                    <p class="mb-6">
+                        <?php echo e($item->ringkasan); ?>
+
+                    </p>
+
+                    <a href="<?php echo e(route('pengumuman.detail',$item->id)); ?>"
+                        class="bg-white text-indigo-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100">
+                        Lihat Detail
+                    </a>
+                </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+            </div>
+ <!-- ✅ BUTTON PREV (PINDAH KE KIRI TEKS) -->
+            <button onclick="prevTextSlide()"
+    class="absolute -left-8 top-1/2 -translate-y-1/2
+           bg-white/80 hover:bg-white
+           text-indigo-600
+           px-3 py-2 rounded-full shadow
+           z-20">
+    ❮
+</button>
+        </div>
+
+     <!-- GAMBAR + CONTROL SLIDER -->
+<div class="md:w-1/2 mt-6 md:mt-0 relative" data-aos="fade-left">
+
+    <img src="<?php echo e(asset('img/landing.png')); ?>" class="rounded-lg shadow-lg">
+
+    <!-- BUTTON PREV -->
+    
+
+    <!-- BUTTON NEXT -->
+    <button onclick="nextTextSlide()"
+        class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-indigo-600 px-3 py-2 rounded-full shadow">
+        ❯
+    </button>
+
+    <!-- DOT -->
+    <div id="textDots"
+        class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+    </div>
+
+</div>
+
+    </div>
+</section>
 <!-- resources/views/landing.blade.php -->
 
 
@@ -545,118 +520,70 @@ class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
 
 </body>
 <script>
+document.addEventListener("DOMContentLoaded", function () {
 
-let slides = document.querySelectorAll(".banner-slide");
-let dotsContainer = document.getElementById("sliderDots");
-let dots = [];
-let currentSlide = 0;
-let slideInterval;
+    let textSlides = document.querySelectorAll(".text-slide");
+    let textIndex = 0;
+    let textDotsContainer = document.getElementById("textDots");
+    let textDots = [];
 
+    function showTextSlide(newIndex){
+        textSlides.forEach((slide, i) => {
+            slide.classList.remove("active", "exit-left", "exit-right");
 
-// set posisi awal
-function initSlides(){
-
-    slides.forEach((slide,i)=>{
-
-        slide.classList.remove("slide-active","slide-next","slide-prev");
-
-        if(i === 0){
-            slide.classList.add("slide-active");
-        }
-        else{
-            slide.classList.add("slide-next");
-        }
-
-    });
-
-}
-
-
-// tampilkan slide
-function showSlide(index){
-
-    slides.forEach((slide,i)=>{
-
-        slide.classList.remove("slide-active","slide-next","slide-prev");
-
-        if(i === index){
-            slide.classList.add("slide-active");
-        }
-        else if(i < index){
-            slide.classList.add("slide-prev");
-        }
-        else{
-            slide.classList.add("slide-next");
-        }
-
-    });
-
-    dots.forEach(d=>d.classList.remove("active"));
-    dots[index].classList.add("active");
-
-}
-// next
-function nextSlide(){
-
-    currentSlide++;
-
-    if(currentSlide >= slides.length){
-        currentSlide = 0;
-    }
-
-    showSlide(currentSlide);
-
-}
-
-
-// prev
-function prevSlide(){
-
-    currentSlide--;
-
-    if(currentSlide < 0){
-        currentSlide = slides.length - 1;
-    }
-
-    showSlide(currentSlide);
-
-}
-
-
-// auto slide
-function startAutoSlide(){
-
-    slideInterval = setInterval(()=>{
-        nextSlide();
-    },60000);
-
-}
-
-function createDots(){
-
-    slides.forEach((_,i)=>{
-
-        let dot = document.createElement("div");
-
-        dot.classList.add("slider-dot");
-
-        dot.addEventListener("click",()=>{
-            currentSlide = i;
-            showSlide(currentSlide);
+            if(i === newIndex){
+                slide.classList.add("active");
+            }
+            else if(i < newIndex){
+                slide.classList.add("exit-left");
+            }
+            else {
+                slide.classList.add("exit-right");
+            }
         });
 
-        dotsContainer.appendChild(dot);
-        dots.push(dot);
+        textDots.forEach(d => d.classList.remove("active"));
+        if(textDots[newIndex]) textDots[newIndex].classList.add("active");
+    }
 
-    });
+    // NEXT
+    window.nextTextSlide = function(){
+        textIndex = (textIndex + 1) % textSlides.length;
+        showTextSlide(textIndex);
+    }
 
-}
+    // PREV
+    window.prevTextSlide = function(){
+        textIndex = (textIndex - 1 + textSlides.length) % textSlides.length;
+        showTextSlide(textIndex);
+    }
 
-// init
-createDots();
-initSlides();
-initSlides();
-startAutoSlide();
+    // DOT
+    function createTextDots(){
+        textSlides.forEach((_, i)=>{
+            let dot = document.createElement("div");
+            dot.classList.add("slider-dot");
 
+            dot.addEventListener("click", ()=>{
+                textIndex = i;
+                showTextSlide(textIndex);
+            });
+
+            textDotsContainer.appendChild(dot);
+            textDots.push(dot);
+        });
+    }
+
+    // INIT
+    if(textSlides.length > 0){
+        createTextDots();
+        showTextSlide(0);
+
+        setInterval(() => {
+            nextTextSlide();
+        }, 50000);
+    }
+
+});
 </script>
 <?php /**PATH C:\laragon\www\inovasirev\resources\views/welcome.blade.php ENDPATH**/ ?>

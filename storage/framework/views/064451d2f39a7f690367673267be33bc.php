@@ -151,9 +151,6 @@ border-radius:5px;
 <th>Nama Gugus</th>
 <th>Judul</th>
 <th>Tanggal Upload</th>
-<th>Ketua</th>
-<th>Fasilitator</th>
-<th>Anggota Lain</th>
 <th width="90">Aksi</th>
 </tr>
 
@@ -217,11 +214,6 @@ return meta.row + meta.settings._iDisplayStart + 1;
 
 { data: 'tanggal_upload', name: 'tanggal_upload' },
 
-{ data: 'ketua', name: 'ketua', orderable: false, searchable: false },
-
-{ data: 'fasilitator', name: 'fasilitator', orderable: false, searchable: false },
-
-{ data: 'anggota_lain', name: 'anggota_lain', orderable: false, searchable: false },
 
 {
 data: 'aksi',

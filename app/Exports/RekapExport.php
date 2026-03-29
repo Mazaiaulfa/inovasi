@@ -93,8 +93,8 @@ public function __construct($id = null, $tahun = null, $jenis = null)
                 'Judul'        => implode("\n", $judulList),
                 'Status'       => implode("\n", $statusList),
                 'Waktu Upload' => implode("\n", $waktuUploadList),
-                'Ketua'        => implode("\n", $ketua),
                 'Fasilitator'  => implode("\n", $fasilitator),
+                  'Ketua'        => implode("\n", $ketua),
                 'Anggota' => implode("\n", collect($anggota)
                     ->values()
                     ->map(fn($v, $i) => ($i+1).'. '.$v)
@@ -114,8 +114,8 @@ public function __construct($id = null, $tahun = null, $jenis = null)
             'Judul',
             'Status',
             'Waktu Upload',
-            'Ketua',
             'Fasilitator',
+            'Ketua',
             'Anggota',
         ];
     }

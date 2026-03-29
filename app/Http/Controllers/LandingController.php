@@ -17,32 +17,18 @@ class LandingController extends Controller
 
 public function index()
 {
-    // =========================
-    // DATA DASHBOARD LAMA
-    // =========================
     $totalJudul = KaryaTulis::count();
     $pendingProposal = Proposal::where('status', 'pending')->count();
     $totalFinalisasi = FinalKarya::count();
     $totalUser = User::count();
 
-    // =========================
-    // TAMBAHAN SLIDER PENGUMUMAN
-    // =========================
+    // FIXED (tanpa kolom yang sudah dihapus)
     $pengumuman = Pengumuman::where('is_active', 1)
-        ->whereDate('tanggal_mulai', '<=', Carbon::now())
-        ->where(function ($q) {
-            $q->whereNull('tanggal_selesai')
-              ->orWhereDate('tanggal_selesai', '>=', Carbon::now());
-        })
-        ->orderBy('urgent', 'desc') // urgent di atas
         ->latest()
-        ->take(6) // maksimal 6 slide
+        ->take(6)
         ->get();
 
-    // =========================
-    // TAMBAHAN TIMELINE
-    // =========================
-    $timelines = Timeline::orderBy('urutan')->get(); // ambil timeline dari database
+    $timelines = Timeline::orderBy('urutan')->get();
 
     return view('welcome', compact(
         'totalJudul',
@@ -50,7 +36,7 @@ public function index()
         'totalFinalisasi',
         'totalUser',
         'pengumuman',
-        'timelines' // tambahkan ini
+        'timelines'
     ));
 
 }

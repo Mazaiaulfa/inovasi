@@ -42,6 +42,21 @@ class DashboardController extends Controller
     $q->where('role','user')->where('jenis_peserta','EIF')
 )->count();
 
+        // ================== SS ==================
+        $ssUsers = User::where('role','user')->where('jenis_peserta','SS')->count();
+
+        $ssKarya = KaryaTulis::whereHas('user', fn($q) =>
+            $q->where('role','user')->where('jenis_peserta','SS')
+        )->count();
+
+        $ssProposal = Proposal::whereHas('karya.user', fn($q) =>
+            $q->where('role','user')->where('jenis_peserta','SS')
+        )->count();
+
+        $ssFinal = FinalKarya::whereHas('karya.user', fn($q) =>
+            $q->where('role','user')->where('jenis_peserta','SS')
+        )->count();
+
         return view('admin.dashboard', [
             'judulChart' => $judulChart->build(),
             'proposalChart' => $proposalChart->build(),
@@ -69,6 +84,10 @@ class DashboardController extends Controller
             'eifKarya' => $eifKarya,
             'eifProposal' => $eifProposal,
             'eifFinal' => $eifFinal,
+            'ssUsers' => $ssUsers,
+            'ssKarya' => $ssKarya,
+            'ssProposal' => $ssProposal,
+            'ssFinal' => $ssFinal,
 
             // latest karya
             'latestKarya' => KaryaTulis::with('user')->latest()->take(5)->get(),
