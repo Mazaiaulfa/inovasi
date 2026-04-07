@@ -26,7 +26,6 @@
                             <h4>Judul Diajukan</h4>
                         </div>
                         <div class="card-body">
-                            <?php echo e($judulDiajukan); ?>
 
                         </div>
                     </div>
@@ -44,7 +43,6 @@
                             <h4>Draft Makalah Disetujui</h4>
                         </div>
                         <div class="card-body">
-                            <?php echo e($draftDisetujui); ?>
 
                         </div>
                     </div>
@@ -62,7 +60,6 @@
                             <h4>Final Disetujui</h4>
                         </div>
                         <div class="card-body">
-                            <?php echo e($finalDisetujui); ?>
 
                         </div>
                     </div>
@@ -76,7 +73,6 @@
             <div class="col-lg-6 col-md-12 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <?php echo $karyaChart->container(); ?>
 
                     </div>
                 </div>
@@ -86,7 +82,6 @@
             <div class="col-lg-6 col-md-12 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <?php echo $finalChart->container(); ?>
 
                     </div>
                 </div>
@@ -99,9 +94,7 @@
 
 <?php $__env->startPush('scripts'); ?>
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<?php echo $karyaChart->script(); ?>
-
-<?php echo $finalChart->script(); ?>
 
 <?php $__env->stopPush(); ?>
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/user/dashboard.blade.php ENDPATH**/ ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/juri/dashboard.blade.php ENDPATH**/ ?>

@@ -19,7 +19,10 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Admin\RekapController;
 use App\Http\Controllers\TahapanAppController;
 use App\Http\Controllers\PengumumanController;
-
+use App\Http\Controllers\JuriController;
+use App\Http\Controllers\NilaiController;
+use App\Http\Controllers\Admin\AdminJuriController;
+use App\Http\Controllers\Admin\KonvensiController;
 
 Route::get('/storage-link', function(){
    $targetFolder = base_path().'/storage/app/public';
@@ -46,12 +49,19 @@ Route::get('/', [LandingController::class, 'index'])->name('landing');
 
 // Redirect setelah login berdasarkan role
 Route::get('/dashboard', function () {
+
     if (Auth::user()->role === 'admin') {
         return redirect()->route('admin.dashboard');
     }
-    return redirect()->route('user.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
+    if (Auth::user()->role === 'juri') {
+        return redirect()->route('juri.dashboard');
+    }
+
+    return redirect()->route('user.dashboard');
+
+
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 /* Halaman Tahapan */
 Route::get('/tahapanapp', [TahapanAppController::class, 'index'])
@@ -127,6 +137,30 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::delete('/admin/profile', [ProfileController::class, 'destroy'])
         ->name('admin.profile.destroy');
+
+    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('konvensi', [KonvensiController::class, 'index'])->name('konvensi.index');
+});
+
+Route::prefix('admin/juri')
+    ->name('admin.juri.')
+    ->middleware(['auth','role:admin'])
+    ->group(function () {
+
+    Route::get('/', [AdminJuriController::class, 'index'])->name('index');
+
+    Route::get('/create', [AdminJuriController::class, 'create'])->name('create');
+    Route::post('/store', [AdminJuriController::class, 'store'])->name('store');
+
+    Route::get('/assign/{id}', [AdminJuriController::class, 'formAssign'])->name('assign.form');
+    Route::post('/assign', [AdminJuriController::class, 'assign'])->name('assign');
+
+    Route::get('/peserta/{id}', [AdminJuriController::class, 'DaftarPeserta'])->name('peserta');
+    Route::get('/edit/{id}', [AdminJuriController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [AdminJuriController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [AdminJuriController::class, 'destroy'])->name('destroy');
+});
+
 });
 
 
@@ -156,6 +190,27 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     Route::delete('/user/profile', [ProfileController::class, 'destroy'])
         ->name('user.profile.destroy');
+
+});
+
+Route::middleware(['auth', 'role:juri'])
+    ->prefix('juri')
+    ->name('juri.')
+    ->group(function () {
+
+    Route::get('/', function () {
+        return view('juri.dashboard');
+    })->name('dashboard');
+
+
+    Route::post('/penilaian', [JuriController::class, 'nilai'])->name('nilai');
+     Route::get('/peserta', [JuriController::class, 'peserta'])->name('peserta');
+
+    Route::get('/nilai/{id}', [JuriController::class, 'penilaian'])->name('nilai');
+    Route::get('/nilai/{id}', [NilaiController::class, 'create'])
+    ->name('nilai.form'); // BUKAN juri.nilai.form
+    Route::post('/nilai', [NilaiController::class, 'store'])
+    ->name('nilai.store');
 
 });
 

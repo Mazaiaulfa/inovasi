@@ -56,15 +56,16 @@
         }
 
 
-/* ========================= */
-/* TEXT SLIDER FIX */
-/* ========================= */
+/* SLIDER */
 #textSlider {
     position: relative;
     overflow: hidden;
-    min-height: 220px;
+    min-height: 260px;
+    display: flex;
+    align-items: center;
 }
 
+/* slide */
 .text-slide {
     position: absolute;
     width: 100%;
@@ -73,7 +74,8 @@
 
     opacity: 0;
     transform: translateX(80px);
-    transition: all 0.6s ease;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    filter: blur(5px);
 }
 
 /* aktif */
@@ -81,33 +83,36 @@
     opacity: 1;
     transform: translateX(0);
     z-index: 2;
+    filter: blur(0);
 }
 
-/* keluar kiri */
+/* keluar */
 .text-slide.exit-left {
-    opacity: 0;
     transform: translateX(-80px);
 }
-
-/* keluar kanan */
 .text-slide.exit-right {
-    opacity: 0;
     transform: translateX(80px);
 }
 
-/* DOT */
 .slider-dot {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.5);
-    cursor: pointer;
+    background: rgba(255,255,255,0.3);
     transition: all .3s ease;
 }
+
 .slider-dot.active {
+    width: 20px; /* jadi lonjong */
     background: white;
-    transform: scale(1.3);
 }
+
+/* FLOAT IMAGE */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
     </style>
 
 </head>
@@ -268,82 +273,92 @@ class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
         </div>
     </section> --}}
 <section id="hero" class="pt-24 pb-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
-    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
+<div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-10">
 
-        <!-- TEXT SLIDER -->
-        <div class="md:w-1/2" data-aos="fade-right">
+<!-- TEXT -->
+<div class="md:w-1/2 relative">
 
-            <div id="textSlider">
+<div id="textSlider">
 
-                <!-- SLIDE PERTAMA (TETAP ADA) -->
-                <div class="text-slide">
-                    <h2 class="text-4xl font-bold mb-4">
-                        Sistem Pengelolaan Inovasi
-                    </h2>
-                    <p class="mb-6">
-                        Daftarkan tim Anda, unggah proposal, dan pantau status verifikasi secara real-time dalam satu platform.
-                    </p>
+<!-- DEFAULT SLIDE -->
+<div class="text-slide active">
+    <div class="bg-white/10 backdrop-blur-md p-5 rounded-xl shadow-md">
 
-                    <a href="{{ route('register') }}"
-                        class="bg-white text-indigo-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100">
-                        <i class="fas fa-user-plus mr-1"></i>Daftar Sekarang
-                    </a>
-                </div>
+        <h2 class="text-2xl md:text-3xl font-semibold mb-3 leading-snug">
+            Sistem Pengelolaan Inovasi
+        </h2>
 
-                <!-- SLIDE DARI DATABASE -->
-                @foreach($pengumuman as $item)
-                <div class="text-slide active">
-                    <h2 class="text-4xl font-bold mb-4">
-                        {{ $item->judul }}
-                    </h2>
-                    <p class="mb-6">
-                        {{ $item->ringkasan }}
-                    </p>
+        <p class="mb-4 text-sm md:text-base text-white/80 leading-relaxed">
+            Daftarkan tim Anda, unggah proposal, dan pantau status verifikasi secara real-time dalam satu platform.
+        </p>
 
-                    <a href="{{ route('pengumuman.detail',$item->id) }}"
-                        class="bg-white text-indigo-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100">
-                        Lihat Detail
-                    </a>
-                </div>
-                @endforeach
+        <a href="{{ route('register') }}"
+           class="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm hover:bg-gray-100 transition">
+           <i class="fas fa-user-plus mr-1"></i>Daftar
+        </a>
 
-            </div>
- <!-- ✅ BUTTON PREV (PINDAH KE KIRI TEKS) -->
-            <button onclick="prevTextSlide()"
-    class="absolute -left-8 top-1/2 -translate-y-1/2
-           bg-white/80 hover:bg-white
-           text-indigo-600
-           px-3 py-2 rounded-full shadow
-           z-20">
-    ❮
-</button>
-        </div>
-
-     <!-- GAMBAR + CONTROL SLIDER -->
-<div class="md:w-1/2 mt-6 md:mt-0 relative" data-aos="fade-left">
-
-    <img src="{{ asset('img/landing.png') }}" class="rounded-lg shadow-lg">
-
-    <!-- BUTTON PREV -->
-    {{-- <button onclick="prevTextSlide()"
-        class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-indigo-600 px-3 py-2 rounded-full shadow">
-        ❮
-    </button> --}}
-
-    <!-- BUTTON NEXT -->
-    <button onclick="nextTextSlide()"
-        class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-indigo-600 px-3 py-2 rounded-full shadow">
-        ❯
-    </button>
-
-    <!-- DOT -->
-    <div id="textDots"
-        class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
     </div>
+</div>
+<!-- DATA SLIDE -->
+@foreach($pengumuman as $index => $item)
+<div class="text-slide {{ $index == 0 ? '' : '' }}">
+    <div class="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg">
+
+       {{-- <span class="inline-block bg-yellow-400 text-black text-[10px] px-2 py-1 rounded-full mb-2">
+            Pengumuman
+        </span> --}}
+
+        <h2 class="text-2xl md:text-3xl font-semibold mb-3 leading-snug">
+            {{ $item->judul }}
+        </h2>
+
+        <p class="mb-4 text-sm md:text-base text-white/80 leading-relaxed">
+            {{ $item->ringkasan }}
+        </p>
+
+        <a href="{{ route('pengumuman.detail',$item->id) }}"
+           class="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm hover:bg-gray-100 transition">
+           Detail
+        </a>
+
+
+    </div>
+</div>
+@endforeach
 
 </div>
 
-    </div>
+<!-- PREV -->
+<button onclick="prevTextSlide()"
+class="absolute left-0 md:-left-10 top-1/2 -translate-y-1/2
+       bg-white/90 hover:bg-white text-indigo-600
+       p-3 rounded-full shadow-lg transition hover:scale-110">
+❮
+</button>
+
+</div>
+
+<!-- IMAGE -->
+<div class="md:w-1/2 relative">
+
+<img src="{{ asset('img/landing.png') }}"
+     class="rounded-lg shadow-lg animate-[float_4s_ease-in-out_infinite]">
+
+<!-- NEXT -->
+<button onclick="nextTextSlide()"
+class="absolute right-2 top-1/2 -translate-y-1/2
+       bg-white/90 hover:bg-white text-indigo-600
+       p-3 rounded-full shadow-lg transition hover:scale-110">
+❯
+</button>
+
+<div id="textDots"
+class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+</div>
+
+</div>
+
+</div>
 </section>
 <!-- resources/views/landing.blade.php -->
 {{-- <div class="relative">
@@ -668,15 +683,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showTextSlide(newIndex){
         textSlides.forEach((slide, i) => {
-            slide.classList.remove("active", "exit-left", "exit-right");
+            slide.classList.remove("active","exit-left","exit-right");
 
             if(i === newIndex){
                 slide.classList.add("active");
-            }
-            else if(i < newIndex){
+            } else if(i < newIndex){
                 slide.classList.add("exit-left");
-            }
-            else {
+            } else {
                 slide.classList.add("exit-right");
             }
         });
@@ -685,42 +698,38 @@ document.addEventListener("DOMContentLoaded", function () {
         if(textDots[newIndex]) textDots[newIndex].classList.add("active");
     }
 
-    // NEXT
     window.nextTextSlide = function(){
         textIndex = (textIndex + 1) % textSlides.length;
         showTextSlide(textIndex);
     }
 
-    // PREV
     window.prevTextSlide = function(){
         textIndex = (textIndex - 1 + textSlides.length) % textSlides.length;
         showTextSlide(textIndex);
     }
 
-    // DOT
-    function createTextDots(){
+    function createDots(){
         textSlides.forEach((_, i)=>{
             let dot = document.createElement("div");
             dot.classList.add("slider-dot");
 
-            dot.addEventListener("click", ()=>{
+            dot.onclick = () => {
                 textIndex = i;
                 showTextSlide(textIndex);
-            });
+            };
 
             textDotsContainer.appendChild(dot);
             textDots.push(dot);
         });
     }
 
-    // INIT
     if(textSlides.length > 0){
-        createTextDots();
+        createDots();
         showTextSlide(0);
 
         setInterval(() => {
             nextTextSlide();
-        }, 50000);
+        }, 5000); // 5 detik
     }
 
 });

@@ -20,9 +20,17 @@ class KaryaTulisController extends Controller
             $query = KaryaTulis::where('user_id', Auth::id())->latest();
 
             return Datatables::of($query)
-                ->addColumn('file_ajukan', function ($item) {
-                    return '<a href="'.asset($item->file_ajukan).'" target="_blank" class="btn btn-info btn-sm">Lihat File</a>';
-                })
+                ->addColumn('file', function ($item) {
+    if (!$item->file_ajukan) {
+        return '<span class="text-muted">Tidak ada file</span>';
+    }
+
+   return '<a href="' . asset($item->file_ajukan) . '" target="_blank" class="btn btn-info btn-sm">
+    Lihat File
+</a>';
+})
+
+
                 ->addColumn('catatan', function ($item) {
                     return $item->catatan_judul ?? '-';
                 })
@@ -40,7 +48,7 @@ class KaryaTulisController extends Controller
                         </form>
                     </div>';
                 })
-                ->rawColumns(['action', 'file_ajukan'])
+                ->rawColumns(['file', 'action'])
                 ->make(true);
         }
 

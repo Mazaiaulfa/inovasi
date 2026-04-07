@@ -25,7 +25,7 @@ class ProposalController extends Controller
             $request->validate([
                 'karya_id' => 'required|exists:karya_tulis,id',
                 'tahap_id' => 'required|exists:tahapan,id',
-                'file' => 'required|mimes:pdf|max:2048'
+                'file' => 'required|mimes:pdf|max:5120'
             ]);
 
             $karya = KaryaTulis::find($request->karya_id);

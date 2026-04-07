@@ -90,6 +90,22 @@
                 </ul>
             </li>
 
+        {{-- Penetapan Juri --}}
+        <li class="{{ Request::is('admin/juri*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.juri.index') }}">
+                <i class="fas fa-user-check"></i>
+                <span>Penetapan Juri</span>
+            </a>
+        </li>
+
+            {{-- Kelola Pengumuman --}}
+            <li class="{{ Request::is('admin/konvensi*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('admin.konvensi.index') }}">
+                    <i class="fas fa-bullhorn"></i> <span>Konvensi</span>
+                </a>
+            </li>
+
+
             {{-- Kelola Pengumuman --}}
             <li class="{{ Request::is('admin/pengumuman*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.pengumuman.index') }}">
@@ -104,6 +120,32 @@
     </a>
 </li>
 
+            {{-- JURI --}}
+@elseif(Auth::user()->role === 'juri')
+
+<li class="{{ Request::is('juri') ? 'active' : '' }}">
+    <a class="nav-link" href="{{ url('/juri') }}">
+        <i class="fas fa-tachometer-alt"></i> <span>Dashboard Juri</span>
+    </a>
+</li>
+<li class="{{ Request::is('juri/peserta*') ? 'active' : '' }}">
+    <a class="nav-link" href="{{ url('/juri/peserta') }}">
+        <i class="fas fa-star"></i> <span>Peserta</span>
+    </a>
+</li>
+
+<li class="{{ Request::is('juri/penilaian*') ? 'active' : '' }}">
+    <a class="nav-link" href="{{ url('/juri/penilaian') }}">
+        <i class="fas fa-star"></i> <span>Penilaian</span>
+    </a>
+</li>
+
+<li class="{{ Request::is('juri/profile*') ? 'active' : '' }}">
+    <a class="nav-link" href="">
+        <i class="fas fa-user-circle"></i>
+        <span>Profile</span>
+    </a>
+</li>
 
             {{-- USER --}}
             @elseif(Auth::user()->role === 'user')

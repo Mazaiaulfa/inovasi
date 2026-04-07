@@ -89,13 +89,15 @@ public function __construct($id = null, $tahun = null, $jenis = null)
             $rows->push([
                 'No'           => $no++,
                 'Nama User'    => $user->name,
+                'Direktorat'   => $user->direktorat,
+                'Kompartemen'  => $user->kompartemen,
                 'Unit Kerja'   => $user->unit_kerja,
                 'Judul'        => implode("\n", $judulList),
                 'Status'       => implode("\n", $statusList),
                 'Waktu Upload' => implode("\n", $waktuUploadList),
                 'Fasilitator'  => implode("\n", $fasilitator),
-                  'Ketua'        => implode("\n", $ketua),
-                'Anggota' => implode("\n", collect($anggota)
+                'Ketua'        => implode("\n", $ketua),
+                'Anggota'      => implode("\n", collect($anggota)
                     ->values()
                     ->map(fn($v, $i) => ($i+1).'. '.$v)
                     ->toArray()),
@@ -106,18 +108,21 @@ public function __construct($id = null, $tahun = null, $jenis = null)
     }
 
     public function headings(): array
-    {
-        return [
-            'No',
-            'Nama User',
-            'Unit Kerja',
-            'Judul',
-            'Status',
-            'Waktu Upload',
-            'Fasilitator',
-            'Ketua',
-            'Anggota',
-        ];
+        {
+            return [
+                'No',
+                'Nama User',
+                'Direktorat',
+                'Kompartemen',
+                'Unit Kerja',
+                'Judul',
+                'Status',
+                'Waktu Upload',
+                'Fasilitator',
+                'Ketua',
+                'Anggota',
+            ];
+
     }
 
 
@@ -131,13 +136,15 @@ public function __construct($id = null, $tahun = null, $jenis = null)
         return [
             'A' => 6,
             'B' => 25,
-            'C' => 20,
-            'D' => 40,
-            'E' => 18,
-            'F' => 15,
-            'G' => 25,
-            'H' => 25,
-            'I' => 40,
+            'C' => 25, // Direktorat
+            'D' => 25, // Kompartemen
+            'E' => 20, // Unit Kerja
+            'F' => 40,
+            'G' => 18,
+            'H' => 15,
+            'I' => 25,
+            'J' => 25,
+            'K' => 40,
         ];
     }
 
@@ -157,7 +164,7 @@ public function title(): string
          $lastRow = $sheet->getHighestRow();
 
         // Header
-        $sheet->getStyle('A1:I1')->applyFromArray([
+        $sheet->getStyle('A1:K1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['rgb' => 'FFFFFF'],
@@ -174,8 +181,8 @@ public function title(): string
         ]);
 
         // Wrap + Top align
-        $sheet->getStyle("A:I")->getAlignment()->setWrapText(true);
-        $sheet->getStyle("A:I")->getAlignment()->setVertical(Alignment::VERTICAL_TOP);
+        $sheet->getStyle("A:K")->getAlignment()->setWrapText(true);
+        $sheet->getStyle("A:K")->getAlignment()->setVertical(Alignment::VERTICAL_TOP);
 
         // Center nomor
         $sheet->getStyle("A2:A{$lastRow}")
@@ -183,7 +190,7 @@ public function title(): string
               ->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         // Border
-        $sheet->getStyle("A1:I{$lastRow}")
+        $sheet->getStyle("A1:K{$lastRow}")
               ->getBorders()
               ->getAllBorders()
               ->setBorderStyle(Border::BORDER_THIN);

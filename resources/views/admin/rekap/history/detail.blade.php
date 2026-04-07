@@ -16,12 +16,14 @@
 }
 
 .info-gugus .info-item {
-    flex: 1 1 180px;
+
     background-color: #f1f5f9; /* lembut */
     padding: 0.5rem 0.75rem;
     border-radius: 6px;
     font-size: 0.85rem;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    flex: 1 1 calc(33.333% - 0.8rem); /* 3 kolom */
+    max-width: calc(33.333% - 0.8rem);
 }
 
 /* List anggota minimal */
@@ -77,6 +79,12 @@
     font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
 }
+@media (max-width: 768px) {
+    .info-gugus .info-item {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
 </style>
 @endpush
 
@@ -94,27 +102,34 @@
                             </a>
                         </div>
                         <div class="card-body">
-                            <div class="info-gugus">
-                                <div class="info-item"><strong>Ketua:</strong> {{ $gugus->ketua }}</div>
-                                <div class="info-item"><strong>Fasilitator:</strong> {{ $gugus->fasilitator }}</div>
-                                <div class="info-item">
-                                    <strong>Anggota Lain:</strong>
-                                    <ul class="anggota-list">
-                                        @php $no = 1; @endphp
-                                        @foreach($gugus->anggota_lain as $anggota)
-                                            <li>{{ $no++ }}. {{ $anggota->nama }} ({{ $anggota->badge }})</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
+                           <div class="info-gugus">
 
+    <div class="info-item"><strong>Direktorat:</strong> {{ $gugus->direktorat ?? '-' }}</div>
+    <div class="info-item"><strong>Kompartemen:</strong> {{ $gugus->kompartemen ?? '-' }}</div>
+    <div class="info-item"><strong>Unit Kerja:</strong> {{ $gugus->unit_kerja ?? '-' }}</div>
+
+    <div class="info-item"><strong>Ketua:</strong> {{ $gugus->ketua }}</div>
+    <div class="info-item"><strong>Fasilitator:</strong> {{ $gugus->fasilitator }}</div>
+
+    <div class="info-item">
+        <strong>Anggota Lain:</strong>
+        <ul class="anggota-list">
+            @foreach($gugus->anggota_lain as $anggota)
+                <li>{{ $anggota->nama }}</li>
+            @endforeach
+        </ul>
+    </div>
+
+</div>
+
+</div>
                             <div class="table-responsive mt-2">
                                 <table id="detailTable" class="table table-striped table-bordered table-hover w-100">
                         <thead class="table-light">
                             <tr>
                             <th>No</th>
                             <th>Judul</th>
-                            <th>Karya Tulis</th>
+                            <th>Profile Judul</th>
                             <th>Proposal</th>
                             <th>Final</th>
                             <th>Status</th>
@@ -133,7 +148,7 @@
                                 <td>
                                 @if($karya->file_ajukan)
                                 <a href="{{ asset($karya->file_ajukan) }}" target="_blank" class="btn btn-success btn-sm">
-                                <i class="fas fa-file-alt"></i> Karya
+                                <i class="fas fa-file-alt"></i> Judul
                                 </a>
                                 @else
                                 <span class="text-muted">-</span>

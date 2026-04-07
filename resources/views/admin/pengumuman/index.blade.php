@@ -120,7 +120,7 @@
                         <div class="tab-pane fade show active" id="pengumuman" role="tabpanel" aria-labelledby="pengumuman-tab">
                             <div class="mb-3">
                                 <a href="{{ route('admin.pengumuman.create') }}" class="btn btn-primary">
-                                    <i class="fas fa-plus"></i> Tambah Pengumuman
+                                </i> Add Pengumuman
                                 </a>
                             </div>
                             <div class="table-responsive">
@@ -179,7 +179,7 @@
                         <div class="tab-pane fade" id="timeline" role="tabpanel" aria-labelledby="timeline-tab">
                             <div class="mb-3">
                                 <a href="{{ route('admin.timeline.create') }}" class="btn btn-primary">
-                                    <i class="fas fa-plus"></i> Tambah Timeline
+                                    </i> Add Timeline
                                 </a>
                             </div>
                             <div class="table-responsive">

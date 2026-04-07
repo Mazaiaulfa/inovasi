@@ -19,6 +19,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'direktorat',
+        'kompartemen',
         'unit_kerja',
         'email',
         'password',
@@ -37,8 +39,17 @@ class User extends Authenticatable
     }
 
 
+    public function pesertaYangDinilai()
+    {
+        return $this->belongsToMany(User::class, 'juri_peserta', 'juri_id', 'peserta_id');
+    }
 
+    public function juriPenilai()
+    {
+        return $this->belongsToMany(User::class, 'juri_peserta', 'peserta_id', 'juri_id');
+    }
 
+ 
     /**
      * The attributes that should be hidden for serialization.
      *

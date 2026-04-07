@@ -29,27 +29,29 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'unit_kerja' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+{
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'jenis_peserta' => ['required', 'in:EIF,GKM,SS'],
+        'direktorat' => ['required', 'string', 'max:255'],
+        'kompartemen' => ['required', 'string', 'max:255'],
+        'unit_kerja' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'unit_kerja' => $request->unit_kerja,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    $user = User::create([
+        'name' => $request->name,
+        'jenis_peserta' => $request->jenis_peserta,
+        'direktorat' => $request->direktorat,
+        'kompartemen' => $request->kompartemen,
+        'unit_kerja' => $request->unit_kerja,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
 
-        event(new Registered($user));
+    event(new Registered($user));
 
-        // Auth::login($user);
-
-        // return redirect(RouteServiceProvider::HOME);
-
-        return redirect()->route('login')->with('status', 'Registrasi berhasil! Silakan login.');
-    }
+    return redirect()->route('login')->with('status', 'Registrasi berhasil! Silakan login.');
+}
 }

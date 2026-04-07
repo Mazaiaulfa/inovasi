@@ -90,6 +90,22 @@
                 </ul>
             </li>
 
+        
+        <li class="<?php echo e(Request::is('admin/juri*') ? 'active' : ''); ?>">
+            <a class="nav-link" href="<?php echo e(route('admin.juri.index')); ?>">
+                <i class="fas fa-user-check"></i>
+                <span>Penetapan Juri</span>
+            </a>
+        </li>
+
+            
+            <li class="<?php echo e(Request::is('admin/konvensi*') ? 'active' : ''); ?>">
+                <a class="nav-link" href="<?php echo e(route('admin.konvensi.index')); ?>">
+                    <i class="fas fa-bullhorn"></i> <span>Konvensi</span>
+                </a>
+            </li>
+
+
             
             <li class="<?php echo e(Request::is('admin/pengumuman*') ? 'active' : ''); ?>">
                 <a class="nav-link" href="<?php echo e(route('admin.pengumuman.index')); ?>">
@@ -104,6 +120,32 @@
     </a>
 </li>
 
+            
+<?php elseif(Auth::user()->role === 'juri'): ?>
+
+<li class="<?php echo e(Request::is('juri') ? 'active' : ''); ?>">
+    <a class="nav-link" href="<?php echo e(url('/juri')); ?>">
+        <i class="fas fa-tachometer-alt"></i> <span>Dashboard Juri</span>
+    </a>
+</li>
+<li class="<?php echo e(Request::is('juri/peserta*') ? 'active' : ''); ?>">
+    <a class="nav-link" href="<?php echo e(url('/juri/peserta')); ?>">
+        <i class="fas fa-star"></i> <span>Peserta</span>
+    </a>
+</li>
+
+<li class="<?php echo e(Request::is('juri/penilaian*') ? 'active' : ''); ?>">
+    <a class="nav-link" href="<?php echo e(url('/juri/penilaian')); ?>">
+        <i class="fas fa-star"></i> <span>Penilaian</span>
+    </a>
+</li>
+
+<li class="<?php echo e(Request::is('juri/profile*') ? 'active' : ''); ?>">
+    <a class="nav-link" href="">
+        <i class="fas fa-user-circle"></i>
+        <span>Profile</span>
+    </a>
+</li>
 
             
             <?php elseif(Auth::user()->role === 'user'): ?>
