@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\RekapController;
 use App\Http\Controllers\TahapanAppController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\JuriController;
+use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\Admin\AdminJuriController;
 use App\Http\Controllers\Admin\KonvensiController;
@@ -140,6 +141,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('konvensi', [KonvensiController::class, 'index'])->name('konvensi.index');
+    Route::resource('kriteria', KriteriaController::class);
 });
 
 Route::prefix('admin/juri')

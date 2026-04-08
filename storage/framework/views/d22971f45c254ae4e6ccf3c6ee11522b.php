@@ -19,11 +19,13 @@
                 <div class="card-body">
 
                     <table class="table table-bordered table-hover">
-                        <thead class="table-dark">
+                        <thead class="bg-secondary text-white">
                             <tr>
                                 <th>No</th>
                                 <th>Nama Peserta</th>
                                 <th>Email</th>
+                                <th>Departemen</th>
+                                <th>Nilai</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -34,7 +36,14 @@
                                     <td><?php echo e($key + 1); ?></td>
                                     <td><?php echo e($item->name); ?></td>
                                     <td><?php echo e($item->email); ?></td>
-
+                                    <td><?php echo e($item->unit_kerja); ?></td>
+                                    <td>
+                                        <?php if($item->nilai): ?>
+                                            <span class="badge bg-primary"><?php echo e($item->nilai); ?></span>
+                                        <?php else: ?>
+                                            <span class="badge bg-warning text-dark">Belum dinilai</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td>
                                         
                                         <a href="<?php echo e(route('juri.nilai.form', $item->id)); ?>"

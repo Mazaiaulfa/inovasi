@@ -49,7 +49,11 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'juri_peserta', 'peserta_id', 'juri_id');
     }
 
- 
+    public function penilaian()
+{
+    return $this->hasMany(Penilaian::class, 'user_id');
+}
+
     /**
      * The attributes that should be hidden for serialization.
      *

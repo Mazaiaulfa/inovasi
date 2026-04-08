@@ -21,11 +21,13 @@
                 <div class="card-body">
 
                     <table class="table table-bordered table-hover">
-                        <thead class="table-dark">
+                        <thead class="bg-secondary text-white">
                             <tr>
                                 <th>No</th>
                                 <th>Nama Peserta</th>
                                 <th>Email</th>
+                                <th>Departemen</th>
+                                <th>Nilai</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -36,7 +38,14 @@
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
-
+                                    <td>{{ $item->unit_kerja }}</td>
+                                    <td>
+                                        @if ($item->nilai)
+                                            <span class="badge bg-primary">{{ $item->nilai }}</span>
+                                        @else
+                                            <span class="badge bg-warning text-dark">Belum dinilai</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         {{-- Tombol NILAI --}}
                                         <a href="{{ route('juri.nilai.form', $item->id) }}"

@@ -90,21 +90,36 @@
                 </ul>
             </li>
 
+        <li class="nav-item dropdown <?php echo e(Request::is('admin/juri*') || Request::is('admin/konvensi*') || Request::is('admin/kriteria*') ? 'active' : ''); ?>">
+    <a href="#" class="nav-link has-dropdown">
+        <i class="fas fa-gavel"></i>
+        <span>Manajemen Penilaian</span>
+    </a>
+    <ul class="dropdown-menu">
+
         
         <li class="<?php echo e(Request::is('admin/juri*') ? 'active' : ''); ?>">
             <a class="nav-link" href="<?php echo e(route('admin.juri.index')); ?>">
-                <i class="fas fa-user-check"></i>
-                <span>Penetapan Juri</span>
+                <i class="fas fa-user-check"></i> Penetapan Juri
             </a>
         </li>
 
-            
-            <li class="<?php echo e(Request::is('admin/konvensi*') ? 'active' : ''); ?>">
-                <a class="nav-link" href="<?php echo e(route('admin.konvensi.index')); ?>">
-                    <i class="fas fa-bullhorn"></i> <span>Konvensi</span>
-                </a>
-            </li>
+        
+        <li class="<?php echo e(Request::is('admin/konvensi*') ? 'active' : ''); ?>">
+            <a class="nav-link" href="<?php echo e(route('admin.konvensi.index')); ?>">
+                <i class="fas fa-bullhorn"></i> Konvensi
+            </a>
+        </li>
 
+        
+        <li class="<?php echo e(Request::is('admin/kriteria*') ? 'active' : ''); ?>">
+            <a class="nav-link" href="<?php echo e(route('admin.kriteria.index')); ?>">
+                <i class="fas fa-list"></i> Kelola Kriteria
+            </a>
+        </li>
+
+    </ul>
+</li>
 
             
             <li class="<?php echo e(Request::is('admin/pengumuman*') ? 'active' : ''); ?>">
