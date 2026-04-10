@@ -73,7 +73,7 @@
             <label class="form-label">Item (PLAN / DO / CHECK / ACT)</label>
             <select name="item" class="form-control" required>
                 <option value="">-- Pilih --</option>
-                <?php $__currentLoopData = ['PLAN','DO','CHECK','ACT']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $opt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php $__currentLoopData = ['PLAN','DO','CHECK','ACT','CREATIVITY']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $opt): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <option value="<?php echo e($opt); ?>" <?php echo e(($item ?? '') == $opt ? 'selected' : ''); ?>>
                         <?php echo e($opt); ?>
 

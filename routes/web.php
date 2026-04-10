@@ -140,7 +140,25 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.profile.destroy');
 
     Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('konvensi', [KonvensiController::class, 'index'])->name('konvensi.index');
+
+    Route::get('konvensi', [KonvensiController::class, 'index'])
+        ->name('konvensi.index');
+
+    // 🔥 FINALISASI
+    Route::post('konvensi/publish', [KonvensiController::class, 'publish'])
+        ->name('publish');
+
+    // 🔥 DETAIL NILAI
+    Route::get('konvensi/{id}', [KonvensiController::class, 'detail'])
+        ->name('nilai.detail');
+
+    // 🔥 EDIT NILAI
+    Route::get('konvensi/{id}/edit', [KonvensiController::class, 'edit'])
+        ->name('nilai.edit');
+
+    Route::put('konvensi/{id}', [KonvensiController::class, 'update'])
+        ->name('nilai.update');
+
     Route::resource('kriteria', KriteriaController::class);
 });
 
@@ -161,6 +179,8 @@ Route::prefix('admin/juri')
     Route::get('/edit/{id}', [AdminJuriController::class, 'edit'])->name('edit');
     Route::put('/update/{id}', [AdminJuriController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [AdminJuriController::class, 'destroy'])->name('destroy');
+
+
 });
 
 });
@@ -206,13 +226,18 @@ Route::middleware(['auth', 'role:juri'])
 
 
     Route::post('/penilaian', [JuriController::class, 'nilai'])->name('nilai');
-     Route::get('/peserta', [JuriController::class, 'peserta'])->name('peserta');
-
-    Route::get('/nilai/{id}', [JuriController::class, 'penilaian'])->name('nilai');
+    Route::get('/peserta', [JuriController::class, 'peserta'])->name('peserta');
+    Route::post('/peserta/submit/{id}', [JuriController::class, 'submit'])
+        ->name('submit');
+        Route::post('/submit-semua', [JuriController::class, 'submitSemua'])
+    ->name('submit.semua');
+    // Route::get('/nilai/{id}', [JuriController::class, 'penilaian'])->name('nilai');
     Route::get('/nilai/{id}', [NilaiController::class, 'create'])
     ->name('nilai.form'); // BUKAN juri.nilai.form
     Route::post('/nilai', [NilaiController::class, 'store'])
     ->name('nilai.store');
+
+
 
 });
 

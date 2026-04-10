@@ -13,6 +13,9 @@ class Penilaian extends Model
             'id',
             'user_id',
             'juri_id',
+            'total_nilai',
+            'status',
+            'apresiasi',
         ];
 
 
@@ -30,4 +33,5 @@ public function juri()
 {
     return $this->belongsTo(User::class, 'juri_id');
 }
+
 }

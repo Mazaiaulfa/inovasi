@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 
 class KonvensiController extends Controller
 {
-    public function index()
-    {
-        // tampilkan daftar pengumumaAn
-        return view('admin.konvensi.index');
-    }
+      public function index()
+{
+    $data = \App\Models\Penilaian::with('peserta')
+        ->where('status', 'submitted') // hanya yg sudah disubmit juri
+        ->get();
+
+    return view('admin.konvensi.index', compact('data'));
+}
 
     public function create()
     {

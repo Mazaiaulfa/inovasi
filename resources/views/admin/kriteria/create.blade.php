@@ -74,7 +74,7 @@
             <label class="form-label">Item (PLAN / DO / CHECK / ACT)</label>
             <select name="item" class="form-control" required>
                 <option value="">-- Pilih --</option>
-                @foreach(['PLAN','DO','CHECK','ACT'] as $opt)
+                @foreach(['PLAN','DO','CHECK','ACT','CREATIVITY'] as $opt)
                     <option value="{{ $opt }}" {{ ($item ?? '') == $opt ? 'selected' : '' }}>
                         {{ $opt }}
                     </option>

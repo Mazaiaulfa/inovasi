@@ -10,49 +10,108 @@ use App\Models\Kriteria;
 
 class NilaiController extends Controller
 {
+    // ===============================
+    // FORM NILAI
+    // ===============================
     public function create($id)
-{
-    $peserta = User::findOrFail($id);
+    {
+        $peserta = User::findOrFail($id);
 
-    // ambil semua kriteria
-    $kriteria = Kriteria::orderBy('no')->get();
+        $kriteria = Kriteria::orderBy('no')->get();
 
-    return view('juri.peserta.nilai', compact('peserta', 'kriteria'));
-}
+        // ambil penilaian milik juri
+        $penilaian = Penilaian::where('user_id', $id)
+            ->where('juri_id', auth()->id())
+            ->first();
 
+        // siapkan nilai lama
+        $nilaiLama = [];
+
+        if ($penilaian) {
+            foreach ($penilaian->detail as $d) {
+                $nilaiLama[$d->kriteria_id] = $d->nilai;
+            }
+        }
+
+        return view('juri.peserta.nilai', compact(
+            'peserta',
+            'kriteria',
+            'nilaiLama'
+        ));
+    }
+
+    // ===============================
+    // SIMPAN / EDIT NILAI
+    // ===============================
     public function store(Request $request)
-{
-    // validasi
-    $request->validate([
-        'user_id' => 'required',
-        'nilai.*' => 'nullable|numeric|min:0|max:10'
-    ]);
-
-    // cek kalau juri sudah pernah nilai
-    $cek = Penilaian::where('user_id', $request->user_id)
-        ->where('juri_id', auth()->id())
-        ->first();
-
-    if ($cek) {
-        return back()->with('error', 'Anda sudah menilai peserta ini');
-    }
-
-    // simpan header
-    $penilaian = Penilaian::create([
-        'user_id' => $request->user_id,
-        'juri_id' => auth()->id(),
-    ]);
-
-    // simpan detail
-    foreach ($request->nilai as $kriteria_id => $nilai) {
-        PenilaianDetail::create([
-            'penilaian_id' => $penilaian->id,
-            'kriteria_id' => $kriteria_id,
-            'nilai' => $nilai,
+    {
+        $request->validate([
+            'user_id' => 'required',
+            'nilai.*' => 'nullable|integer|min:1|max:10'
         ]);
-    }
 
-    return redirect()->route('juri.peserta')
-        ->with('success', 'Nilai berhasil disimpan');
-}
+        // ambil / buat penilaian
+        $penilaian = Penilaian::firstOrCreate(
+            [
+                'user_id' => $request->user_id,
+                'juri_id' => auth()->id(),
+            ],
+            [
+                'status' => 'draft'
+            ]
+        );
+
+        // ❌ tidak boleh edit kalau sudah submit
+        if ($penilaian->status != 'draft') {
+            return back()->with('error', 'Tidak bisa mengubah, sudah submit');
+        }
+
+        $total = 0;
+
+        // 🔥 hapus detail lama (biar update bersih)
+        $penilaian->detail()->delete();
+
+        foreach ($request->nilai as $kriteria_id => $nilai) {
+
+            if ($nilai === null || $nilai === '') continue;
+
+            $total += $nilai;
+
+            PenilaianDetail::create([
+                'penilaian_id' => $penilaian->id,
+                'kriteria_id' => $kriteria_id,
+                'nilai' => $nilai,
+            ]);
+        }
+
+        // ===============================
+        // 🔥 HITUNG APRESIASI (FIX RANGE)
+        // ===============================
+        $total = (float) $total;
+
+        if ($total >= 95 && $total <= 100) {
+            $apresiasi = 'Diamond';
+        } elseif ($total >= 85 && $total < 95) {
+            $apresiasi = 'Platinum';
+        } elseif ($total >= 75 && $total < 85) {
+            $apresiasi = 'Gold';
+        } elseif ($total >= 70 && $total < 75) {
+            $apresiasi = 'Silver';
+        } elseif ($total >= 60 && $total < 70) {
+            $apresiasi = 'Bronze';
+        } else {
+            $apresiasi = null;
+        }
+
+        // ===============================
+        // 🔥 SIMPAN TOTAL + APRESIASI
+        // ===============================
+        $penilaian->update([
+            'total_nilai' => $total,
+            'apresiasi' => $apresiasi
+        ]);
+
+        return redirect()->route('juri.peserta')
+            ->with('success', 'Nilai berhasil disimpan / diupdate');
+    }
 }

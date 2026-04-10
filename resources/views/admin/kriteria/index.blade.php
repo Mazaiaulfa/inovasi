@@ -1,12 +1,28 @@
 @extends('layouts.app')
+
 @section('title', 'Kelola Kriteria')
 
 @push('style')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
 <style>
 .main-content {
     padding-top: 20px;
+}
+
+
+.modal-body ol {
+    padding-left: 20px;
+}
+
+.modal-body li {
+    margin-bottom: 5px;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+    font-size: 13px;
 }
 
 td {
@@ -16,12 +32,29 @@ td {
     text-overflow: ellipsis;
 }
 
-.modal-body ol {
-    padding-left: 20px;
+/* 🔥 TAB BAGUS */
+.nav-tabs .nav-link {
+    border: none;
+    color: #555;
+    font-weight: 500;
 }
 
-.modal-body li {
-    margin-bottom: 5px;
+.nav-tabs .nav-link.active {
+    background-color: #7ea0d2;
+    color: white;
+    border-radius: 12px;
+}
+
+/*AKSI BIAR GA TURUN */
+.aksi-btn {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.aksi-btn form {
+    margin: 0;
 }
 </style>
 @endpush
@@ -48,7 +81,7 @@ td {
         <button class="nav-link {{ $loop->first ? 'active' : '' }}"
                 data-bs-toggle="tab"
                 data-bs-target="#{{ strtolower($item) }}">
-            {{ $item }}
+            {{ strtoupper($item) }}
         </button>
     </li>
 @endforeach
@@ -67,15 +100,15 @@ td {
 </div>
 
 <div class="table-responsive">
-<table class="table table-bordered table-striped">
-<thead>
+<table class="table table-bordered table-striped align-middle">
+<thead class="table-secondary">
 <tr>
-    <th>No</th>
+    <th width="5%">No</th>
     <th>Kriteria</th>
     <th>Keterangan</th>
     <th>Rujukan</th>
-    <th>Skala</th>
-    <th>Aksi</th>
+    <th width="10%">Skala</th>
+    <th width="12%">Aksi</th>
 </tr>
 </thead>
 
@@ -90,21 +123,21 @@ td {
 
     <td>{{ Str::limit($k->rujukan, 30) }}</td>
 
-    <td>
-        <button class="btn btn-sm btn-info"
-            data-bs-toggle="modal"
-            data-bs-target="#modal{{ $k->id }}">
-            Lihat
-        </button>
-    </td>
+   <td class="text-center">
+    <button class="btn btn-sm btn-info"
+        data-bs-toggle="modal"
+        data-bs-target="#modal{{ $k->id }}">
+        <i class="bi bi-eye"></i>
+    </button>
+</td>
 
-   <td class="d-flex gap-2 align-items-center">
+<td class="aksi-btn">
 
     <!-- EDIT -->
     <a href="{{ route('admin.kriteria.edit', $k->id) }}"
        class="btn btn-sm btn-warning"
        data-bs-toggle="tooltip"
-       title="Edit Data">
+       title="Edit">
         <i class="bi bi-pencil"></i>
     </a>
 
@@ -115,8 +148,8 @@ td {
         <button type="submit"
                 class="btn btn-sm btn-danger"
                 data-bs-toggle="tooltip"
-                title="Hapus Data"
-                onclick="return confirm('Yakin hapus data ini?')">
+                title="Hapus"
+                onclick="return confirm('Yakin hapus?')">
             <i class="bi bi-trash"></i>
         </button>
     </form>
@@ -136,69 +169,46 @@ td {
 
 <div class="modal-body">
 
+{{-- ================= KETERANGAN ================= --}}
 <p><strong>Keterangan:</strong></p>
 <ol>
-@foreach(explode("\n", $k->keterangan) as $item)
+@foreach(explode("\n", $k->keterangan) as $text)
     @php
-        $item = trim($item);
-        $item = preg_replace('/^\d+\.\s*/', '', $item);
+        $text = trim($text);
+        $text = preg_replace('/^\d+\.\s*/', '', $text);
     @endphp
 
-    @if($item != '')
-        <li>{{ $item }}</li>
+    @if($text)
+        <li>{{ $text }}</li>
     @endif
 @endforeach
 </ol>
 
 <hr>
 
-{{-- FUNCTION BERSIHIN NOMOR --}}
-@php
-    function cleanList($text) {
-        $lines = explode("\n", $text);
-        $result = [];
+{{-- ================= SKALA ================= --}}
+@foreach([
+    '1 - 4' => $k->skala_1_4,
+    '5 - 6' => $k->skala_5_6,
+    '7 - 8' => $k->skala_7_8,
+    '9 - 10' => $k->skala_9_10,
+] as $label => $value)
 
-        foreach ($lines as $line) {
-            $line = trim($line);
-            // hapus "1." "2." dst
-            $line = preg_replace('/^\d+\.\s*/', '', $line);
-
-            if ($line != '') {
-                $result[] = $line;
-            }
-        }
-
-        return $result;
-    }
-@endphp
-
-<p><strong>Skala 1 - 4:</strong></p>
+<p><strong>Skala {{ $label }}:</strong></p>
 <ol>
-@foreach(cleanList($k->skala_1_4) as $item)
-    <li>{{ $item }}</li>
+@foreach(explode("\n", $value) as $text)
+    @php
+        $text = trim($text);
+        $text = preg_replace('/^\d+\.\s*/', '', $text);
+    @endphp
+
+    @if($text)
+        <li>{{ $text }}</li>
+    @endif
 @endforeach
 </ol>
 
-<p><strong>Skala 5 - 6:</strong></p>
-<ol>
-@foreach(cleanList($k->skala_5_6) as $item)
-    <li>{{ $item }}</li>
 @endforeach
-</ol>
-
-<p><strong>Skala 7 - 8:</strong></p>
-<ol>
-@foreach(cleanList($k->skala_7_8) as $item)
-    <li>{{ $item }}</li>
-@endforeach
-</ol>
-
-<p><strong>Skala 9 - 10:</strong></p>
-<ol>
-@foreach(cleanList($k->skala_9_10) as $item)
-    <li>{{ $item }}</li>
-@endforeach
-</ol>
 
 </div>
 
@@ -224,4 +234,13 @@ td {
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.map(function (el) {
+        return new bootstrap.Tooltip(el)
+    })
+});
+</script>
 @endpush
