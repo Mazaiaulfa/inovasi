@@ -3,7 +3,7 @@
 
 @push('style')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 <style>
 .table-konvensi {
     width: 100%;
@@ -51,11 +51,20 @@
 <div class="card">
 
 <div class="card-header">
-    <h4 class="mb-0">Hasil Penilaian</h4>
+    <h4 class="mb-0">DaftarHasil Penilaian</h4>
 </div>
 
-<div class="card-body">
 
+<div class="card-body">
+<div class="mb-3 d-flex justify-content-between align-items-center">
+
+    <a href="{{ route('admin.konvensi.export') }}"
+       class="btn btn-success btn-sm d-flex align-items-center gap-2">
+        <i class="bi bi-file-earmark-excel"></i>
+        Export Excel
+    </a>
+
+</div>
 <div class="table-responsive">
 <table class="table-konvensi">
 
@@ -107,29 +116,25 @@
     </td>
 
     {{-- AKSI --}}
-    <td class="text-center">
+   <td class="text-center">
 
-        @if($item->status != 'published')
+    {{-- DETAIL --}}
+    <a href="{{ route('admin.nilai.detail', $item->id) }}"
+       class="btn btn-info btn-sm me-1"
+       title="Detail">
+        <i class="bi bi-eye"></i>
+    </a>
 
-            {{-- DETAIL --}}
-            <a href="{{ route('admin.nilai.detail', $item->id) }}"
-               class="btn btn-info btn-sm"
-               title="Detail">
-                👁
-            </a>
+    {{-- EDIT (kalau belum publish) --}}
+    @if($item->status != 'published')
+        <a href="{{ route('admin.nilai.edit', $item->id) }}"
+           class="btn btn-warning btn-sm"
+           title="Edit">
+            <i class="bi bi-pencil-square"></i>
+        </a>
+    @endif
 
-            {{-- EDIT --}}
-            <a href="{{ route('admin.nilai.edit', $item->id) }}"
-               class="btn btn-warning btn-sm"
-               title="Edit">
-                ✏️
-            </a>
-
-        @else
-            <span class="badge bg-dark">🔒</span>
-        @endif
-
-    </td>
+</td>
 
 </tr>
 @endforeach

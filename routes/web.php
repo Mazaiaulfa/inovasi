@@ -140,7 +140,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         ->name('admin.profile.destroy');
 
     Route::prefix('admin')->name('admin.')->group(function () {
-
+    Route::get('konvensi/export', [KonvensiController::class, 'export'])
+            ->name('konvensi.export');
     Route::get('konvensi', [KonvensiController::class, 'index'])
         ->name('konvensi.index');
 
@@ -158,7 +159,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::put('konvensi/{id}', [KonvensiController::class, 'update'])
         ->name('nilai.update');
-
     Route::resource('kriteria', KriteriaController::class);
 });
 

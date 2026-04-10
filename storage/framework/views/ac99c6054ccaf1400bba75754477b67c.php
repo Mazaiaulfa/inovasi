@@ -1,26 +1,29 @@
-<?php $__env->startSection('title', 'Edit Nilai Peserta'); ?>
+<?php $__env->startSection('title', 'Detail Penilaian'); ?>
 
 <?php $__env->startPush('style'); ?>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
 .table-custom {
     border-collapse: collapse;
     width: 100%;
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .table-custom th,
 .table-custom td {
-    border: 1px solid #dee2e6;
-    padding: 8px;
+    border: 1px solid #000;
+    padding: 6px;
     vertical-align: top;
 }
 
 .table-custom th {
-    background: #6c757d;
-    color: white;
+    background: #ffe600;
     text-align: center;
+    font-weight: bold;
 }
 
+/* warna item */
 .plan { background: #fff9c4; }
 .do { background: #d4edda; }
 .check { background: #cfe2ff; }
@@ -28,23 +31,8 @@
 .creativity { background: #e8f5e9; }
 
 .text-wrap {
-    max-width: 220px;
     white-space: pre-line;
 }
-
-.nilai {
-    width: 50px;
-    height: 28px;
-    font-size: 11px;
-    text-align: center;
-}
-
-.nilai::-webkit-outer-spin-button,
-.nilai::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-.nilai { -moz-appearance: textfield; }
 </style>
 <?php $__env->stopPush(); ?>
 
@@ -53,21 +41,58 @@
 <section class="section">
 
 <div class="section-header">
-    <h1>Edit Nilai Peserta</h1>
+    <h1>Detail Penilaian</h1>
 </div>
 
 <div class="section-body">
 <div class="card">
 <div class="card-body">
 
-<h5 class="text-center mb-4">
+
+
+
+<h5 class="text-center mb-3">
     <?php echo e($peserta->name); ?>
 
 </h5>
 
-<form action="<?php echo e(route('admin.nilai.update', $penilaian->id)); ?>" method="POST">
-<?php echo csrf_field(); ?>
-<?php echo method_field('PUT'); ?>
+<div class="mb-3">
+    <b>Direktorat:</b> <?php echo e($peserta->direktorat ?? '-'); ?> <br>
+    <b>Kompartemen:</b> <?php echo e($peserta->kompartemen ?? '-'); ?> <br>
+    <b>Departemen:</b> <?php echo e($peserta->unit_kerja ?? '-'); ?>
+
+</div>
+
+<hr>
+
+
+
+
+<div class="mb-3">
+    <b>Total Nilai:</b> <?php echo e($penilaian->total_nilai); ?> <br>
+
+    <b>Apresiasi:</b>
+    <?php $a = $penilaian->apresiasi; ?>
+
+    <?php if($a == 'Diamond'): ?>
+        <span class="badge bg-primary">💎 Diamond</span>
+    <?php elseif($a == 'Platinum'): ?>
+        <span class="badge bg-info">Platinum</span>
+    <?php elseif($a == 'Gold'): ?>
+        <span class="badge bg-warning text-dark">Gold</span>
+    <?php elseif($a == 'Silver'): ?>
+        <span class="badge bg-secondary">Silver</span>
+    <?php elseif($a == 'Bronze'): ?>
+        <span class="badge bg-dark">Bronze</span>
+    <?php else: ?>
+        -
+    <?php endif; ?>
+</div>
+
+<hr>
+
+
+
 
 <div class="table-responsive">
 <table class="table-custom">
@@ -78,11 +103,6 @@
     <th>No</th>
     <th>Kriteria</th>
     <th>Keterangan</th>
-    <th>Rujukan</th>
-    <th>1-4</th>
-    <th>5-6</th>
-    <th>7-8</th>
-    <th>9-10</th>
     <th>Nilai</th>
 </tr>
 </thead>
@@ -109,6 +129,7 @@ $class = strtolower($item);
 <?php endif; ?>
 
 <td class="text-center"><?php echo e($k->no); ?></td>
+
 <td><?php echo e($k->nama); ?></td>
 
 <td class="text-wrap">
@@ -116,24 +137,8 @@ $class = strtolower($item);
 
 </td>
 
-<td class="text-wrap">
-    <?php echo e($k->rujukan); ?>
-
-</td>
-
-<td class="text-wrap"><?php echo nl2br(e($k->skala_1_4)); ?></td>
-<td class="text-wrap"><?php echo nl2br(e($k->skala_5_6)); ?></td>
-<td class="text-wrap"><?php echo nl2br(e($k->skala_7_8)); ?></td>
-<td class="text-wrap"><?php echo nl2br(e($k->skala_9_10)); ?></td>
-
 <td class="text-center">
-    <input type="number"
-           min="1"
-           max="10"
-           class="form-control nilai"
-           name="nilai[<?php echo e($k->id); ?>]"
-           value="<?php echo e($nilaiLama[$k->id] ?? ''); ?>"
-           onkeyup="hitung()">
+    <b><?php echo e($nilaiDetail[$k->id] ?? '-'); ?></b>
 </td>
 
 </tr>
@@ -143,50 +148,29 @@ $class = strtolower($item);
 
 <tfoot>
 <tr>
-    <th colspan="9" class="text-end">TOTAL</th>
-    <th id="total">0</th>
+    <th colspan="4" class="text-end">TOTAL</th>
+    <th><?php echo e($penilaian->total_nilai); ?></th>
 </tr>
 </tfoot>
 
 </table>
 </div>
 
-<div class="mt-4 d-flex justify-content-end gap-2">
+
+
+
+<div class="mt-4">
     <a href="<?php echo e(route('admin.konvensi.index')); ?>" class="btn btn-secondary">
         Kembali
     </a>
-
-    <button type="submit" class="btn btn-success">
-        Update Nilai
-    </button>
-</div>
-
-</form>
-
-</div>
 </div>
 
 </div>
+</div>
+</div>
+
 </section>
 </div>
 <?php $__env->stopSection(); ?>
 
-<?php $__env->startPush('scripts'); ?>
-<script>
-function hitung() {
-    let total = 0;
-
-    document.querySelectorAll(".nilai").forEach(i => {
-        total += Number(i.value || 0);
-    });
-
-    document.getElementById("total").innerText = total;
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    hitung();
-});
-</script>
-<?php $__env->stopPush(); ?>
-
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/admin/konvensi/edit.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/admin/konvensi/detail.blade.php ENDPATH**/ ?>
