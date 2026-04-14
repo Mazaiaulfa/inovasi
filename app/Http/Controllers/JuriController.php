@@ -7,30 +7,36 @@ use App\Models\User;
 use App\Models\Kriteria;
 use App\Models\Penilaian;
 use App\Models\PenilaianDetail;
-
+use App\Models\HasilAkhir;
+use Illuminate\Support\Facades\DB;
 
 class JuriController extends Controller
 {
+    // =========================
+    // LIST PESERTA
+    // =========================
     public function peserta()
-{
-    $juri = auth()->user();
+    {
+        $juri = auth()->user();
 
-    $peserta = $juri->pesertaYangDinilai->map(function ($user) use ($juri) {
+        $peserta = $juri->pesertaYangDinilai->map(function ($user) use ($juri) {
 
-        $penilaian = Penilaian::where('user_id', $user->id)
-            ->where('juri_id', $juri->id)
-            ->first();
+            $penilaian = Penilaian::where('user_id', $user->id)
+                ->where('juri_id', $juri->id)
+                ->first();
 
-        $user->nilai = $penilaian ? $penilaian->total_nilai : null;
-        $user->status = $penilaian ? $penilaian->status : 'draft';
+            $user->nilai = $penilaian ? $penilaian->total_nilai : null;
+            $user->status = $penilaian ? $penilaian->status : 'draft';
 
-        return $user;
-    });
+            return $user;
+        });
 
-    return view('juri.peserta.index', compact('peserta'));
-}
+        return view('juri.peserta.index', compact('peserta'));
+    }
 
-    // tampilkan form nilai
+    // =========================
+    // FORM NILAI
+    // =========================
     public function penilaian($id)
     {
         $peserta = User::where('role','user')->findOrFail($id);
@@ -39,15 +45,16 @@ class JuriController extends Controller
         return view('juri.peserta.nilai', compact('peserta', 'kriteria'));
     }
 
-    // simpan nilai
-  public function store(Request $request)
+    // =========================
+    // SIMPAN NILAI (DRAFT)
+    // =========================
+    public function store(Request $request)
     {
         $request->validate([
             'user_id' => 'required',
             'nilai.*' => 'nullable|integer|min:1|max:10'
         ]);
 
-        // ambil / buat penilaian (biar bisa edit)
         $penilaian = Penilaian::firstOrCreate(
             [
                 'user_id' => $request->user_id,
@@ -58,15 +65,14 @@ class JuriController extends Controller
             ]
         );
 
-        // ❌ tidak boleh edit kalau sudah submit / publish
+        // kalau sudah submit, tidak boleh edit
         if ($penilaian->status != 'draft') {
-            return back()->with('error', 'Tidak bisa mengubah, sudah submit');
+            return back()->with('error', 'Sudah submit, tidak bisa diubah');
         }
 
-        $total = 0;
-
-        // 🔥 hapus detail lama (biar bisa edit ulang)
         $penilaian->detail()->delete();
+
+        $total = 0;
 
         foreach ($request->nilai as $kriteria_id => $nilai) {
 
@@ -81,77 +87,106 @@ class JuriController extends Controller
             ]);
         }
 
-        // ===============================
-        // 🔥 HITUNG APRESIASI
-        // ===============================
-        $apresiasi = $this->getApresiasi($total);
-
-        // ===============================
-        // 🔥 SIMPAN TOTAL + APRESIASI
-        // ===============================
         $penilaian->update([
             'total_nilai' => $total,
-            'apresiasi' => $apresiasi
+            'apresiasi' => $this->getApresiasi($total)
         ]);
 
-        return redirect()->route('juri.peserta')
-            ->with('success', 'Nilai berhasil disimpan');
+        return back()->with('success', 'Nilai tersimpan (draft)');
     }
 
-public function submit($id)
-{
-    $penilaian = Penilaian::where('user_id', $id)
-        ->where('juri_id', auth()->id())
-        ->firstOrFail();
+    // =========================
+    // SUBMIT PERMANEN
+    // =========================
+    public function submit($id)
+    {
+        $penilaian = Penilaian::where('user_id', $id)
+            ->where('juri_id', auth()->id())
+            ->firstOrFail();
 
-    if ($penilaian->status != 'draft') {
-        return back()->with('error', 'Sudah submit');
-    }
+        if ($penilaian->status != 'draft') {
+            return back()->with('error', 'Sudah submit');
+        }
 
-    $penilaian->update([
-        'status' => 'submitted'
-    ]);
-
-    return back()->with('success', 'Berhasil submit permanen');
-}
-
-
-public function submitSemua()
-{
-    $juriId = auth()->id();
-
-    $penilaian = Penilaian::where('juri_id', $juriId)
-        ->where('status', 'draft')
-        ->get();
-
-    if ($penilaian->isEmpty()) {
-        return back()->with('error', 'Tidak ada data untuk disubmit.');
-    }
-
-    foreach ($penilaian as $item) {
-        $item->update([
+        $penilaian->update([
             'status' => 'submitted'
         ]);
+
+        // 🔥 UPDATE HASIL AKHIR PESERTA
+        $this->updateHasilAkhir($id);
+
+        return back()->with('success', 'Submit berhasil');
     }
 
-    return back()->with('success', 'Semua penilaian berhasil disubmit.');
-}
+    // =========================
+    // SUBMIT SEMUA
+    // =========================
+    public function submitSemua()
+    {
+        $juriId = auth()->id();
 
+        $penilaian = Penilaian::where('juri_id', $juriId)
+            ->where('status', 'draft')
+            ->get();
 
-private function getApresiasi($total)
-{
-    if ($total >= 95 && $total <= 100) {
-        return 'Diamond';
-    } elseif ($total >= 85 && $total < 95) {
-        return 'Platinum';
-    } elseif ($total >= 75 && $total < 85) {
-        return 'Gold';
-    } elseif ($total >= 70 && $total < 75) {
-        return 'Silver';
-    } elseif ($total >= 60 && $total < 70) {
-        return 'Bronze';
-    } else {
+        if ($penilaian->isEmpty()) {
+            return back()->with('error', 'Tidak ada data draft');
+        }
+
+        foreach ($penilaian as $item) {
+
+            $item->update([
+                'status' => 'submitted'
+            ]);
+
+            // 🔥 update per peserta
+            $this->updateHasilAkhir($item->user_id);
+        }
+
+        return back()->with('success', 'Semua berhasil disubmit');
+    }
+
+    // =========================
+    // UPDATE HASIL AKHIR
+    // =========================
+    private function updateHasilAkhir($userId)
+    {
+        // ambil semua juri yang sudah submit
+        $penilaians = Penilaian::where('user_id', $userId)
+            ->where('status', 'submitted');
+
+        $jumlah_juri = $penilaians->count();
+        $rata_nilai = $penilaians->avg('total_nilai');
+
+        // total juri yang ditugaskan
+        $total_juri = DB::table('juri_peserta')
+            ->where('peserta_id', $userId)
+            ->count();
+
+        $is_complete = ($jumlah_juri == $total_juri && $total_juri > 0);
+
+        HasilAkhir::updateOrCreate(
+            ['user_id' => $userId],
+            [
+                'rata_nilai' => $rata_nilai,
+                'jumlah_juri' => $jumlah_juri,
+                'total_juri' => $total_juri,
+                'is_complete' => $is_complete,
+            ]
+        );
+    }
+
+    // =========================
+    // APRESIASI
+    // =========================
+    private function getApresiasi($total)
+    {
+        if ($total >= 95) return 'Diamond';
+        if ($total >= 85) return 'Platinum';
+        if ($total >= 75) return 'Gold';
+        if ($total >= 70) return 'Silver';
+        if ($total >= 60) return 'Bronze';
+
         return null;
     }
-}
 }

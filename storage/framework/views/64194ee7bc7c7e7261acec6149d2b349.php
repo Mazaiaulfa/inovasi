@@ -54,6 +54,30 @@ td {
 .aksi-btn form {
     margin: 0;
 }
+
+
+.modern-tabs .nav-link {
+    border: none !important;
+    background: none !important;
+    color: #6b7280;
+    font-weight: 500;
+    position: relative;
+}
+
+.modern-tabs .nav-link.active {
+    color: #6366f1 !important;
+}
+
+.modern-tabs .nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #6366f1;
+    border-radius: 3px;
+}
 </style>
 <?php $__env->stopPush(); ?>
 
@@ -73,13 +97,29 @@ td {
 <div class="card-body">
 
 <!-- TAB -->
-<ul class="nav nav-tabs mb-3">
+<ul class="nav modern-tabs mb-3">
 <?php $__currentLoopData = $kriterias; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
     <li class="nav-item">
-        <button class="nav-link <?php echo e($loop->first ? 'active' : ''); ?>"
-                data-bs-toggle="tab"
-                data-bs-target="#<?php echo e(strtolower($item)); ?>">
+        <button
+            class="nav-link tab-item <?php echo e($loop->first ? 'active' : ''); ?>"
+            data-bs-toggle="tab"
+            data-bs-target="#<?php echo e(strtolower($item)); ?>"
+            type="button">
+
+            <?php
+                $icon = match(strtolower($item)){
+                    'plan' => 'bi-lightbulb',
+                    'do' => 'bi-gear',
+                    'check' => 'bi-check2-square',
+                    'act' => 'bi-arrow-repeat',
+                    'creativity' => 'bi-stars',
+                    default => 'bi-folder'
+                };
+            ?>
+
+            <i class="bi <?php echo e($icon); ?> me-1"></i>
             <?php echo e(strtoupper($item)); ?>
+
 
         </button>
     </li>

@@ -32,7 +32,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(KaryaTulis::class, 'user_id');
     }
-
+    public function finalKarya()
+{
+    return $this->hasOneThrough(
+        \App\Models\FinalKarya::class,
+        \App\Models\KaryaTulis::class,
+        'user_id',   // FK di karya_tulis
+        'karya_id',  // FK di final_karya
+        'id',        // PK di users
+        'id'         // PK di karya_tulis
+    );
+}
     public function anggota()
     {
         return $this->hasMany(Anggota::class, 'user_id');
@@ -48,6 +58,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'juri_peserta', 'peserta_id', 'juri_id');
     }
+
+    public function hasilAkhir()
+{
+    return $this->hasOne(HasilAkhir::class, 'user_id');
+}
 
    public function penilaian()
 {

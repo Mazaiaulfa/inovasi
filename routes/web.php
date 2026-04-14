@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\RekapController;
 use App\Http\Controllers\TahapanAppController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\JuriController;
+use App\Http\Controllers\User\RiwayatController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\Admin\AdminJuriController;
@@ -202,6 +203,9 @@ Route::middleware(['auth', 'role:user'])->group(function () {
         ->names('finalkarya');
     Route::delete('finalkarya/{id}', [FinalKaryaController::class, 'destroy'])->name('finalkarya.destroy');
 
+
+    Route::get('/user/riwayat', [RiwayatController::class, 'index'])->name('riwayat.index');
+    Route::get('/user/riwayat/{id}', [RiwayatController::class, 'show'])->name('riwayat.show');
     Route::resource('/user/anggota', TeamController::class);
 
     Route::get('/user/profile', [ProfileController::class, 'index'])
@@ -212,6 +216,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 
     Route::delete('/user/profile', [ProfileController::class, 'destroy'])
         ->name('user.profile.destroy');
+
 
 });
 

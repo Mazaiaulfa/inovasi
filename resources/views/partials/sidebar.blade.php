@@ -195,6 +195,13 @@
                 </ul>
             </li>
 
+            <li class="{{ Request::is('user/riwayat*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('riwayat.index') }}">
+                    <i class="fas fa-history"></i>
+                    <span>Riwayat Pengajuan</span>
+                </a>
+            </li>
+
             @if(Auth::user()->jenis_peserta == 'GKM')
             <li class="{{ Request::is('user/anggota*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('anggota.index') }}">

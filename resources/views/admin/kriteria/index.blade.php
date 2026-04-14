@@ -56,6 +56,30 @@ td {
 .aksi-btn form {
     margin: 0;
 }
+
+
+.modern-tabs .nav-link {
+    border: none !important;
+    background: none !important;
+    color: #6b7280;
+    font-weight: 500;
+    position: relative;
+}
+
+.modern-tabs .nav-link.active {
+    color: #6366f1 !important;
+}
+
+.modern-tabs .nav-link.active::after {
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: #6366f1;
+    border-radius: 3px;
+}
 </style>
 @endpush
 
@@ -75,13 +99,29 @@ td {
 <div class="card-body">
 
 <!-- TAB -->
-<ul class="nav nav-tabs mb-3">
+<ul class="nav modern-tabs mb-3">
 @foreach($kriterias as $item => $data)
     <li class="nav-item">
-        <button class="nav-link {{ $loop->first ? 'active' : '' }}"
-                data-bs-toggle="tab"
-                data-bs-target="#{{ strtolower($item) }}">
+        <button
+            class="nav-link tab-item {{ $loop->first ? 'active' : '' }}"
+            data-bs-toggle="tab"
+            data-bs-target="#{{ strtolower($item) }}"
+            type="button">
+
+            @php
+                $icon = match(strtolower($item)){
+                    'plan' => 'bi-lightbulb',
+                    'do' => 'bi-gear',
+                    'check' => 'bi-check2-square',
+                    'act' => 'bi-arrow-repeat',
+                    'creativity' => 'bi-stars',
+                    default => 'bi-folder'
+                };
+            @endphp
+
+            <i class="bi {{ $icon }} me-1"></i>
             {{ strtoupper($item) }}
+
         </button>
     </li>
 @endforeach

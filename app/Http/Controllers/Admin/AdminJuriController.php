@@ -22,6 +22,10 @@ public function formAssign($id)
     $juri = User::where('role', 'juri')->findOrFail($id);
     $peserta = User::where('role', 'user')
     ->with('juriPenilai')
+    ->whereHas('finalKarya', function ($q) {
+        $q->where('status', 'disetujui')
+          ->whereNotNull('file_path');
+    })
     ->get();
 
     // ambil yang sudah dipilih sebelumnya

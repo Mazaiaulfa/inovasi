@@ -195,6 +195,13 @@
                 </ul>
             </li>
 
+            <li class="<?php echo e(Request::is('user/riwayat*') ? 'active' : ''); ?>">
+                <a class="nav-link" href="<?php echo e(route('riwayat.index')); ?>">
+                    <i class="fas fa-history"></i>
+                    <span>Riwayat Pengajuan</span>
+                </a>
+            </li>
+
             <?php if(Auth::user()->jenis_peserta == 'GKM'): ?>
             <li class="<?php echo e(Request::is('user/anggota*') ? 'active' : ''); ?>">
                 <a class="nav-link" href="<?php echo e(route('anggota.index')); ?>">
