@@ -41,18 +41,20 @@
 
                             {{-- STATUS --}}
                             <td>
-                                @if($karya->status == 'draft')
-                                    <span class="badge bg-secondary">Draft</span>
-                                @elseif($karya->status == 'submit')
-                                    <span class="badge bg-info">Terkirim</span>
-                                @elseif($karya->status == 'dinilai')
-                                    <span class="badge bg-warning">Dinilai</span>
-                                @elseif($karya->status == 'publish')
-                                    <span class="badge bg-success">Selesai</span>
-                                @else
-                                    <span class="">Belum dinilai</span>
-                                @endif
-                            </td>
+   @php
+    $penilaian = $karya->penilaian->last();
+@endphp
+
+@if(optional($penilaian)->status == 'submitted')
+    <span class="badge bg-info">Terkirim</span>
+@elseif(optional($penilaian)->status == 'dinilai')
+    <span class="badge bg-warning">Dinilai</span>
+@elseif(optional($penilaian)->status == 'publish')
+    <span class="badge bg-success">Selesai</span>
+@else
+    <span class="badge bg-secondary">Belum dinilai</span>
+@endif
+</td>
 
                             {{-- ACTION --}}
                             <td class="text-center">

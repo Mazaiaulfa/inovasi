@@ -32,4 +32,9 @@ class KaryaTulis extends Model
 {
     return $this->hasOne(\App\Models\FinalKarya::class, 'karya_id');
 }
+
+public function penilaian()
+{
+    return $this->hasMany(\App\Models\Penilaian::class, 'user_id', 'user_id');
+}
 }

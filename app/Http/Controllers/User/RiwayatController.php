@@ -16,9 +16,10 @@ class RiwayatController extends Controller
         $user = Auth::user();
 
         // Ambil semua karya milik user
-        $karyas = KaryaTulis::where('user_id', $user->id)
-            ->latest() // urut terbaru
-            ->get();
+         $karyas = KaryaTulis::with('penilaian') // ⬅️ TAMBAH INI
+        ->where('user_id', $user->id)
+        ->latest()
+        ->get();
 
         return view('user.riwayat.index', compact('karyas'));
     }
@@ -30,9 +31,10 @@ class RiwayatController extends Controller
     {
         $user = Auth::user();
 
-        $karya = KaryaTulis::where('id', $id)
-            ->where('user_id', $user->id)
-            ->firstOrFail();
+         $karya = KaryaTulis::with('penilaian') // ⬅️ TAMBAH INI
+        ->where('id', $id)
+        ->where('user_id', $user->id)
+        ->firstOrFail();
 
         return view('user.riwayat.show', compact('karya'));
     }

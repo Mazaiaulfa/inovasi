@@ -8,13 +8,14 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Penilaian;
 use App\Models\Kriteria;
+use App\Models\KaryaTulis;
 use App\Models\PenilaianDetail;
 class KonvensiController extends Controller
 {
-      public function index()
+     public function index()
 {
-    $data = \App\Models\Penilaian::with('peserta')
-        ->whereIn('status', ['submitted', 'reviewed', 'published']) // 🔥 tambah reviewed
+    $data = \App\Models\HasilAkhir::with('karya.user')
+        ->orderByDesc('rata_nilai')  // ranking otomatis
         ->get();
 
     return view('admin.konvensi.index', compact('data'));
@@ -30,18 +31,27 @@ class KonvensiController extends Controller
         // simpan data
     }
 
-    public function show($id)
-    {
-        //
-    }
-
-   public function edit($id)
+    public function show($karyaId)
 {
-    $penilaian = Penilaian::findOrFail($id);
-    $peserta = $penilaian->peserta;
-    $kriteria = Kriteria::all();
+    $karya = KaryaTulis::with('user')->findOrFail($karyaId);
 
-    $nilaiLama = PenilaianDetail::where('penilaian_id', $id)
+    $penilaians = Penilaian::with('juri')
+        ->where('karya_id', $karyaId)
+        ->get();
+
+    return view('admin.konvensi.show', compact('karya', 'penilaians'));
+}
+
+  public function edit($id)
+{
+    $penilaian = Penilaian::with(['karya.user', 'detail'])
+        ->findOrFail($id);
+
+    $peserta = $penilaian->karya->user;
+
+    $kriteria = Kriteria::orderBy('no')->get();
+
+    $nilaiLama = $penilaian->detail
         ->pluck('nilai', 'kriteria_id');
 
     return view('admin.konvensi.edit', compact(
@@ -107,13 +117,13 @@ class KonvensiController extends Controller
 
 public function detail($id)
 {
-    $penilaian = \App\Models\Penilaian::with('detail')->findOrFail($id);
+    $penilaian = Penilaian::with(['detail', 'karya.user'])
+        ->findOrFail($id);
 
-    $peserta = $penilaian->peserta;
+    $peserta = $penilaian->karya->user;
 
-    $kriteria = \App\Models\Kriteria::orderBy('no')->get();
+    $kriteria = Kriteria::orderBy('no')->get();
 
-    // mapping nilai per kriteria
     $nilaiDetail = $penilaian->detail
         ->pluck('nilai', 'kriteria_id');
 

@@ -39,18 +39,20 @@
 
                             
                             <td>
-                                <?php if($karya->status == 'draft'): ?>
-                                    <span class="badge bg-secondary">Draft</span>
-                                <?php elseif($karya->status == 'submit'): ?>
-                                    <span class="badge bg-info">Terkirim</span>
-                                <?php elseif($karya->status == 'dinilai'): ?>
-                                    <span class="badge bg-warning">Dinilai</span>
-                                <?php elseif($karya->status == 'publish'): ?>
-                                    <span class="badge bg-success">Selesai</span>
-                                <?php else: ?>
-                                    <span class="">Belum dinilai</span>
-                                <?php endif; ?>
-                            </td>
+   <?php
+    $penilaian = $karya->penilaian->last();
+?>
+
+<?php if(optional($penilaian)->status == 'submitted'): ?>
+    <span class="badge bg-info">Terkirim</span>
+<?php elseif(optional($penilaian)->status == 'dinilai'): ?>
+    <span class="badge bg-warning">Dinilai</span>
+<?php elseif(optional($penilaian)->status == 'publish'): ?>
+    <span class="badge bg-success">Selesai</span>
+<?php else: ?>
+    <span class="badge bg-secondary">Belum dinilai</span>
+<?php endif; ?>
+</td>
 
                             
                             <td class="text-center">

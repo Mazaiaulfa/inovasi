@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Kriteria;
+use App\Models\KaryaTulis;
 use App\Models\Penilaian;
 use App\Models\PenilaianDetail;
 use App\Models\HasilAkhir;
@@ -21,9 +22,13 @@ class JuriController extends Controller
 
         $peserta = $juri->pesertaYangDinilai->map(function ($user) use ($juri) {
 
-            $penilaian = Penilaian::where('user_id', $user->id)
-                ->where('juri_id', $juri->id)
-                ->first();
+            $karya = KaryaTulis::where('user_id', $user->id)->first();
+
+            $penilaian = $karya
+                ? Penilaian::where('karya_id', $karya->id)
+                    ->where('juri_id', $juri->id)
+                    ->first()
+                : null;
 
             $user->nilai = $penilaian ? $penilaian->total_nilai : null;
             $user->status = $penilaian ? $penilaian->status : 'draft';
@@ -55,17 +60,19 @@ class JuriController extends Controller
             'nilai.*' => 'nullable|integer|min:1|max:10'
         ]);
 
+        $karya = KaryaTulis::where('user_id', $request->user_id)->firstOrFail();
+
         $penilaian = Penilaian::firstOrCreate(
             [
-                'user_id' => $request->user_id,
+                'karya_id' => $karya->id,
                 'juri_id' => auth()->id(),
             ],
             [
+                'user_id' => $request->user_id,
                 'status' => 'draft'
             ]
         );
 
-        // kalau sudah submit, tidak boleh edit
         if ($penilaian->status != 'draft') {
             return back()->with('error', 'Sudah submit, tidak bisa diubah');
         }
@@ -87,9 +94,9 @@ class JuriController extends Controller
             ]);
         }
 
+        // ✅ hanya simpan total
         $penilaian->update([
-            'total_nilai' => $total,
-            'apresiasi' => $this->getApresiasi($total)
+            'total_nilai' => $total
         ]);
 
         return back()->with('success', 'Nilai tersimpan (draft)');
@@ -98,9 +105,11 @@ class JuriController extends Controller
     // =========================
     // SUBMIT PERMANEN
     // =========================
-    public function submit($id)
+    public function submit($userId)
     {
-        $penilaian = Penilaian::where('user_id', $id)
+        $karya = KaryaTulis::where('user_id', $userId)->firstOrFail();
+
+        $penilaian = Penilaian::where('karya_id', $karya->id)
             ->where('juri_id', auth()->id())
             ->firstOrFail();
 
@@ -112,8 +121,7 @@ class JuriController extends Controller
             'status' => 'submitted'
         ]);
 
-        // 🔥 UPDATE HASIL AKHIR PESERTA
-        $this->updateHasilAkhir($id);
+        $this->updateHasilAkhir($karya->id);
 
         return back()->with('success', 'Submit berhasil');
     }
@@ -125,67 +133,70 @@ class JuriController extends Controller
     {
         $juriId = auth()->id();
 
-        $penilaian = Penilaian::where('juri_id', $juriId)
+        $penilaians = Penilaian::where('juri_id', $juriId)
             ->where('status', 'draft')
             ->get();
 
-        if ($penilaian->isEmpty()) {
+        if ($penilaians->isEmpty()) {
             return back()->with('error', 'Tidak ada data draft');
         }
 
-        foreach ($penilaian as $item) {
+        foreach ($penilaians as $item) {
 
             $item->update([
                 'status' => 'submitted'
             ]);
 
-            // 🔥 update per peserta
-            $this->updateHasilAkhir($item->user_id);
+            $this->updateHasilAkhir($item->karya_id);
         }
 
         return back()->with('success', 'Semua berhasil disubmit');
     }
 
     // =========================
-    // UPDATE HASIL AKHIR
+    // UPDATE HASIL AKHIR (🔥 CORE)
     // =========================
-    private function updateHasilAkhir($userId)
+    private function updateHasilAkhir($karyaId)
     {
-        // ambil semua juri yang sudah submit
-        $penilaians = Penilaian::where('user_id', $userId)
+        $penilaians = Penilaian::where('karya_id', $karyaId)
             ->where('status', 'submitted');
 
         $jumlah_juri = $penilaians->count();
         $rata_nilai = $penilaians->avg('total_nilai');
 
-        // total juri yang ditugaskan
+        $karya = KaryaTulis::findOrFail($karyaId);
+
         $total_juri = DB::table('juri_peserta')
-            ->where('peserta_id', $userId)
+            ->where('peserta_id', $karya->user_id)
             ->count();
 
         $is_complete = ($jumlah_juri == $total_juri && $total_juri > 0);
 
+        // ✅ HITUNG APRESIASI DI SINI
+        $apresiasi = $this->getApresiasi($rata_nilai);
+
         HasilAkhir::updateOrCreate(
-            ['user_id' => $userId],
+            ['karya_id' => $karyaId],
             [
                 'rata_nilai' => $rata_nilai,
                 'jumlah_juri' => $jumlah_juri,
                 'total_juri' => $total_juri,
                 'is_complete' => $is_complete,
+                'apresiasi' => $apresiasi,
             ]
         );
     }
 
     // =========================
-    // APRESIASI
+    // APRESIASI (FINAL)
     // =========================
-    private function getApresiasi($total)
+    private function getApresiasi($nilai)
     {
-        if ($total >= 95) return 'Diamond';
-        if ($total >= 85) return 'Platinum';
-        if ($total >= 75) return 'Gold';
-        if ($total >= 70) return 'Silver';
-        if ($total >= 60) return 'Bronze';
+        if ($nilai >= 95) return 'Diamond';
+        if ($nilai >= 85) return 'Platinum';
+        if ($nilai >= 75) return 'Gold';
+        if ($nilai >= 70) return 'Silver';
+        if ($nilai >= 60) return 'Bronze';
 
         return null;
     }

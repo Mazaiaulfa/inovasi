@@ -70,23 +70,7 @@
 <div class="mb-3">
     <b>Total Nilai:</b> {{ $penilaian->total_nilai }} <br>
 
-    <b>Apresiasi:</b>
-    @php $a = $penilaian->apresiasi; @endphp
 
-    @if($a == 'Diamond')
-        <span class="badge bg-primary">💎 Diamond</span>
-    @elseif($a == 'Platinum')
-        <span class="badge bg-info">Platinum</span>
-    @elseif($a == 'Gold')
-        <span class="badge bg-warning text-dark">Gold</span>
-    @elseif($a == 'Silver')
-        <span class="badge bg-secondary">Silver</span>
-    @elseif($a == 'Bronze')
-        <span class="badge bg-dark">Bronze</span>
-    @else
-        -
-    @endif
-</div>
 
 <hr>
 
@@ -157,7 +141,7 @@ $class = strtolower($item);
 {{-- 🔙 TOMBOL --}}
 {{-- ===================== --}}
 <div class="mt-4">
-    <a href="{{ route('admin.konvensi.index') }}" class="btn btn-secondary">
+    <a href="{{ route('admin.nilai.show', $penilaian->karya_id) }}" class="btn btn-secondary">
         Kembali
     </a>
 </div>

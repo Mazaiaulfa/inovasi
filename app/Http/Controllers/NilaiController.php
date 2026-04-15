@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Penilaian;
+use App\Models\KaryaTulis;
 use App\Models\PenilaianDetail;
 use App\Models\Kriteria;
 
@@ -50,9 +51,13 @@ class NilaiController extends Controller
             'nilai.*' => 'nullable|integer|min:1|max:10'
         ]);
 
-        // ambil / buat penilaian
+        // 🔥 ambil karya berdasarkan user
+        $karya = KaryaTulis::where('user_id', $request->user_id)->firstOrFail();
+
+        // 🔥 ambil / buat penilaian
         $penilaian = Penilaian::firstOrCreate(
             [
+                'karya_id' => $karya->id,
                 'user_id' => $request->user_id,
                 'juri_id' => auth()->id(),
             ],
@@ -85,30 +90,10 @@ class NilaiController extends Controller
         }
 
         // ===============================
-        // 🔥 HITUNG APRESIASI (FIX RANGE)
-        // ===============================
-        $total = (float) $total;
-
-        if ($total >= 95 && $total <= 100) {
-            $apresiasi = 'Diamond';
-        } elseif ($total >= 85 && $total < 95) {
-            $apresiasi = 'Platinum';
-        } elseif ($total >= 75 && $total < 85) {
-            $apresiasi = 'Gold';
-        } elseif ($total >= 70 && $total < 75) {
-            $apresiasi = 'Silver';
-        } elseif ($total >= 60 && $total < 70) {
-            $apresiasi = 'Bronze';
-        } else {
-            $apresiasi = null;
-        }
-
-        // ===============================
-        // 🔥 SIMPAN TOTAL + APRESIASI
+        // ✅ SIMPAN TOTAL SAJA (TANPA APRESIASI)
         // ===============================
         $penilaian->update([
-            'total_nilai' => $total,
-            'apresiasi' => $apresiasi
+            'total_nilai' => (float) $total
         ]);
 
         return redirect()->route('juri.peserta')

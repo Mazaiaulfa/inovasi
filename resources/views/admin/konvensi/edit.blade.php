@@ -150,7 +150,7 @@ $class = strtolower($item);
 </div>
 
 <div class="mt-4 d-flex justify-content-end gap-2">
-    <a href="{{ route('admin.konvensi.index') }}" class="btn btn-secondary">
+    <a href="{{ route('admin.nilai.show', $penilaian->karya_id) }}" class="btn btn-secondary">
         Kembali
     </a>
 

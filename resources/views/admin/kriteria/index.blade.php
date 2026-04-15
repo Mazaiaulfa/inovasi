@@ -48,9 +48,20 @@ td {
 /*AKSI BIAR GA TURUN */
 .aksi-btn {
     display: flex;
-    gap: 6px;
     justify-content: center;
-    white-space: nowrap;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap; /* 🔥 biar ga turun */
+}
+
+.aksi-btn a,
+.aksi-btn button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .aksi-btn form {
@@ -133,11 +144,6 @@ td {
 @foreach($kriterias as $item => $rows)
 <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" id="{{ strtolower($item) }}">
 
-<div class="mb-3">
-    <a href="{{ route('admin.kriteria.create') }}?item={{ $item }}" class="btn btn-primary">
-        + Tambah {{ $item }}
-    </a>
-</div>
 
 <div class="table-responsive">
 <table class="table table-bordered table-striped align-middle">
@@ -175,7 +181,7 @@ td {
 
     <!-- EDIT -->
     <a href="{{ route('admin.kriteria.edit', $k->id) }}"
-       class="btn btn-sm btn-warning"
+       class="btn btn-warning btn-sm"
        data-bs-toggle="tooltip"
        title="Edit">
         <i class="bi bi-pencil"></i>
@@ -186,7 +192,7 @@ td {
         @csrf
         @method('DELETE')
         <button type="submit"
-                class="btn btn-sm btn-danger"
+                class="btn btn-danger btn-sm"
                 data-bs-toggle="tooltip"
                 title="Hapus"
                 onclick="return confirm('Yakin hapus?')">

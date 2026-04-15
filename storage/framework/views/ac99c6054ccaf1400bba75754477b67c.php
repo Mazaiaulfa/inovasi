@@ -71,23 +71,7 @@
 <div class="mb-3">
     <b>Total Nilai:</b> <?php echo e($penilaian->total_nilai); ?> <br>
 
-    <b>Apresiasi:</b>
-    <?php $a = $penilaian->apresiasi; ?>
 
-    <?php if($a == 'Diamond'): ?>
-        <span class="badge bg-primary">💎 Diamond</span>
-    <?php elseif($a == 'Platinum'): ?>
-        <span class="badge bg-info">Platinum</span>
-    <?php elseif($a == 'Gold'): ?>
-        <span class="badge bg-warning text-dark">Gold</span>
-    <?php elseif($a == 'Silver'): ?>
-        <span class="badge bg-secondary">Silver</span>
-    <?php elseif($a == 'Bronze'): ?>
-        <span class="badge bg-dark">Bronze</span>
-    <?php else: ?>
-        -
-    <?php endif; ?>
-</div>
 
 <hr>
 
@@ -160,7 +144,7 @@ $class = strtolower($item);
 
 
 <div class="mt-4">
-    <a href="<?php echo e(route('admin.konvensi.index')); ?>" class="btn btn-secondary">
+    <a href="<?php echo e(route('admin.nilai.show', $penilaian->karya_id)); ?>" class="btn btn-secondary">
         Kembali
     </a>
 </div>

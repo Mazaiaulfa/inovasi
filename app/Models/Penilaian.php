@@ -13,9 +13,9 @@ class Penilaian extends Model
             'id',
             'user_id',
             'juri_id',
+            'karya_id',
             'total_nilai',
             'status',
-            'apresiasi',
         ];
 
 
@@ -29,9 +29,17 @@ public function peserta()
     return $this->belongsTo(User::class, 'user_id');
 }
 
-public function juri()
+
+
+public function karya()
 {
-    return $this->belongsTo(User::class, 'juri_id');
+    return $this->belongsTo(\App\Models\KaryaTulis::class, 'karya_id');
 }
 
+
+
+public function juri()
+{
+    return $this->belongsTo(\App\Models\User::class, 'juri_id');
+}
 }

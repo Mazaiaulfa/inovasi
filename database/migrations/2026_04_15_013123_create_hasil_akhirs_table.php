@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('hasil_akhirs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-
+            $table->foreignId('karya_id')
+                    ->unique() // 🔥 1 karya = 1 hasil
+                    ->constrained('karya_tulis')
+                    ->cascadeOnDelete();
             $table->double('rata_nilai')->nullable();
             $table->integer('jumlah_juri')->default(0);
             $table->integer('total_juri')->default(0);

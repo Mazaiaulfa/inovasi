@@ -157,6 +157,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // 🔥 EDIT NILAI
     Route::get('konvensi/{id}/edit', [KonvensiController::class, 'edit'])
         ->name('nilai.edit');
+    Route::get('/konvensi/{karya_id}/show', [KonvensiController::class, 'show'])
+    ->name('nilai.show');
 
     Route::put('konvensi/{id}', [KonvensiController::class, 'update'])
         ->name('nilai.update');
