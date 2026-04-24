@@ -3,7 +3,9 @@
 <?php $__env->startPush('style'); ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
 <style>
+
 .table-custom {
     border-collapse: collapse;
     width: 100%;
@@ -48,8 +50,6 @@
 <div class="card-body">
 
 
-
-
 <h5 class="text-center mb-3">
     <?php echo e($karya->user->name); ?>
 
@@ -66,12 +66,11 @@
 <hr>
 
 
-
-
 <div class="table-responsive">
 <table class="table-custom">
 
 <thead>
+
 <tr>
     <th width="50">No</th>
     <th>Nama Juri</th>
@@ -79,8 +78,8 @@
     <th width="150">Status</th>
     <th width="120">Aksi</th>
 </tr>
-</thead>
 
+</thead>
 <tbody>
 <?php $__currentLoopData = $penilaians; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $p): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 <tr>
@@ -93,14 +92,14 @@
         <b><?php echo e($p->total_nilai ?? '-'); ?></b>
     </td>
 
-    
-    <td class="text-center">
-        <?php if($p->status == 'submitted'): ?>
-            <span class="status-ok">Sudah Dinilai</span>
-        <?php else: ?>
-            <span class="status-bad">Belum Dinilai</span>
-        <?php endif; ?>
-    </td>
+<td class="text-center">
+    <?php if($p->status == 'draft'): ?>
+        <span class="status-bad">Belum Dinilai</span>
+    <?php else: ?>
+        <span class="status-ok">Sudah Dinilai</span>
+    <?php endif; ?>
+</td>
+
 
     
     <td class="text-center">
@@ -108,16 +107,10 @@
         
         <a href="<?php echo e(route('admin.nilai.detail', $p->id)); ?>"
            class="btn btn-info btn-sm">
-            <i class="bi bi-eye"></i> Lihat
+            <i class="bi bi-eye"></i>
         </a>
 
         
-        <?php if($p->status != 'published'): ?>
-            <a href="<?php echo e(route('admin.nilai.edit', $p->id)); ?>"
-               class="btn btn-warning btn-sm">
-                <i class="bi bi-pencil-square">Edit </i>
-            </a>
-        <?php endif; ?>
 
     </td>
 

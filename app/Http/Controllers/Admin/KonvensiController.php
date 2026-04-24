@@ -42,7 +42,7 @@ class KonvensiController extends Controller
     return view('admin.konvensi.show', compact('karya', 'penilaians'));
 }
 
-  public function edit($id)
+  public function i($id)
 {
     $penilaian = Penilaian::with(['karya.user', 'detail'])
         ->findOrFail($id);
@@ -62,58 +62,55 @@ class KonvensiController extends Controller
     ));
 }
 
-    public function update(Request $request, $id)
-{
-    $penilaian = Penilaian::findOrFail($id);
+//     public function update(Request $request, $id)
+// {
+//     $penilaian = Penilaian::findOrFail($id);
 
-    $total = 0;
+//     $total = 0;
 
-    // hapus detail lama biar clean
-    $penilaian->detail()->delete();
+//     // hapus detail lama biar clean
+//     $penilaian->detail()->delete();
 
-    foreach ($request->nilai as $kriteria_id => $nilai) {
+//     foreach ($request->nilai as $kriteria_id => $nilai) {
 
-        if ($nilai === null || $nilai === '') continue;
+//         if ($nilai === null || $nilai === '') continue;
 
-        $total += $nilai;
+//         $total += $nilai;
 
-        PenilaianDetail::create([
-            'penilaian_id' => $id,
-            'kriteria_id' => $kriteria_id,
-            'nilai' => $nilai,
-        ]);
-    }
+//         PenilaianDetail::create([
+//             'penilaian_id' => $id,
+//             'kriteria_id' => $kriteria_id,
+//             'nilai' => $nilai,
+//         ]);
+//     }
 
-    // ===============================
-    // 🔥 HITUNG APRESIASI (SAMA PERSIS)
-    // ===============================
-    $total = (float) $total;
+//     $total = (float) $total;
 
-    if ($total >= 95 && $total <= 100) {
-        $apresiasi = 'Diamond';
-    } elseif ($total >= 85 && $total < 95) {
-        $apresiasi = 'Platinum';
-    } elseif ($total >= 75 && $total < 85) {
-        $apresiasi = 'Gold';
-    } elseif ($total >= 70 && $total < 75) {
-        $apresiasi = 'Silver';
-    } elseif ($total >= 60 && $total < 70) {
-        $apresiasi = 'Bronze';
-    } else {
-        $apresiasi = null;
-    }
+//     if ($total >= 95 && $total <= 100) {
+//         $apresiasi = 'Diamond';
+//     } elseif ($total >= 85 && $total < 95) {
+//         $apresiasi = 'Platinum';
+//     } elseif ($total >= 75 && $total < 85) {
+//         $apresiasi = 'Gold';
+//     } elseif ($total >= 70 && $total < 75) {
+//         $apresiasi = 'Silver';
+//     } elseif ($total >= 60 && $total < 70) {
+//         $apresiasi = 'Bronze';
+//     } else {
+//         $apresiasi = null;
+//     }
 
-    // ===============================
-    // 🔥 UPDATE TOTAL + APRESIASI
-    // ===============================
-    $penilaian->update([
-        'total_nilai' => $total,
-        'apresiasi' => $apresiasi
-    ]);
+//     // ===============================
+//     // 🔥 UPDATE TOTAL + APRESIASI
+//     // ===============================
+//     $penilaian->update([
+//         'total_nilai' => $total,
+//         'apresiasi' => $apresiasi
+//     ]);
 
-    return redirect()->route('admin.konvensi.index')
-        ->with('success', 'Nilai berhasil diupdate');
-}
+//     return redirect()->route('admin.konvensi.index')
+//         ->with('success', 'Nilai berhasil diupdate');
+// }
 
 public function detail($id)
 {
@@ -149,5 +146,48 @@ public function publish()
 
     return redirect()->route('admin.konvensi.index')
         ->with('success', 'Semua data berhasil difinalisasi');
+}
+public function finalize()
+{
+    $data = \App\Models\HasilAkhir::where('is_complete', true)->get();
+
+    if ($data->isEmpty()) {
+        return back()->with('error', 'Tidak ada data yang bisa difinalisasi');
+    }
+
+    foreach ($data as $item) {
+        $item->update([
+            'is_published' => true
+        ]);
+    }
+
+    return redirect()->route('admin.konvensi.index')
+        ->with('success', 'Finalisasi berhasil dilakukan');
+}
+
+public function edit(Request $request, $id)
+{
+    $request->validate([
+        'rata_nilai' => 'required|numeric|min:0|max:100'
+    ]);
+
+    \App\Models\HasilAkhir::where('id', $id)
+        ->update(['rata_nilai' => $request->rata_nilai]);
+
+    return back()->with('success', 'Berhasil diupdate');
+}
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'rata_nilai' => 'required|numeric|min:0|max:100'
+    ]);
+
+    \App\Models\HasilAkhir::where('id', $id)
+        ->update([
+            'rata_nilai' => $request->rata_nilai
+        ]);
+
+    return back()->with('success', 'Berhasil diupdate');
 }
 }

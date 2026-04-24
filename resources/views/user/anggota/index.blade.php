@@ -124,7 +124,7 @@
         });
 
         const table = $('#anggota-table').DataTable({
-            processing: true,
+            processing: false,
             serverSide: true,
             ajax: "{{ route('anggota.index') }}",
             columns: [

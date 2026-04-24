@@ -5,7 +5,9 @@
 @push('style')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
 <style>
+
 .table-custom {
     border-collapse: collapse;
     width: 100%;
@@ -49,9 +51,7 @@
 <div class="card">
 <div class="card-body">
 
-{{-- ===================== --}}
-{{-- 🔥 INFO PESERTA --}}
-{{-- ===================== --}}
+
 <h5 class="text-center mb-3">
     {{ $karya->user->name }}
 </h5>
@@ -65,13 +65,12 @@
 
 <hr>
 
-{{-- ===================== --}}
-{{-- 🔥 LIST JURI --}}
-{{-- ===================== --}}
+
 <div class="table-responsive">
 <table class="table-custom">
 
 <thead>
+
 <tr>
     <th width="50">No</th>
     <th>Nama Juri</th>
@@ -79,8 +78,8 @@
     <th width="150">Status</th>
     <th width="120">Aksi</th>
 </tr>
-</thead>
 
+</thead>
 <tbody>
 @foreach($penilaians as $i => $p)
 <tr>
@@ -93,14 +92,14 @@
         <b>{{ $p->total_nilai ?? '-' }}</b>
     </td>
 
-    {{-- STATUS --}}
-    <td class="text-center">
-        @if($p->status == 'submitted')
-            <span class="status-ok">Sudah Dinilai</span>
-        @else
-            <span class="status-bad">Belum Dinilai</span>
-        @endif
-    </td>
+<td class="text-center">
+    @if($p->status == 'draft')
+        <span class="status-bad">Belum Dinilai</span>
+    @else
+        <span class="status-ok">Sudah Dinilai</span>
+    @endif
+</td>
+
 
     {{-- AKSI --}}
     <td class="text-center">
@@ -108,16 +107,16 @@
         {{-- DETAIL --}}
         <a href="{{ route('admin.nilai.detail', $p->id) }}"
            class="btn btn-info btn-sm">
-            <i class="bi bi-eye"></i> Lihat
+            <i class="bi bi-eye"></i>
         </a>
 
-        {{-- EDIT --}}
+        {{-- EDIT
         @if($p->status != 'published')
             <a href="{{ route('admin.nilai.edit', $p->id) }}"
                class="btn btn-warning btn-sm">
-                <i class="bi bi-pencil-square">Edit </i>
+                <i class="bi bi-pencil-square"></i>
             </a>
-        @endif
+        @endif --}}
 
     </td>
 

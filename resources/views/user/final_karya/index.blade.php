@@ -104,7 +104,7 @@
 <script>
     $(function() {
             const table = $('#final-table').DataTable({
-                processing: true,
+                processing: false,
                 serverSide: true,
                 ajax: '{{ route('finalkarya.index') }}',
                 columns: [{

@@ -242,7 +242,7 @@
 $(function () {
     let jenisFilter = 'all';
     let table = $('#proposalTable').DataTable({
-        processing: true,
+        processing: false,
         serverSide: true,
         responsive: true,
         ajax: {

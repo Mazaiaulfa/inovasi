@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('title', 'Upload Proposal'); ?>
 
 <?php $__env->startPush('style'); ?>
@@ -85,7 +84,7 @@
 <script>
     $(function() {
         $('#proposal-table').DataTable({
-            processing: true
+            processing: false
             , serverSide: true
             , ajax: '<?php echo e(route('proposal.data')); ?>'
             , columns: [{
@@ -158,4 +157,5 @@
 
 </script>
 <?php $__env->stopPush(); ?>
+
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/user/proposal/index.blade.php ENDPATH**/ ?>

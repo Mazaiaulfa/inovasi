@@ -153,15 +153,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // 🔥 DETAIL NILAI
     Route::get('konvensi/{id}', [KonvensiController::class, 'detail'])
         ->name('nilai.detail');
-
-    // 🔥 EDIT NILAI
-    Route::get('konvensi/{id}/edit', [KonvensiController::class, 'edit'])
+    Route::put('/konvensi/{id}', [KonvensiController::class, 'update'])
+        ->name('admin.konvensi.update');
+        // 🔥 EDIT NILAI
+    Route::put('konvensi/{id}/edit', [KonvensiController::class, 'edit'])
         ->name('nilai.edit');
     Route::get('/konvensi/{karya_id}/show', [KonvensiController::class, 'show'])
     ->name('nilai.show');
+    Route::post('/konvensi/finalize', [KonvensiController::class, 'finalize'])
+    ->name('nilai.finalize');
+    Route::get('/konvensi/{id}/edit', [KonvensiController::class, 'edit'])->name('admin.nilai.edit');
 
-    Route::put('konvensi/{id}', [KonvensiController::class, 'update'])
-        ->name('nilai.update');
+    // Route::put('konvensi/{id}', [KonvensiController::class, 'update'])
+    //     ->name('nilai.update');
     Route::resource('kriteria', KriteriaController::class);
 });
 

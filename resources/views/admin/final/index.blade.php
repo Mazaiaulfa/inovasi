@@ -143,7 +143,7 @@ $(function () {
 let jenisFilter = 'all';
 
 const table = $('#finalTable').DataTable({
-processing: true,
+processing: false,
 serverSide: true,
 responsive: true,
 ajax: {

@@ -324,7 +324,7 @@ $(document).ready(function () {
     // Inisialisasi DataTable
     let jenisFilter = 'all';
     let table = $('#verifikasi-table').DataTable({
-        processing: true,
+        processing: false,
         serverSide: true,
         ajax: {
     url: baseUrl + '/admin/verifikasi',

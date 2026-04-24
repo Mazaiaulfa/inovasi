@@ -2,11 +2,6 @@
 
 @section('title', 'Riwayat Pengajuan')
 
-@push('style')
-<link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
-<link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
-@endpush
-
 @section('main')
 <div class="main-content">
     <section class="section">
@@ -16,70 +11,75 @@
         </div>
 
         <div class="section-body">
-
-            <div class="card">
-
+            <div class="card shadow-sm">
                 <div class="card-body">
 
-                <div class="table-responsive">
-                <table class="table align-middle">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Judul Karya</th>
-                            <th>Tahun</th>
-                            <th>Status</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($karyas as $index => $karya)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $karya->judul }}</td>
-                            <td>{{ $karya->created_at->format('Y') }}</td>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th width="5%">No</th>
+                                    <th>Judul Karya</th>
+                                    <th width="15%">Tahun</th>
+                                    <th width="20%">Status</th>
+                                    <th width="15%" class="text-center">Action</th>
+                                </tr>
+                            </thead>
 
-                            {{-- STATUS --}}
-                            <td>
-   @php
-    $penilaian = $karya->penilaian->last();
-@endphp
+                            <tbody>
+                                @forelse($karyas as $karya)
+                                @php
+                                    $hasil = $karya->hasilAkhir;
 
-@if(optional($penilaian)->status == 'submitted')
-    <span class="badge bg-info">Terkirim</span>
-@elseif(optional($penilaian)->status == 'dinilai')
-    <span class="badge bg-warning">Dinilai</span>
-@elseif(optional($penilaian)->status == 'publish')
-    <span class="badge bg-success">Selesai</span>
-@else
-    <span class="badge bg-secondary">Belum dinilai</span>
-@endif
-</td>
+                                    if (!$hasil) {
+                                        $status = ['text' => 'Belum dinilai', 'class' => 'text-secondary'];
+                                    } elseif ($hasil->is_complete == 0) {
+                                        $status = ['text' => 'Sedang Dinilai', 'class' => 'text-info'];
+                                    } elseif ($hasil->is_complete == 1 && $hasil->is_published == 0) {
+                                        $status = ['text' => 'Menunggu Publish', 'class' => 'text-warning'];
+                                    } else {
+                                        $status = ['text' => 'Selesai', 'class' => 'text-success'];
+                                    }
+                                @endphp
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
 
-                            {{-- ACTION --}}
-                            <td class="text-center">
-                                <a href="{{ route('riwayat.show', $karya->id) }}"
-                                   class="btn btn-outline-dark btn-sm">
-                                    Lihat
-                                </a>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="5" class="text-center">Belum ada pengajuan</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                                    <td>
+                                        {{ $karya->judul }}
+                                    </td>
+
+                                    <td>{{ $karya->created_at->format('Y') }}</td>
+
+                                    <td>
+                                        <span class="{{ $status['class'] }}">
+                                            {{ $status['text'] }}
+                                        </span>
+                                    </td>
+
+                                    <td class="text-center">
+                                        <a href="{{ route('riwayat.show', $karya->id) }}"
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i> Lihat
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        <i class="bi bi-inbox fs-4 d-block mb-2"></i>
+                                        Belum ada pengajuan
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
-
         </div>
-    </div>
 
+    </section>
 </div>
 @endsection
-
-
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-@endpush

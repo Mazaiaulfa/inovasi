@@ -3,9 +3,6 @@
 @section('title', 'Form Nilai Inovasi')
 
 @push('style')
-<link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
-<link rel="stylesheet" href="{{ asset('library/summernote/dist/summernote-bs4.min.css') }}">
-
 <style>
 .table-custom {
     border-collapse: collapse;
@@ -26,35 +23,22 @@
     text-align: center;
 }
 
-/* warna item */
 .plan { background: #fff9c4; }
 .do { background: #d4edda; }
 .check { background: #cfe2ff; }
 .act { background: #f8d7da; }
 .creativity { background: #e8f5e9; }
 
-/* text panjang */
 .text-wrap {
     max-width: 220px;
     white-space: pre-line;
 }
 
 .nilai {
-    width: 50px;
-    height: 28px;
-    font-size: 11px;
+    width: 60px;
+    height: 30px;
+    font-size: 12px;
     text-align: center;
-    padding: 2px;
-}
-
-.nilai::-webkit-outer-spin-button,
-.nilai::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.nilai {
-    -moz-appearance: textfield;
 }
 </style>
 @endpush
@@ -114,7 +98,7 @@ $class = strtolower($item);
 <tr class="{{ $class }}">
 
 @if ($index == 0)
-<td rowspan="{{ $rowspan }}" class="text-center font-weight-bold">
+<td rowspan="{{ $rowspan }}" class="text-center fw-bold">
     {{ $item }}
 </td>
 @endif
@@ -136,13 +120,14 @@ $class = strtolower($item);
 <td class="text-wrap">{!! nl2br(e($k->skala_9_10)) !!}</td>
 
 <td class="text-center">
-    <input type="number"
-           min="1"
-           max="10"
+    <input type="text"
+           inputmode="numeric"
+           pattern="[0-9]*"
+           maxlength="2"
            class="form-control nilai"
            name="nilai[{{ $k->id }}]"
-           value="{{ old('nilai.'.$k->id, $nilaiLama[$k->id] ?? '') }}"
-           onkeyup="hitung()">
+           value="{{ $nilaiLama[$k->id] ?? '' }}"
+           data-id="{{ $k->id }}">
 </td>
 
 </tr>
@@ -181,20 +166,35 @@ $class = strtolower($item);
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
 <script>
 function hitung() {
     let total = 0;
 
     document.querySelectorAll(".nilai").forEach(i => {
-        total += Number(i.value || 0);
+        let val = parseInt(i.value);
+        if (!isNaN(val)) total += val;
     });
 
     document.getElementById("total").innerText = total;
 }
 
-// 🔥 AUTO HITUNG SAAT HALAMAN LOAD
+// VALIDASI INPUT AGAR TIDAK ANEH
+document.querySelectorAll(".nilai").forEach(input => {
+
+    input.addEventListener("input", function () {
+        let val = this.value.replace(/[^0-9]/g, '');
+
+        if (val > 10) val = 10;
+        if (val < 1 && val !== '') val = 1;
+
+        this.value = val;
+
+        hitung();
+    });
+
+});
+
+// AUTO HITUNG SAAT LOAD
 document.addEventListener("DOMContentLoaded", function () {
     hitung();
 });

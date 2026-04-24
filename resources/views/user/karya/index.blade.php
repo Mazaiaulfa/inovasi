@@ -55,7 +55,7 @@
         const storageUrl = "{{ asset('storage') }}";
 
         $('#karya-table').DataTable({
-            processing: true,
+            processing: false,
             serverSide: true,
             ajax: '{{ route('karya.index') }}',
             columns: [
@@ -74,7 +74,7 @@
                     name: 'file_ajukan',
                     orderable: false,
                     searchable: false,
-                 
+
                         render: function(url) {
         if (url) {
             return `

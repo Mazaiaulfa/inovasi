@@ -154,7 +154,7 @@ class JuriController extends Controller
     }
 
     // =========================
-    // UPDATE HASIL AKHIR (🔥 CORE)
+    // UPDATE HASIL AKHIR
     // =========================
     private function updateHasilAkhir($karyaId)
     {

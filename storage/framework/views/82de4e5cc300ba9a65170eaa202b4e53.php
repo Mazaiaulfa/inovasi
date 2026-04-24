@@ -123,7 +123,7 @@
         });
 
         const table = $('#anggota-table').DataTable({
-            processing: true,
+            processing: false,
             serverSide: true,
             ajax: "<?php echo e(route('anggota.index')); ?>",
             columns: [

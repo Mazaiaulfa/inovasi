@@ -1,4 +1,3 @@
-
 <?php $__env->startSection('title', 'Final Karya'); ?>
 
 <?php $__env->startPush('style'); ?>
@@ -104,7 +103,7 @@
 <script>
     $(function() {
             const table = $('#final-table').DataTable({
-                processing: true,
+                processing: false,
                 serverSide: true,
                 ajax: '<?php echo e(route('finalkarya.index')); ?>',
                 columns: [{
@@ -185,4 +184,5 @@
         });
 </script>
 <?php $__env->stopPush(); ?>
+
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/user/final_karya/index.blade.php ENDPATH**/ ?>

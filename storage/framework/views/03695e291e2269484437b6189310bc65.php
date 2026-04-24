@@ -109,7 +109,7 @@
 
         // Initialize DataTable
         var table = $('#anggotaTable').DataTable({
-            processing: true,
+            processing: false,
             serverSide: true,
             ajax: {
                 url: '<?php echo e(route('admin.anggota.index')); ?>',

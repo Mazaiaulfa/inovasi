@@ -7,17 +7,120 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
+body {
+    background: #f6f8fb;
+}
+
+/* CARD */
+.card {
+    border: none;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+}
+
+
+.card-header {
+    background: #fff;
+    border-bottom: 1px solid #eef2f7;
+    font-weight: 600;
+}
+
+
+.card-header h4 {
+    margin: 0;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* TABLE WRAPPER */
+.table-responsive {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* TABLE */
+table.dataTable {
+    border-collapse: separate !important;
+    border-spacing: 0;
+    width: 100%;
+    font-size: 13px;
+}
+
+/* HEADER TABLE */
+table.dataTable thead th {
+    background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
+    border-bottom: 1px solid #e5e7eb !important;
+    color: #374151;
+    font-weight: 600;
+    text-align: center;
+    padding: 12px;
+}
+
+/* BODY */
+table.dataTable tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #374151;
+    vertical-align: middle;
+    background: #fff;
+}
+
+/* ROW HOVER */
+table.dataTable tbody tr:hover {
+    background: #f3f8ff;
+}
+
+/* ACTION BUTTONS */
+td .btn {
+    border-radius: 10px;
+    padding: 6px 10px;
+    font-size: 13px;
+}
+
+/* ACTION CELL */
+td .d-flex {
+    gap: 6px;
+}
+
+/* ADD BUTTON */
+.btn-primary {
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+/* DATATABLE SEARCH */
 .dataTables_wrapper .dataTables_filter {
     display: flex !important;
     justify-content: flex-end;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-    flex-direction: row-reverse;
+    margin-bottom: 12px;
 }
 
-.main-content {
-    padding-top: 20px;
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    padding: 6px 10px;
+    outline: none;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    padding: 4px 8px;
+}
+
+td .btn {
+    width: 30px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 0;
+}
+
+td .btn i {
+    font-size: 12px;
 }
 </style>
 @endpush
@@ -28,20 +131,24 @@
         <div class="section-body">
 
             <div class="card">
-                <div class="card-header">
+
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h4>Daftar Juri</h4>
+
+                    <a href="{{ route('admin.juri.create') }}"
+                       class="btn btn-primary btn-sm">
+                        Add Juri
+                    </a>
                 </div>
 
                 <div class="card-body">
-                    <div class="mb-3 d-flex justify-content-between">
-                    <h6 class="mb-0 text-muted">Manajemen Data Juri</h6>
 
-                    <a href="{{ route('admin.juri.create') }}" class="btn btn-primary btn-sm">
-                         Add Juri
-                    </a>
-                </div>
+                    <div class="mb-3 text-muted">
+                        Manajemen Data Juri
+                    </div>
+
                     <div class="table-responsive">
-                        <table id="juriTable" class="table table-striped table-bordered table-hover w-100">
+                        <table id="juriTable" class="table w-100">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -50,56 +157,59 @@
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 @foreach($juri as $item)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
-                                                        <td class="d-flex gap-1">
 
-                            {{-- PENETAPAN --}}
-                            <a href="{{ route('admin.juri.assign.form', $item->id) }}"
-                            class="btn btn-primary btn-sm"
-                            title="Penetapan">
-                               <i class="fas fa-users-cog"></i>
-                            </a>
+                                    <td>
+    <div class="d-flex justify-content-center gap-1">
 
-                            {{-- LIHAT PESERTA --}}
-                            <a href="{{ route('admin.juri.peserta', $item->id) }}"
-                            class="btn btn-info btn-sm"
-                            title="Lihat Gugus">
-                                <i class="fas fa-eye"></i>
-                            </a>
+        {{-- PENETAPAN --}}
+        <a href="{{ route('admin.juri.assign.form', $item->id) }}"
+           class="btn btn-primary btn-sm"
+           title="Penetapan">
+            <i class="bi bi-people-fill"></i>
+        </a>
 
-                            {{-- EDIT --}}
-                            <a href="{{ route('admin.juri.edit', $item->id) }}"
-                            class="btn btn-warning btn-sm"
-                            title="Edit">
-                                <i class="fas fa-pen"></i>
-                            </a>
+        {{-- LIHAT --}}
+        <a href="{{ route('admin.juri.peserta', $item->id) }}"
+           class="btn btn-info btn-sm"
+           title="Lihat Gugus">
+            <i class="bi bi-eye"></i>
+        </a>
 
-                            {{-- DELETE --}}
-                            <form action="{{ route('admin.juri.destroy', $item->id) }}"
-                                method="POST"
-                                onsubmit="return confirm('Yakin mau hapus data ini?')"
-                                class="d-inline">
+        {{-- EDIT --}}
+        <a href="{{ route('admin.juri.edit', $item->id) }}"
+           class="btn btn-warning btn-sm"
+           title="Edit">
+            <i class="bi bi-pencil-square"></i>
+        </a>
 
-                                @csrf
-                                @method('DELETE')
+        {{-- DELETE --}}
+        <form action="{{ route('admin.juri.destroy', $item->id) }}"
+              method="POST"
+              onsubmit="return confirm('Yakin mau hapus data ini?')">
+            @csrf
+            @method('DELETE')
 
-                                <button type="submit"
-                                        class="btn btn-danger btn-sm"
-                                        title="Hapus">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+            <button type="submit"
+                    class="btn btn-danger btn-sm"
+                    title="Hapus">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>
 
-                            </form>
+    </div>
+</td>
 
-                        </td>
                                 </tr>
                                 @endforeach
                             </tbody>
+
                         </table>
                     </div>
 
@@ -121,6 +231,7 @@
 $(function () {
     $('#juriTable').DataTable({
         responsive: true,
+        pageLength: 10,
         columnDefs: [
             { orderable: false, targets: [3] }
         ]

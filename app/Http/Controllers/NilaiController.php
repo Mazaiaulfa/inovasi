@@ -62,6 +62,7 @@ class NilaiController extends Controller
                 'juri_id' => auth()->id(),
             ],
             [
+                'total_nilai' => 0,
                 'status' => 'draft'
             ]
         );

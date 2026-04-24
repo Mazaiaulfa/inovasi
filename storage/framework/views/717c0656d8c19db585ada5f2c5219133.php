@@ -5,25 +5,29 @@
 .timeline-wrapper {
     position: relative;
     margin-top: 40px;
+    padding: 20px 10px;
 }
 
 .timeline-line {
-    height: 4px;
-    background: #e4e6ef;
+    height: 3px;
+    background: #e5e7eb;
     position: absolute;
-    top: 12px;
+    top: 22px;
     left: 0;
     right: 0;
     z-index: 1;
+    border-radius: 10px;
 }
 
 .timeline-progress {
-    height: 4px;
-    background: #6777ef;
+    height: 3px;
+    background: #2563eb;
     position: absolute;
-    top: 12px;
+    top: 22px;
     left: 0;
     z-index: 2;
+    border-radius: 10px;
+    transition: 0.4s;
 }
 
 .timeline-steps {
@@ -39,26 +43,56 @@
 }
 
 .circle {
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
     background: #d1d5db;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 2px #e5e7eb;
     margin: auto;
 }
 
-.circle.active { background: #030a42; }
-.circle.done { background: #28a745; }
-.circle.reject { background: #dc3545; }
+.circle.active {
+    background: #2563eb;
+    box-shadow: 0 0 0 3px #93c5fd;
+}
+
+.circle.done {
+    background: #2563eb;
+}
 
 .step-label {
     margin-top: 10px;
     font-size: 13px;
     font-weight: 500;
+    color: #6b7280;
+}
+
+.step.active .step-label {
+    color: #111827;
+    font-weight: 600;
 }
 
 .step-status {
+    font-size: 11px;
+    margin-top: 6px;
+}
+
+.badge-status {
+    background: #fef3c7;
+    color: #92400e;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+}
+
+.table-sm td, .table-sm th {
+    padding: 6px;
     font-size: 12px;
-    margin-top: 4px;
+}
+
+.card.border {
+    border: 1px solid #e5e7eb !important;
 }
 </style>
 <?php $__env->stopPush(); ?>
@@ -76,131 +110,142 @@
 <div class="card-body">
 
 
-<h5 class="mb-3"><?php echo e($karya->judul); ?></h5>
-<hr>
 
+ <?php
+$hasil = $karya->hasilAkhir;
 
-<div class="row mb-3">
-    <div class="col-md-4">
-        <strong>Tahun</strong><br>
-        <?php echo e($karya->created_at->format('Y')); ?>
+if(!$hasil){
+    $statusText = 'Belum dinilai';
+}
+elseif($hasil->is_complete == 0){
+    $statusText = 'Sedang dinilai';
+}
+elseif($hasil->is_complete == 1 && $hasil->is_published == 0){
+    $statusText = 'Menunggu publish';
+}
+else{
+    $statusText = 'Selesai';
+}
 
-    </div>
+$judul = 'diterima';
+$proposal = $karya->proposals->isNotEmpty() ? 'diterima' : 'pending';
+$final = $karya->finalKarya ? 'diterima' : 'pending';
 
-    <div class="col-md-4">
-        <strong>Status</strong><br>
-        <?php if($karya->status == 'publish'): ?>
-            <span class="badge badge-success">Selesai</span>
-        <?php else: ?>
-            <span class="badge badge-warning">Dalam Proses</span>
-        <?php endif; ?>
-    </div>
+if(!$hasil || $hasil->is_complete == 0){
+    $penilaian = 'pending';
+} else {
+    $penilaian = 'diterima';
+}
 
-    <div class="col-md-4">
-        <strong>Tanggal Submit</strong><br>
-        <?php echo e($karya->created_at->format('d M Y')); ?>
-
-    </div>
-</div>
-
-
-<?php if($karya->status == 'publish'): ?>
-<div class="mb-3">
-    <strong>Nilai Akhir</strong><br>
-    <span class="badge badge-success"><?php echo e($karya->nilai_akhir ?? '-'); ?></span>
-</div>
-<?php endif; ?>
-
-
-<?php
-$judul = $karya->status_judul ?? 'pending';
-$proposal = $karya->status_proposal ?? 'pending';
-$final = $karya->status_final ?? 'pending';
-$penilaian = $karya->status_penilaian ?? 'pending';
-$hasil = $karya->status == 'publish' ? 'selesai' : 'pending';
+$hasilStep = ($hasil && $hasil->is_published) ? 'selesai' : 'pending';
 
 function warna($s){
     if($s=='diterima' || $s=='selesai') return 'done';
-    if($s=='ditolak') return 'reject';
-    if($s=='pending') return 'active';
+    return 'active';
 }
 
-$steps = [$judul,$proposal,$final,$penilaian,$hasil];
+$steps = [$judul,$proposal,$final,$penilaian,$hasilStep];
 $current = 0;
+
 foreach($steps as $i=>$s){
-    if($s=='diterima' || $s=='selesai') $current = $i+1;
+    if($s=='diterima' || $s=='selesai'){
+        $current = $i+1;
+    }
 }
+
+$currentIndex = $current - 1;
 $percent = ($current/5)*100;
 ?>
 
-<div class="timeline-wrapper">
 
-    <div class="timeline-line"></div>
-    <div class="timeline-progress" style="width: <?php echo e($percent); ?>%"></div>
 
-    <div class="timeline-steps">
+
+
+
+
+
+
+
+
+<?php if($hasil && $hasil->is_published): ?>
+<div class="mt-4">
+    <h6 class="mb-3">
+        <i class="bi bi-trophy me-2 text-warning"></i>
+        Hasil & Apresiasi
+    </h6>
+
+    <div class="card border shadow-sm">
+        <div class="card-body text-center">
+
+                    <h4 class="mb-2" style="color:#b45309">
+                <i class="bi bi-trophy-fill me-2"></i>
+                Apresiasi Karya
+            </h4>
+
+            <div class="mb-2">
+                <span class="badge bg-warning text-dark">
+                    <i class="bi bi-award me-1"></i>
+                    <?php echo e($hasil->apresiasi ?? 'Peserta'); ?>
+
+                </span>
+            </div>
+
+            <p class="text-muted mb-0">
+                Hasil penilaian telah dipublikasikan.
+            </p>
+
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+
+<div class="mt-4">
+    <h6 class="mb-3">
+        <i class="bi bi-bar-chart-line me-2 text-primary"></i>
+        Ringkasan Penilaian
+    </h6>
+
+    <div class="row g-3">
 
         
-        <div class="step">
-            <div class="circle <?php echo e(warna($judul)); ?>"></div>
-            <div class="step-label">Judul</div>
-            <div class="step-status">
-                <?php echo e(ucfirst($judul)); ?>
+        <div class="col-md-4">
+            <div class="card border text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-people text-secondary mb-2" style="font-size:20px;"></i>
+                    <div><small class="text-muted">Total Juri</small></div>
+                    <h4 class="mb-0 mt-1">
+                        <?php echo e($hasil->total_juri ?? 0); ?>
 
+                    </h4>
+                </div>
             </div>
         </div>
 
         
-        <div class="step">
-            <div class="circle <?php echo e(warna($proposal)); ?>"></div>
-            <div class="step-label">Proposal</div>
-            <div class="step-status">
-                <?php if(!$karya->file_proposal): ?>
-                    Belum upload
-                <?php else: ?>
-                    <?php echo e(ucfirst($proposal)); ?>
+        <div class="col-md-4">
+            <div class="card border text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-check-circle text-success mb-2" style="font-size:20px;"></i>
+                    <div><small class="text-muted">Sudah Menilai</small></div>
+                    <h4 class="mb-0 mt-1">
+                        <?php echo e($hasil->jumlah_juri ?? 0); ?>
 
-                <?php endif; ?>
+                    </h4>
+                </div>
             </div>
         </div>
 
         
-        <div class="step">
-            <div class="circle <?php echo e(warna($final)); ?>"></div>
-            <div class="step-label">Finalisasi</div>
-            <div class="step-status">
-                <?php if(!$karya->file_final): ?>
-                    Belum upload
-                <?php else: ?>
-                    <?php echo e(ucfirst($final)); ?>
+        <div class="col-md-4">
+            <div class="card border text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <i class="bi bi-star-fill text-warning mb-2" style="font-size:20px;"></i>
+                    <div><small class="text-muted">Nilai Rata-rata</small></div>
+                    <h4 class="mb-0 mt-1 text-primary">
+                        <?php echo e($hasil ? round($hasil->rata_nilai,2) : '-'); ?>
 
-                <?php endif; ?>
-            </div>
-        </div>
-
-        
-        <div class="step">
-            <div class="circle <?php echo e(warna($penilaian)); ?>"></div>
-            <div class="step-label">Penilaian</div>
-            <div class="step-status">
-                <?php if($penilaian=='pending'): ?>
-                    Belum dinilai
-                <?php else: ?>
-                    Sudah dinilai
-                <?php endif; ?>
-            </div>
-        </div>
-
-        
-        <div class="step">
-            <div class="circle <?php echo e(warna($hasil)); ?>"></div>
-            <div class="step-label">Hasil</div>
-            <div class="step-status">
-                <?php if($hasil=='pending'): ?>
-                    Menunggu
-                <?php else: ?>
-                    Selesai
-                <?php endif; ?>
+                    </h4>
+                </div>
             </div>
         </div>
 
@@ -210,20 +255,16 @@ $percent = ($current/5)*100;
 
 <div class="mt-4">
     <a href="<?php echo e(route('riwayat.index')); ?>" class="btn btn-secondary">
-        <i class="fas fa-arrow-left"></i> Kembali
+        <i class="bi bi-box-arrow-in-left"></i>
     </a>
 </div>
 
 </div>
 </div>
 </div>
+
 </section>
 </div>
 <?php $__env->stopSection(); ?>
-
-<?php $__env->startPush('scripts'); ?>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<?php $__env->stopPush(); ?>
-
 
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/user/riwayat/show.blade.php ENDPATH**/ ?>

@@ -186,7 +186,7 @@ $(function() {
 
 let table = $('#historyTable').DataTable({
 
-processing: true,
+processing: false,
 serverSide: true,
 
 ajax: {

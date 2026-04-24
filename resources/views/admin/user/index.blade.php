@@ -109,7 +109,7 @@ $(document).ready(function() {
     let jenisFilter = 'all';
 
     let table = $('#user-table').DataTable({
-        processing: true,
+        processing: false,
         serverSide: true,
         responsive: true,
         ajax: {

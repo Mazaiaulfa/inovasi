@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Rekap Data'); ?>
 
-@section('title', 'Rekap Data')
-
-@push('style')
+<?php $__env->startPush('style'); ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 <style>
@@ -24,9 +22,9 @@
         gap: 5px;
     }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('main')
+<?php $__env->startSection('main'); ?>
 <div class="main-content">
     <div class="container-fluid">
         <div class="section-body">
@@ -61,9 +59,9 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -74,7 +72,7 @@
         processing: false,
         serverSide: true,
         ajax: {
-            url: '{{ route('admin.rekap.index') }}',
+            url: '<?php echo e(route('admin.rekap.index')); ?>',
             type: 'GET'
         },
         columns: [
@@ -95,7 +93,7 @@
         initComplete: function() {
             //  handle button export to left
             let exportBtn = `
-                <a href="{{ route('rekap.exportAll') }}"
+                <a href="<?php echo e(route('rekap.exportAll')); ?>"
                    class="btn btn-success btn-sm"
                    style="white-space: nowrap;">
                     <i class="fas fa-file-excel"></i> Export Semua
@@ -106,4 +104,6 @@
     });
 });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/admin/rekap/index.blade.php ENDPATH**/ ?>

@@ -85,7 +85,7 @@
 <script>
     $(function() {
         $('#proposal-table').DataTable({
-            processing: true
+            processing: false
             , serverSide: true
             , ajax: '{{ route('proposal.data') }}'
             , columns: [{
