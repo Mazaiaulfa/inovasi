@@ -18,14 +18,14 @@ body {
     box-shadow: 0 12px 30px rgba(0,0,0,0.06);
 }
 
-/* HEADER */
+
 .card-header {
     background: #fff;
     border-bottom: 1px solid #eef2f7;
     font-weight: 600;
 }
 
-/* TITLE AREA */
+
 .card-header h4 {
     margin: 0;
     font-weight: 700;

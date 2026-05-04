@@ -128,7 +128,7 @@
             , confirmButtonText: 'Ya, hapus!'
             , cancelButtonText: 'Batal'
         }).then((result) => {
-            if (result.isConfirmed) {
+            if (result.isConfirmed){
                 $.ajax({
                     url: url
                     , type: 'POST'

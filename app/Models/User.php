@@ -59,10 +59,18 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'juri_peserta', 'peserta_id', 'juri_id');
     }
 
-    public function hasilAkhir()
+   public function hasilAkhir()
 {
-    return $this->hasOne(HasilAkhir::class, 'user_id');
+    return $this->hasOneThrough(
+        \App\Models\HasilAkhir::class,
+        \App\Models\KaryaTulis::class,
+        'user_id',
+        'karya_id',
+        'id',
+        'id'
+    );
 }
+
 
    public function penilaian()
 {

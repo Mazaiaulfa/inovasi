@@ -137,9 +137,6 @@ $class = strtolower($item);
 </table>
 </div>
 
-{{-- ===================== --}}
-{{-- 🔙 TOMBOL --}}
-{{-- ===================== --}}
 <div class="mt-4">
     <a href="{{ route('admin.nilai.show', $penilaian->karya_id) }}" class="btn btn-secondary">
         Kembali

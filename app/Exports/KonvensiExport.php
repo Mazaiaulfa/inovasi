@@ -24,7 +24,16 @@ class KonvensiExport implements
 
     public function collection()
     {
-        $data = Penilaian::with(['peserta.anggota'])->get();
+          $data = Penilaian::with([
+    'peserta.anggota',
+    'peserta.karyaTulis',
+    'peserta.hasilAkhir'
+])
+->groupBy('user_id')
+->select('user_id')
+->selectRaw('MAX(total_nilai) as total_nilai')
+->selectRaw('MAX(status) as status')
+->get();
 
         $rows = collect();
         $no = 1;
@@ -49,22 +58,25 @@ class KonvensiExport implements
                     $anggota[] = $text;
                 }
             }
-
+ // ambil apresiasi dari hasil_akhirs
+            $apresiasi = $user->hasilAkhir->apresiasi ?? '-';
             $rows->push([
-                'No' => $no++,
-                'Nama' => $user->name,
-                'Direktorat' => $user->direktorat,
-                'Kompartemen' => $user->kompartemen,
-                'Departemen' => $user->unit_kerja,
-                'Total Nilai' => $item->total_nilai,
-                'Fasilitator' => implode("\n", $fasilitator),
-                'Ketua' => implode("\n", $ketua),
-                'Anggota' => implode("\n", collect($anggota)
-                    ->values()
-                    ->map(fn($v, $i) => ($i+1).'. '.$v)
-                    ->toArray()),
-                'Apresiasi' => $item->apresiasi, // 🔥 pindah ke akhir
-            ]);
+            'No' => $no++,
+            'Nama Gugus' => $user->name,
+            'Judul Karya' => $user->judul,
+            'Direktorat' => $user->direktorat,
+            'Kompartemen' => $user->kompartemen,
+            'Departemen' => $user->unit_kerja,
+            'Total Nilai' => $item->total_nilai,
+            'Fasilitator' => implode("\n", $fasilitator),
+            'Ketua' => implode("\n", $ketua),
+            'Anggota' => implode("\n", collect($anggota)
+                ->values()
+                ->map(fn($v, $i) => ($i+1).'. '.$v)
+                ->toArray()),
+            'Apresiasi' => $apresiasi,
+            'Status' => $item->status,
+        ]);
         }
 
         return $rows;
@@ -73,17 +85,19 @@ class KonvensiExport implements
     public function headings(): array
     {
         return [
-            'No',
-            'Nama',
-            'Direktorat',
-            'Kompartemen',
-            'Departemen',
-            'Total Nilai',
-            'Fasilitator',
-            'Ketua',
-            'Anggota',
-            'Apresiasi',
-        ];
+        'No',
+        'Nama Gugus',
+        'Judul Karya',
+        'Direktorat',
+        'Kompartemen',
+        'Departemen',
+        'Total Nilai',
+        'Fasilitator',
+        'Ketua',
+        'Anggota',
+        'Apresiasi',
+        'Status',
+    ];
     }
 
     public function columnWidths(): array
@@ -99,6 +113,8 @@ class KonvensiExport implements
             'H' => 30,
             'I' => 40,
             'J' => 20,
+            'K' => 20,
+            'L' => 20,
         ];
     }
 
@@ -112,7 +128,7 @@ class KonvensiExport implements
         $lastRow = $sheet->getHighestRow();
 
         // 🔥 HEADER KUNING
-        $sheet->getStyle('A1:J1')->applyFromArray([
+        $sheet->getStyle('A1:L1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['rgb' => '000000'], // hitam biar kontras
@@ -129,10 +145,10 @@ class KonvensiExport implements
         ]);
 
         // WRAP TEXT
-        $sheet->getStyle("A:J")->getAlignment()->setWrapText(true);
+        $sheet->getStyle("A:L")->getAlignment()->setWrapText(true);
 
         // VERTICAL TOP
-        $sheet->getStyle("A:J")->getAlignment()->setVertical(Alignment::VERTICAL_TOP);
+        $sheet->getStyle("A:L")->getAlignment()->setVertical(Alignment::VERTICAL_TOP);
 
         // 🔥 CENTER KOLOM TERTENTU
         $sheet->getStyle("A2:A{$lastRow}") // No
@@ -148,7 +164,7 @@ class KonvensiExport implements
             ->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
         // BORDER
-        $sheet->getStyle("A1:J{$lastRow}")
+        $sheet->getStyle("A1:L{$lastRow}")
             ->getBorders()
             ->getAllBorders()
             ->setBorderStyle(Border::BORDER_THIN);

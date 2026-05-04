@@ -15,7 +15,6 @@
     font-weight: 700;
 }
 
-/* TABLE */
 .table-konvensi {
     width: 100%;
     border-collapse: separate;
@@ -143,16 +142,14 @@
     
     <td class="text-center">
         <a href="<?php echo e(route('admin.nilai.show', $item->karya_id)); ?>"
-           class="btn btn-primary btn-sm">
-            Detail
-        </a>
+           class="btn btn-primary btn-sm"><i class="bi bi-ticket-detailed-fill"></i>        </a>
          <button
             class="btn btn-warning btn-sm btn-edit"
             data-id="<?php echo e($item->id); ?>"
             data-nilai="<?php echo e($item->rata_nilai); ?>"
             data-bs-toggle="modal"
-            data-bs-target="#modalEdit">
-            Edit
+            data-bs-target="#modalEdit"><i class="bi bi-pen-fill"></i>
+
         </button>
 
     </td>
@@ -189,10 +186,7 @@
 </div>
 </div>
 </div>
-
-
 </section>
-
 <div class="modal fade" id="modalEdit" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content" style="border-radius:12px">
