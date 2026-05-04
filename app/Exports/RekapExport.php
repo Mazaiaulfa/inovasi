@@ -152,8 +152,6 @@ public function title(): string
 {
     return 'Daftar Gugus Tgl ' . now()->format('d-m-Y');
 }
-
-
     /*
     |--------------------------------------------------------------------------
     | STYLES

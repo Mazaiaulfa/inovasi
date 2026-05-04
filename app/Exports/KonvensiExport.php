@@ -23,64 +23,67 @@ class KonvensiExport implements
 {
 
     public function collection()
-    {
-          $data = Penilaian::with([
-    'peserta.anggota',
-    'peserta.karyaTulis',
-    'peserta.hasilAkhir'
-])
-->groupBy('user_id')
-->select('user_id')
-->selectRaw('MAX(total_nilai) as total_nilai')
-->selectRaw('MAX(status) as status')
-->get();
+{
+    $users = \App\Models\User::with([
+        'anggota',
+        'karyaTulis',
+        'hasilAkhir',
+        'penilaian'
+    ])
+    ->whereHas('penilaian')
+    ->where('role', '!=', 'admin')
+    ->get();
 
-        $rows = collect();
-        $no = 1;
+    $rows = collect();
+    $no = 1;
 
-        foreach ($data as $item) {
+    foreach ($users as $user) {
 
-            $user = $item->peserta;
+        $ketua = [];
+        $fasilitator = [];
+        $anggota = [];
 
-            $ketua = [];
-            $fasilitator = [];
-            $anggota = [];
+        foreach ($user->anggota as $a) {
 
-            foreach ($user->anggota as $a) {
+            $text = $a->nama . ' (' . $a->badge . ')';
+            $jabatan = strtolower(trim($a->jabatan));
 
-                $text = $a->nama . ' (' . $a->badge . ')';
+            if (str_contains($jabatan, 'ketua')) {
+                $ketua[] = $text;
 
-                if (strtolower($a->jabatan) == 'ketua') {
-                    $ketua[] = $text;
-                } elseif (strtolower($a->jabatan) == 'fasilitator') {
-                    $fasilitator[] = $text;
-                } else {
-                    $anggota[] = $text;
-                }
+            } elseif (str_contains($jabatan, 'fasilitator')) {
+                $fasilitator[] = $text;
+
+            } else {
+                $anggota[] = $text;
             }
- // ambil apresiasi dari hasil_akhirs
-            $apresiasi = $user->hasilAkhir->apresiasi ?? '-';
-            $rows->push([
+        }
+
+        $rataNilai = $user->hasilAkhir->rata_nilai ?? '-';
+        $apresiasi = $user->hasilAkhir->apresiasi ?? '-';
+        $status = $user->penilaian->status ?? '-';
+
+        $rows->push([
             'No' => $no++,
             'Nama Gugus' => $user->name,
-            'Judul Karya' => $user->judul,
+            'Judul Karya' => optional($user->karyaTulis->first())->judul ?? '-',
             'Direktorat' => $user->direktorat,
             'Kompartemen' => $user->kompartemen,
             'Departemen' => $user->unit_kerja,
-            'Total Nilai' => $item->total_nilai,
+            'Total Nilai' => $rataNilai,
             'Fasilitator' => implode("\n", $fasilitator),
             'Ketua' => implode("\n", $ketua),
             'Anggota' => implode("\n", collect($anggota)
                 ->values()
-                ->map(fn($v, $i) => ($i+1).'. '.$v)
+                ->map(fn($v, $i) => ($i + 1) . '. ' . $v)
                 ->toArray()),
             'Apresiasi' => $apresiasi,
-            'Status' => $item->status,
+            'Status' => $status,
         ]);
-        }
-
-        return $rows;
     }
+
+    return $rows;
+}
 
     public function headings(): array
     {
