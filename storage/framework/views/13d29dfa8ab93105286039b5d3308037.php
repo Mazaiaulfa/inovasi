@@ -1,9 +1,7 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Admin Dashboard'); ?>
 
-@section('title', 'Admin Dashboard')
-
-@push('style')
-<link rel="stylesheet" href="{{ asset('library/jqvmap/dist/jqvmap.min.css') }}">
+<?php $__env->startPush('style'); ?>
+<link rel="stylesheet" href="<?php echo e(asset('library/jqvmap/dist/jqvmap.min.css')); ?>">
 
 <style>
 .stat-card{
@@ -53,9 +51,9 @@
     margin-bottom:15px;
 }
 </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('main')
+<?php $__env->startSection('main'); ?>
 <div class="main-content">
 <section class="section">
 
@@ -84,22 +82,22 @@
 
                 <div class="row text-center">
                     <div class="col-3">
-                        <h4>{{ $gkmUsers }}</h4>
+                        <h4><?php echo e($gkmUsers); ?></h4>
                         <small>Peserta</small>
                     </div>
 
                     <div class="col-3">
-                        <h4>{{ $gkmKarya }}</h4>
+                        <h4><?php echo e($gkmKarya); ?></h4>
                         <small>Judul</small>
                     </div>
 
                     <div class="col-3">
-                        <h4>{{ $gkmProposal }}</h4>
+                        <h4><?php echo e($gkmProposal); ?></h4>
                         <small>Makalah</small>
                     </div>
 
                     <div class="col-3">
-                        <h4>{{ $gkmFinal }}</h4>
+                        <h4><?php echo e($gkmFinal); ?></h4>
                         <small>Final</small>
                     </div>
                 </div>
@@ -125,22 +123,22 @@
 
                 <div class="row text-center">
                     <div class="col-3">
-                        <h4>{{ $eifUsers }}</h4>
+                        <h4><?php echo e($eifUsers); ?></h4>
                         <small>Peserta</small>
                     </div>
 
                     <div class="col-3">
-                        <h4>{{ $eifKarya }}</h4>
+                        <h4><?php echo e($eifKarya); ?></h4>
                         <small>Judul</small>
                     </div>
 
                     <div class="col-3">
-                        <h4>{{ $eifProposal }}</h4>
+                        <h4><?php echo e($eifProposal); ?></h4>
                         <small>Makalah</small>
                     </div>
 
                     <div class="col-3">
-                        <h4>{{ $eifFinal }}</h4>
+                        <h4><?php echo e($eifFinal); ?></h4>
                         <small>Final</small>
                     </div>
                 </div>
@@ -166,22 +164,22 @@
 
                 <div class="row text-center">
                     <div class="col-3">
-                        <h4>{{ $ssUsers }}</h4>
+                        <h4><?php echo e($ssUsers); ?></h4>
                         <small>Peserta</small>
                     </div>
 
                     <div class="col-3">
-                        <h4>{{ $ssKarya }}</h4>
+                        <h4><?php echo e($ssKarya); ?></h4>
                         <small>Judul</small>
                     </div>
 
                     <div class="col-3">
-                        <h4>{{ $ssProposal }}</h4>
+                        <h4><?php echo e($ssProposal); ?></h4>
                         <small>Makalah</small>
                     </div>
 
                     <div class="col-3">
-                        <h4>{{ $ssFinal }}</h4>
+                        <h4><?php echo e($ssFinal); ?></h4>
                         <small>Final</small>
                     </div>
                 </div>
@@ -205,7 +203,8 @@
                     Tahapan Inovasi
                 </h5>
 
-                {!! $userTahapanChart->container() !!}
+                <?php echo $userTahapanChart->container(); ?>
+
 
             </div>
         </div>
@@ -264,14 +263,15 @@
 
 </section>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <!-- CHART LAMA -->
-{!! $userTahapanChart->script() !!}
+<?php echo $userTahapanChart->script(); ?>
+
 
 <script>
 
@@ -286,8 +286,9 @@ new ApexCharts(document.querySelector("#chartProgress"), {
     },
 
     series: [
-        {{ $complete }},
-        {{ $progress }}
+        <?php echo e($complete); ?>,
+        <?php echo e($progress); ?>
+
     ],
 
     labels: [
@@ -315,11 +316,11 @@ new ApexCharts(document.querySelector("#chartTrend"), {
 
     series: [{
         name: 'Inovasi',
-        data: @json($trendData)
+        data: <?php echo json_encode($trendData, 15, 512) ?>
     }],
 
     xaxis: {
-        categories: @json($trendYear)
+        categories: <?php echo json_encode($trendYear, 15, 512) ?>
     },
 
     stroke: {
@@ -345,9 +346,10 @@ new ApexCharts(document.querySelector("#chartPeserta"), {
     series: [{
         name: 'Peserta',
         data: [
-            {{ $gkmUsers }},
-            {{ $eifUsers }},
-            {{ $ssUsers }}
+            <?php echo e($gkmUsers); ?>,
+            <?php echo e($eifUsers); ?>,
+            <?php echo e($ssUsers); ?>
+
         ]
     }],
 
@@ -361,4 +363,6 @@ new ApexCharts(document.querySelector("#chartPeserta"), {
 
 </script>
 
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>

@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'role',
         'jenis_peserta',
+
     ];
 
     public function karyaTulis()

@@ -71,7 +71,7 @@ public function __construct($id = null, $tahun = null, $jenis = null)
 
             $ketua = [];
             $fasilitator = [];
-            $anggota = [];
+            $anggota = []; 
 
             foreach ($user->anggota as $a) {
 

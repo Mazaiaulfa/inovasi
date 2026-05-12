@@ -17,6 +17,6 @@ class Pengumuman extends Model
     'gambar',
     'urutan',
     'is_active',
-
 ];
+
 }
