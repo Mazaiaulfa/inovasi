@@ -19,10 +19,17 @@ class AnggotaController extends Controller
             return DataTables::of($anggota)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    return '
-                        <button type="button" data-id="' . $row->id . '" class="btn btn-sm btn-primary edit-btn">Edit</button>
-                        <button type="button" data-id="' . $row->id . '" class="btn btn-sm btn-danger delete-btn">Hapus</button>
-                    ';
+                   return '
+    <button type="button" data-id="' . $row->id . '" class="btn btn-sm btn-primary edit-btn"
+        title="Edit data">
+        <i class="bi bi-pencil-square"></i>
+    </button>
+
+    <button type="button" data-id="' . $row->id . '" class="btn btn-sm btn-danger delete-btn"
+        title="Hapus data">
+        <i class="bi bi-trash"></i>
+    </button>
+';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -50,7 +57,7 @@ class AnggotaController extends Controller
     'regex:/[0-9]/'
     ],
         'jabatan' => 'required|in:ketua,sekretaris,fasilitator,anggota'
-    ],[ 
+    ],[
     'badge.regex' => 'Nomor badge tidak boleh huruf semua, harus mengandung minimal satu angka.'
     ]);
 

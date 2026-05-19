@@ -62,33 +62,43 @@ class VerifFinalController extends Controller
 
                     ->addColumn('catatan', fn($row) => $row->notes ?? '-')
                     ->addColumn('aksi', function ($row) {
-                        return '
-                        <button class="btn btn-sm btn-primary btn-verif"
-                            data-id="' . $row->id . '"
-                            data-nama="' . e($row->karya->user->name ?? '-') . '"
-                            data-url="' . route('admin.final.update', $row->id) . '"
-                            data-judul="' . e($row->karya->judul ?? '-') . '"
-                            data-file="' . e($row->file_path ?? '') . '"
-                            data-status="' . e($row->status) . '"
-                            data-notes="' . e($row->notes ?? '') . '">
-                            <i class="fas fa-check-circle"></i>
-                            Verifikasi
-                            </button>
+    return '
+    <button class="btn btn-sm btn-primary btn-verif"
+        title="Verifikasi Final"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        data-id="' . $row->id . '"
+        data-nama="' . e($row->karya->user->name ?? '-') . '"
+        data-url="' . route('admin.final.update', $row->id) . '"
+        data-judul="' . e($row->karya->judul ?? '-') . '"
+        data-file="' . e($row->file_path ?? '') . '"
+        data-status="' . e($row->status) . '"
+        data-notes="' . e($row->notes ?? '') . '">
+        <i class="fas fa-check-circle"></i>
 
-                        <button class="btn btn-sm btn-warning btn-edit"
-                            data-id="' . $row->id . '"
-                            data-nama="' . e($row->karya->user->name ?? '-') . '"
-                            data-judul="' . e($row->karya->judul ?? '-') . '"
-                            data-status="' . e($row->status) . '"
-                            data-notes="' . e($row->notes ?? '') . '">
-                            <i class="fas fa-edit"></i>
-                             Edit
-                        </button>
+    </button>
 
-                        <button class="btn btn-sm btn-danger btn-delete"
-                            data-id="' . $row->id . '">
-                            <i class="fas fa-trash"></i> Hapus</button>';
-                    })
+    <button class="btn btn-sm btn-warning btn-edit"
+        title="Edit Final Karya"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        data-id="' . $row->id . '"
+        data-nama="' . e($row->karya->user->name ?? '-') . '"
+        data-judul="' . e($row->karya->judul ?? '-') . '"
+        data-status="' . e($row->status) . '"
+        data-notes="' . e($row->notes ?? '') . '">
+        <i class="fas fa-edit"></i>
+    </button>
+
+    <button class="btn btn-sm btn-danger btn-delete"
+        title="Hapus Final Karya"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        data-id="' . $row->id . '">
+        <i class="fas fa-trash"></i>
+
+    </button>';
+})
                     ->rawColumns(['file', 'aksi'])
                     ->make(true);
             }

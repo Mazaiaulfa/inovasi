@@ -50,29 +50,33 @@ if ($request->jenis && $request->jenis != 'all') {
                     return $row->catatan_judul ?: '-';
                 })
                 ->addColumn('aksi', function ($row) {
-                    return '
-                        <button class="btn btn-info btn-sm btn-preview"
-                                data-id="' . $row->id . '"
-                                data-nama="' . $row->user->name . '"
-                                data-judul="' . e($row->judul) . '"
-                                data-status="' . $row->status_judul . '"
-                                data-catatan="' . e($row->catatan_judul) . '"
-                                data-file_ajukan="' . asset($row->file_ajukan) . '">
-                        <i class="fas fa-eye"></i> Preview
+    return '
+        <button class="btn btn-info btn-sm btn-preview"
+                title="Preview"
+                data-id="' . $row->id . '"
+                data-nama="' . $row->user->name . '"
+                data-judul="' . e($row->judul) . '"
+                data-status="' . $row->status_judul . '"
+                data-catatan="' . e($row->catatan_judul) . '"
+                data-file_ajukan="' . asset($row->file_ajukan) . '">
+            <i class="fas fa-eye"></i>
         </button>
-                        <button class="btn btn-warning btn-sm btn-edit"
-                                data-id="' . $row->id . '"
-                                data-judul="' . e($row->judul) . '"
-                                data-status="' . $row->status_judul . '">
-                           <i class="fas fa-edit"></i> Edit
-                        </button>
 
-                        <button class="btn btn-danger btn-sm btn-delete ""
-                                data-id="' . $row->id . '">
-                           <i class="fas fa-trash"></i> Hapus
-                        </button>
-                    ';
-                })
+        <button class="btn btn-warning btn-sm btn-edit"
+                title="Edit"
+                data-id="' . $row->id . '"
+                data-judul="' . e($row->judul) . '"
+                data-status="' . $row->status_judul . '">
+            <i class="fas fa-edit"></i>
+        </button>
+
+        <button class="btn btn-danger btn-sm btn-delete"
+                title="Hapus"
+                data-id="' . $row->id . '">
+            <i class="fas fa-trash"></i>
+        </button>
+    ';
+})
                 ->editColumn('status_judul', function ($row) {
                     $color = [
                         'pending' => 'warning',

@@ -109,15 +109,60 @@ class DashboardController extends Controller
         $trendData = $trend->pluck('total');
 
 
+        // ================== FUNNEL ==================
+        $funnelLabel = [
+            'Peserta',
+            'Judul',
+            'Proposal',
+            'Final',
+            'Konvensi'
+        ];
+
+        $funnelData = [
+
+            // jumlah peserta
+            User::where('role', 'user')->count(),
+
+            // jumlah judul
+            KaryaTulis::count(),
+
+            // jumlah proposal
+            Proposal::count(),
+
+            // jumlah final
+            FinalKarya::count(),
+
+            // jumlah konvensi
+            HasilAkhir::count()
+        ];
+
+
+        // ================== TOP UNIT ==================
+        $topUnit = User::select(
+                'unit_kerja',
+                DB::raw('COUNT(*) as total')
+            )
+            ->where('role', 'user')
+            ->whereNotNull('unit_kerja')
+            ->groupBy('unit_kerja')
+            ->orderByDesc('total')
+            ->take(5)
+            ->get();
+
+        $topUnitLabel = $topUnit->pluck('unit_kerja');
+
+        $topUnitData = $topUnit->pluck('total');
+
+
         return view('admin.dashboard', [
 
-            // chart lama
+            // ================== CHART ==================
             'judulChart' => $judulChart->build(),
             'proposalChart' => $proposalChart->build(),
             'finalChart' => $finalChart->build(),
             'userTahapanChart' => $userPerTahapanChart->build(),
 
-            // total umum
+            // ================== TOTAL ==================
             'totalUsers' => User::where('role','user')->count(),
 
             'totalKarya' => KaryaTulis::whereHas('user', fn($q) =>
@@ -132,33 +177,41 @@ class DashboardController extends Controller
                 $q->where('role','user')
             )->count(),
 
-            // GKM
+            // ================== GKM ==================
             'gkmUsers' => $gkmUsers,
             'gkmKarya' => $gkmKarya,
             'gkmProposal' => $gkmProposal,
             'gkmFinal' => $gkmFinal,
 
-            // EIF
+            // ================== EIF ==================
             'eifUsers' => $eifUsers,
             'eifKarya' => $eifKarya,
             'eifProposal' => $eifProposal,
             'eifFinal' => $eifFinal,
 
-            // SS
+            // ================== SS ==================
             'ssUsers' => $ssUsers,
             'ssKarya' => $ssKarya,
             'ssProposal' => $ssProposal,
             'ssFinal' => $ssFinal,
 
-            // progress
+            // ================== PROGRESS ==================
             'complete' => $complete,
             'progress' => $progress,
 
-            // trend
+            // ================== TREND ==================
             'trendYear' => $trendYear,
             'trendData' => $trendData,
 
-            // latest karya
+            // ================== FUNNEL ==================
+            'funnelLabel' => $funnelLabel,
+            'funnelData' => $funnelData,
+
+            // ================== TOP UNIT ==================
+            'topUnitLabel' => $topUnitLabel,
+            'topUnitData' => $topUnitData,
+
+            // ================== LATEST ==================
             'latestKarya' => KaryaTulis::with('user')
                 ->latest()
                 ->take(5)

@@ -75,29 +75,32 @@ class VerifProposalController extends Controller
                 })
                 ->addColumn('waktu_upload', fn($row) => $row->created_at?->format('d M Y ') ?? '-')
                 ->addColumn('aksi', function ($row) {
-                    return '
-                    <button class="btn btn-sm btn-info btn-preview"
-                        data-id="' . $row->id . '"
-                        data-nama="' . ($row->karya->user->name ?? '-') . '"
-                        data-judul="' . ($row->karya->judul ?? '-') . '"
-                        data-status="' . $row->status . '"
-                        data-catatan="' . ($row->catatan ?? '') . '">
-                       <i class="fas fa-check-circle"></i>
-                       </button>
+    return '
+    <button class="btn btn-sm btn-info btn-preview"
+        title="Verifikasi Proposal"
+        data-id="' . $row->id . '"
+        data-nama="' . ($row->karya->user->name ?? '-') . '"
+        data-judul="' . ($row->karya->judul ?? '-') . '"
+        data-status="' . $row->status . '"
+        data-catatan="' . ($row->catatan ?? '') . '">
+       <i class="fas fa-check-circle"></i>
+    </button>
 
-                    <button class="btn btn-sm btn-warning btn-edit"
-                        data-id="' . $row->id . '"
-                        data-tahap_id="' . $row->tahap_id . '"
-                         data-status="' . $row->status . '"
-                       data-file="' . asset($row->file_path) . '">
+    <button class="btn btn-sm btn-warning btn-edit"
+        title="Edit Proposal"
+        data-id="' . $row->id . '"
+        data-tahap_id="' . $row->tahap_id . '"
+        data-status="' . $row->status . '"
+        data-file="' . asset($row->file_path) . '">
+        <i class="fas fa-edit"></i>
+    </button>
 
-                      <i class="fas fa-edit"></i>
-                     </button>
-
-
-                    <button class="btn btn-sm btn-danger btn-delete" data-id="' . $row->id . '">
-                     <i class="fas fa-trash"></i></button>';
-                })
+    <button class="btn btn-sm btn-danger btn-delete"
+        title="Hapus Proposal"
+        data-id="' . $row->id . '">
+        <i class="fas fa-trash"></i>
+    </button>';
+})
                 ->rawColumns(['file', 'aksi', 'tahapan', 'catatan','jenis_peserta'])
                 ->make(true);
         }

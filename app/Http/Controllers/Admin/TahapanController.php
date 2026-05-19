@@ -17,8 +17,22 @@ class TahapanController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    return '<button class="btn btn-sm btn-warning edit-btn" data-id="' . $row->id . '">Edit</button> 
-                            <button class="btn btn-sm btn-danger delete-btn" data-id="' . $row->id . '">Hapus</button>';
+                    return '
+                    <button class="btn btn-sm btn-warning edit-btn"
+                        data-id="' . $row->id . '"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Edit Tahapan">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger delete-btn"
+                        data-id="' . $row->id . '"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="Hapus Tahapan">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    ';
                 })
                 ->rawColumns(['action'])
                 ->make(true);

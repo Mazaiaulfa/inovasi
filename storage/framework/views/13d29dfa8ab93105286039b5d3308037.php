@@ -375,19 +375,13 @@ new ApexCharts(document.querySelector("#chartFunnel"), {
     },
 
     series: [{
-        name: 'Jumlah',
-        data: [435, 390, 320, 210, 58]
-    }],
+    name: 'Jumlah',
+    data: <?php echo json_encode($funnelData, 15, 512) ?>
+}],
 
     xaxis: {
-        categories: [
-            'Peserta',
-            'Judul',
-            'Proposal',
-            'Final',
-            'Konvensi'
-        ]
-    },
+    categories: <?php echo json_encode($funnelLabel, 15, 512) ?>
+},
 
     colors: [
         '#6366f1',
@@ -446,19 +440,13 @@ new ApexCharts(document.querySelector("#chartTopUnit"), {
     },
 
     series: [{
-        name: 'Inovasi',
-        data: [48, 42, 37, 31, 25]
-    }],
+    name: 'Inovasi',
+    data: <?php echo json_encode($topUnitData, 15, 512) ?>
+}],
 
     xaxis: {
-        categories: [
-            'Produksi',
-            'Maintenance',
-            'Operasional',
-            'Keuangan',
-            'HR'
-        ]
-    },
+    categories: <?php echo json_encode($topUnitLabel, 15, 512) ?>
+},
 
     colors: ['#06b6d4']
 
