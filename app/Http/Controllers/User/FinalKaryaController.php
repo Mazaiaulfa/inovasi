@@ -23,28 +23,39 @@ class FinalKaryaController extends Controller
 
             return DataTables::of($data)
                 ->addColumn('judul', fn($row) => $row->karya->judul)
-                
-                ->addColumn('file', fn($row) =>
-    '<a href="' . asset($row->file_path) . '" target="_blank">Lihat File</a>'
-)
-                
-                ->addColumn('status', function ($row) {
-                    switch ($row->status) {
-                        case 'pending':
-                            return '<span class="badge bg-warning text-white">Pending</span>';
-                        case 'disetujui':
-                            return '<span class="badge bg-success text-white">Disetujui</span>';
-                        case 'ditolak':
-                            return '<span class="badge bg-danger text-white">Ditolak</span>';
-                        default:
-                            return '<span class="badge bg-secondary text-white">Tidak Diketahui</span>';
+
+               ->addColumn('file', function ($row) {
+                    if ($row->file_path) {
+                        return '<a href="' . asset($row->file_path) . '"
+                                    target="_blank"
+                                    class="text-danger fw-bold">
+                                    <i class="fas fa-file-pdf"></i> Lihat PDF
+                                </a>';
                     }
+
+                    return '<span class="text-muted">Tidak ada file</span>';
                 })
+
+                ->addColumn('status', function ($row) {
+                switch ($row->status) {
+                    case 'pending':
+                        return '<span class="text-warning fw-bold text-capitalize">Pending</span>';
+
+                    case 'disetujui':
+                        return '<span class="text-success fw-bold text-capitalize">Disetujui</span>';
+
+                    case 'ditolak':
+                        return '<span class="text-danger fw-bold text-capitalize">Ditolak</span>';
+
+                    default:
+                        return '<span class="text-secondary fw-bold">Tidak Diketahui</span>';
+                }
+            })
                 ->addColumn('aksi', function ($row) {
                     $url = route('finalkarya.destroy', $row->id);
                     return '
                             <div class="btn-group">
-                                <button type="button" 
+                                <button type="button"
                                     class="btn btn-danger btn-sm btn-delete"
                                     data-id="' . $row->id . '"
                                     data-judul="' . e($row->karya->judul) . '"
@@ -68,7 +79,7 @@ class FinalKaryaController extends Controller
             'file' => 'required|mimes:pdf|max:2048'
         ]);
 
-        
+
     // Folder tujuan
     $targetPath = $_SERVER['DOCUMENT_ROOT'] . '/uploads/file_final_karya';
 

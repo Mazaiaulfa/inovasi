@@ -79,6 +79,7 @@ public function history(Request $request)
 {
     if ($request->ajax()) {
         $users = User::with(['karyaTulis','anggota'])
+        ->where('role', 'user')
 
     // filter tahun
     ->when($request->tahun, function($query) use ($request) {

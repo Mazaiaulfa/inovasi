@@ -320,8 +320,6 @@ class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
            class="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm hover:bg-gray-100 transition">
            Detail
         </a>
-
-
     </div>
 </div>
 @endforeach

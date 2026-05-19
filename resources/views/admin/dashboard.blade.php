@@ -42,15 +42,39 @@
     font-size:20px;
 }
 
+/* ===== CHART BOX ===== */
 .chart-card{
     border:none;
-    border-radius:20px;
+    border-radius:18px;
     box-shadow:0 5px 15px rgba(0,0,0,.05);
+    height:300px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+.chart-card .card-body{
+    padding:12px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
 }
 
 .chart-title{
     font-weight:700;
-    margin-bottom:15px;
+    margin-bottom:8px;
+    font-size:13px;
+}
+
+/* ===== ROW 2 LEBIH TINGGI ===== */
+.chart-card.tall{
+    height:520px;
+}
+
+/* BIAR LABEL TAHAPAN MUAT */
+.chart-card.tall canvas,
+.chart-card.tall svg{
+    overflow:visible !important;
 }
 </style>
 @endpush
@@ -63,11 +87,9 @@
     <h1>Dashboard Inovasi</h1>
 </div>
 
-<!-- ================= CARD ================= -->
-
+<!-- CARD -->
 <div class="row">
 
-    <!-- GKM -->
     <div class="col-md-4 mb-4">
         <div class="card stat-card bg-gkm">
             <div class="card-body">
@@ -192,26 +214,10 @@
 
 </div>
 
-<!-- ================= GRAFIK ================= -->
-
+<!-- CHART ROW 1 -->
 <div class="row">
 
-    <!-- Tahapan -->
-    <div class="col-md-6 mb-4">
-        <div class="card chart-card">
-            <div class="card-body">
-
-                <h5 class="chart-title">
-                    Tahapan Inovasi
-                </h5>
-
-                {!! $userTahapanChart->container() !!}
-
-            </div>
-        </div>
-    </div>
-
-    <!-- Progress -->
+    <!-- PROGRESS -->
     <div class="col-md-6 mb-4">
         <div class="card chart-card">
             <div class="card-body">
@@ -226,13 +232,49 @@
         </div>
     </div>
 
-</div>
-
-<div class="row">
-
-    <!-- Trend -->
+    <!-- FUNNEL -->
     <div class="col-md-6 mb-4">
         <div class="card chart-card">
+            <div class="card-body">
+
+                <h5 class="chart-title">
+                    Funnel Progress Tahapan
+                </h5>
+
+                <div id="chartFunnel"></div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- CHART ROW 2 -->
+<div class="row align-items-stretch">
+
+    <!-- TAHAPAN -->
+    <div class="col-md-6 mb-4">
+        <div class="card chart-card tall">
+
+            <div class="card-body">
+
+                <h5 class="chart-title">
+                    Tahapan Inovasi
+                </h5>
+
+                <div style="padding-bottom:50px;">
+                    {!! $userTahapanChart->container() !!}
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- TREND -->
+    <div class="col-md-6 mb-4">
+        <div class="card chart-card tall">
+
             <div class="card-body">
 
                 <h5 class="chart-title">
@@ -242,21 +284,28 @@
                 <div id="chartTrend"></div>
 
             </div>
+
         </div>
     </div>
 
-    <!-- Peserta -->
-    <div class="col-md-6 mb-4">
-        <div class="card chart-card">
+</div>
+
+<!-- CHART ROW 3 -->
+<div class="row">
+
+    <div class="col-md-12 mb-4">
+        <div class="card chart-card" style="height:320px;">
+
             <div class="card-body">
 
                 <h5 class="chart-title">
-                    Partisipasi Peserta
+                    Top Unit Kerja Aktif
                 </h5>
 
-                <div id="chartPeserta"></div>
+                <div id="chartTopUnit"></div>
 
             </div>
+
         </div>
     </div>
 
@@ -266,23 +315,21 @@
 </div>
 @endsection
 
+
 @push('scripts')
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-<!-- CHART LAMA -->
 {!! $userTahapanChart->script() !!}
 
 <script>
 
-//
-// ================= PROGRESS
-//
+// ================= PROGRESS =================
 new ApexCharts(document.querySelector("#chartProgress"), {
 
     chart: {
         type: 'donut',
-        height: 260
+        height: 230
     },
 
     series: [
@@ -298,19 +345,66 @@ new ApexCharts(document.querySelector("#chartProgress"), {
     colors: [
         '#22c55e',
         '#f59e0b'
+    ],
+
+    legend: {
+        position: 'bottom'
+    }
+
+}).render();
+
+
+// ================= FUNNEL =================
+new ApexCharts(document.querySelector("#chartFunnel"), {
+
+    chart: {
+        type: 'bar',
+        height: 230,
+        toolbar: {
+            show: false
+        }
+    },
+
+    plotOptions: {
+        bar: {
+            horizontal: true,
+            borderRadius: 6,
+            distributed: true
+        }
+    },
+
+    series: [{
+        name: 'Jumlah',
+        data: [435, 390, 320, 210, 58]
+    }],
+
+    xaxis: {
+        categories: [
+            'Peserta',
+            'Judul',
+            'Proposal',
+            'Final',
+            'Konvensi'
+        ]
+    },
+
+    colors: [
+        '#6366f1',
+        '#8b5cf6',
+        '#06b6d4',
+        '#22c55e',
+        '#f59e0b'
     ]
 
 }).render();
 
 
-//
-// ================= TREND
-//
+// ================= TREND =================
 new ApexCharts(document.querySelector("#chartTrend"), {
 
     chart: {
         type: 'line',
-        height: 320
+        height: 440
     },
 
     series: [{
@@ -324,7 +418,7 @@ new ApexCharts(document.querySelector("#chartTrend"), {
 
     stroke: {
         curve: 'smooth',
-        width: 4
+        width: 3
     },
 
     colors: ['#6366f1']
@@ -332,27 +426,37 @@ new ApexCharts(document.querySelector("#chartTrend"), {
 }).render();
 
 
-//
-// ================= PESERTA
-//
-new ApexCharts(document.querySelector("#chartPeserta"), {
+// ================= TOP UNIT =================
+new ApexCharts(document.querySelector("#chartTopUnit"), {
 
     chart: {
         type: 'bar',
-        height: 320
+        height: 250,
+        toolbar: {
+            show: false
+        }
+    },
+
+    plotOptions: {
+        bar: {
+            horizontal: true,
+            borderRadius: 6
+        }
     },
 
     series: [{
-        name: 'Peserta',
-        data: [
-            {{ $gkmUsers }},
-            {{ $eifUsers }},
-            {{ $ssUsers }}
-        ]
+        name: 'Inovasi',
+        data: [48, 42, 37, 31, 25]
     }],
 
     xaxis: {
-        categories: ['GKM', 'EIF', 'SS']
+        categories: [
+            'Produksi',
+            'Maintenance',
+            'Operasional',
+            'Keuangan',
+            'HR'
+        ]
     },
 
     colors: ['#06b6d4']
@@ -360,5 +464,4 @@ new ApexCharts(document.querySelector("#chartPeserta"), {
 }).render();
 
 </script>
-
 @endpush

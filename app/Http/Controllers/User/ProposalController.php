@@ -112,18 +112,29 @@ class ProposalController extends Controller
                 return "<strong>{$proposal->tahapan->nama}</strong><br><small>{$proposal->tahapan->deskripsi}</small>";
             })
             ->addColumn('file', function ($proposal) {
-            return "<a href='" . asset($proposal->file_path) . "' target='_blank'>Lihat File</a>";
-        })
+                if ($proposal->file_path) {
+                    return "<a href='" . asset($proposal->file_path) . "'
+                                target='_blank'
+                                class='text-danger fw-bold'>
+                                <i class='fas fa-file-pdf'></i> Lihat PDF
+                            </a>";
+                }
+
+                return "<span class='text-muted'>Tidak ada file</span>";
+            })
             ->addColumn('waktu_upload', function ($row) {
                 return $row->created_at ? $row->created_at->format('d M Y') : '-';
             })
             ->addColumn('status', function ($proposal) {
-                $badgeClass = match ($proposal->status) {
-                    'disetujui' => 'success',
-                    'ditolak' => 'danger',
-                    default => 'warning',
+                $textClass = match ($proposal->status) {
+                    'disetujui' => 'text-success fw-bold',
+                    'ditolak' => 'text-danger fw-bold',
+                    default => 'text-warning fw-bold',
                 };
-                return "<span class='badge bg-{$badgeClass} text-white'>" . ucfirst($proposal->status) . "</span>";
+
+                return "<span class='{$textClass} text-capitalize'>" 
+                        . ucfirst($proposal->status) .
+                    "</span>";
             })
             ->addColumn('aksi', function ($proposal) {
                 $url = route('proposal.destroy', $proposal->id);

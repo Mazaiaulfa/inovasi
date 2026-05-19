@@ -32,18 +32,33 @@ class VerifFinalController extends Controller
                     ->addColumn('nama', fn($row) => $row->karya->user->name ?? '-')
                     ->addColumn('jenis_peserta', fn($row) => $row->karya->user->jenis_peserta ?? '-')
                    ->addColumn('file', function ($row) {
-                    if ($row->file_path) {
-                        $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $row->file_path;
+    if ($row->file_path) {
+        $fullPath = $_SERVER['DOCUMENT_ROOT'] . '/' . $row->file_path;
 
-                        if (file_exists($fullPath)) {
-                            return '<a href="' . asset($row->file_path) . '"
-                                target="_blank" class="btn btn-sm btn-outline-primary">
-                                <i class="fas fa-eye"></i> Lihat</a>';
-                        }
-                    }
+        if (file_exists($fullPath)) {
+            return '
+                <a href="' . asset($row->file_path) . '"
+                   target="_blank"
+                   style="
+                        border:1px solid #6366f1;
+                        color:#6366f1;
+                        padding:6px 10px;
+                        border-radius:6px;
+                        font-size:11px;
+                        font-weight:400;
+                        text-decoration:none;
+                        display:inline-flex;
+                        align-items:center;
+                        gap:5px;
+                   ">
+                    <i class="fas fa-file-pdf"></i> Lihat PDF
+                </a>
+            ';
+        }
+    }
 
-                    return '<span class="text-muted">File tidak tersedia</span>';
-                })
+    return '<span class="text-muted">Tidak ada file</span>';
+})
 
                     ->addColumn('catatan', fn($row) => $row->notes ?? '-')
                     ->addColumn('aksi', function ($row) {
@@ -51,6 +66,7 @@ class VerifFinalController extends Controller
                         <button class="btn btn-sm btn-primary btn-verif"
                             data-id="' . $row->id . '"
                             data-nama="' . e($row->karya->user->name ?? '-') . '"
+                            data-url="' . route('admin.final.update', $row->id) . '"
                             data-judul="' . e($row->karya->judul ?? '-') . '"
                             data-file="' . e($row->file_path ?? '') . '"
                             data-status="' . e($row->status) . '"

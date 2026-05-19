@@ -35,11 +35,11 @@ class VerifProposalController extends Controller
     $jenis = $row->karya->user->jenis_peserta ?? null;
 
     if ($jenis === 'EIF') {
-        return '<span class="badge bg-primary">EIF</span>';
+        return '<span class="">EIF</span>';
     } elseif ($jenis === 'GKM') {
-        return '<span class="badge bg-success">GKM</span>';
+        return '<span class="">GKM</span>';
     } elseif ($jenis === 'SS') {
-        return '<span class="badge bg-warning text-dark">SS</span>';
+        return '<span class="">SS</span>';
     }
 
     return '-';
@@ -48,10 +48,28 @@ class VerifProposalController extends Controller
                     if (!$row->tahapan) return '-';
                     return "<strong>{$row->tahapan->nama}</strong><br><small>{$row->tahapan->deskripsi}</small>";
                 })
-               ->addColumn('file', fn($row) =>
-             '<a href="' . asset($row->file_path) . '" target="_blank">Lihat</a>'
-)
+            ->addColumn('file', function ($row) {
+    $fileUrl = asset($row->file_path);
 
+    return '
+        <a href="' . $fileUrl . '"
+           target="_blank"
+           style="
+                border:1px solid #6366f1;
+                color:#6366f1;
+                padding:5px 11px;
+                border-radius:6px;
+                font-size:11px;
+                font-weight:400;
+                text-decoration:none;
+                display:inline-flex;
+                align-items:center;
+                gap:5px;
+           ">
+            <i class="fas fa-file-pdf"></i> Lihat PDF
+        </a>
+    ';
+})
                 ->addColumn('catatan', function ($row) {
                     return $row->catatan ?: '-';
                 })

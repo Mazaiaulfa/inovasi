@@ -53,11 +53,7 @@
                     <i class="fa-solid fa-chart-simple"></i> <span>Rekap</span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li class="<?php echo e(Request::is('admin/rekap') ? 'active' : ''); ?>">
-                        <a class="nav-link" href="<?php echo e(url('/admin/rekap')); ?>">
-                            <i class="fas fa-clipboard-list"></i> Data Inovasi
-                        </a>
-                    </li>
+                    
                     <li class="<?php echo e(Request::is('admin/history') ? 'active' : ''); ?>">
                                 <a class="nav-link" href="<?php echo e(url('/admin/history')); ?>">
                                     <i class="fas fa-clipboard-list"></i> History Inovasi

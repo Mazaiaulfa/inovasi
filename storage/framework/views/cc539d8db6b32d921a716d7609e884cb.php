@@ -216,8 +216,6 @@
            class="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm hover:bg-gray-100 transition">
            Detail
         </a>
-
-
     </div>
 </div>
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

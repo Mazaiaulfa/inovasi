@@ -30,14 +30,17 @@ public function __construct($id = null, $tahun = null, $jenis = null)
 
    public function collection()
 {
-    $query = User::with(['karyaTulis' => function ($q) {
+    $query = User::with([
+        'karyaTulis' => function ($q) {
 
-        if ($this->tahun) {
-            $q->whereYear('created_at', $this->tahun);
-        }
+            if ($this->tahun) {
+                $q->whereYear('created_at', $this->tahun);
+            }
 
-    }, 'anggota'])
-    ->where('role', '!=', 'admin');
+        },
+        'anggota'
+    ])
+    ->where('role', 'user'); // hanya role user
 
     // Filter tahun karya tulis
     if ($this->tahun) {
@@ -71,7 +74,7 @@ public function __construct($id = null, $tahun = null, $jenis = null)
 
             $ketua = [];
             $fasilitator = [];
-            $anggota = []; 
+            $anggota = [];
 
             foreach ($user->anggota as $a) {
 

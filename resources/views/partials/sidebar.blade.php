@@ -53,11 +53,11 @@
                     <i class="fa-solid fa-chart-simple"></i> <span>Rekap</span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li class="{{ Request::is('admin/rekap') ? 'active' : '' }}">
+                    {{-- <li class="{{ Request::is('admin/rekap') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('/admin/rekap') }}">
                             <i class="fas fa-clipboard-list"></i> Data Inovasi
                         </a>
-                    </li>
+                    </li> --}}
                     <li class="{{ Request::is('admin/history') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ url('/admin/history') }}">
                                     <i class="fas fa-clipboard-list"></i> History Inovasi

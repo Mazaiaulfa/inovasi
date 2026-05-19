@@ -40,6 +40,11 @@
     background: #6366f1;
     border-radius: 3px 3px 0 0;
 }
+.btn-pdf {
+    padding: 5px 11px;
+    font-size: 11px;
+    border-radius: 8px;
+}
 </style>
 
 <?php $__env->stopPush(); ?>
@@ -348,7 +353,7 @@ $(document).ready(function () {
             if (!data) return '-';
             return `
                 <a href="${data}" target="_blank"
-                   class="btn btn-sm btn-outline-primary">
+                   class="btn btn-sm btn-outline-primary btn-pdf">
                     <i class="fas fa-file-pdf"></i> Lihat PDF
                 </a>`;
         }

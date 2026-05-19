@@ -1,12 +1,11 @@
-@extends('layouts.app')
-@section('title', 'Pengajuan Judul')
+<?php $__env->startSection('title', 'Pengajuan Judul'); ?>
 
-@push('style')
+<?php $__env->startPush('style'); ?>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('main')
+<?php $__env->startSection('main'); ?>
 <div class="main-content">
     <div class="container-fluid">
         <div class="section-body">
@@ -15,7 +14,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4>Pengajuan Judul</h4>
-                            <a href="{{ route('karya.create') }}" class="btn btn-primary">Ajukan Judul</a>
+                            <a href="<?php echo e(route('karya.create')); ?>" class="btn btn-primary">Ajukan Judul</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -39,9 +38,9 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('scripts')
+<?php $__env->startPush('scripts'); ?>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
@@ -52,12 +51,12 @@
     $(document).ready(function() {
 
         // Base URL untuk storage
-        const storageUrl = "{{ asset('storage') }}";
+        const storageUrl = "<?php echo e(asset('storage')); ?>";
 
         $('#karya-table').DataTable({
             processing: false,
             serverSide: true,
-            ajax: '{{ route('karya.index') }}',
+            ajax: '<?php echo e(route('karya.index')); ?>',
             columns: [
                 {
                     data: 'id',
@@ -144,20 +143,22 @@
                     const form = $('<form>', {
                         action: actionUrl,
                         method: 'POST'
-                    }).append('@csrf', '@method("DELETE")').appendTo('body');
+                    }).append('<?php echo csrf_field(); ?>', '<?php echo method_field("DELETE"); ?>').appendTo('body');
 
                     form.submit();
                 }
             });
         });
 
-        @if(session('success'))
+        <?php if(session('success')): ?>
         Swal.fire({
             icon: 'success',
             title: 'Berhasil',
-            text: '{{ session('success') }}'
+            text: '<?php echo e(session('success')); ?>'
         });
-        @endif
+        <?php endif; ?>
     });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/user/karya/index.blade.php ENDPATH**/ ?>

@@ -33,11 +33,11 @@ if ($request->jenis && $request->jenis != 'all') {
     $jenis = $row->user->jenis_peserta ?? null;
 
     if ($jenis == 'EIF') {
-        return '<span class="badge bg-primary">EIF</span>';
+        return '<span class="">EIF</span>';
     } elseif ($jenis == 'GKM') {
-        return '<span class="badge bg-success">GKM</span>';
+        return '<span class="">GKM</span>';
     } elseif ($jenis == 'SS') {
-        return '<span class="badge bg-warning text-dark">SS</span>';
+        return '<span class="">SS</span>';
     }
 
     return '-';
@@ -58,7 +58,7 @@ if ($request->jenis && $request->jenis != 'all') {
                                 data-status="' . $row->status_judul . '"
                                 data-catatan="' . e($row->catatan_judul) . '"
                                 data-file_ajukan="' . asset($row->file_ajukan) . '">
-            <i class="fas fa-eye"></i> Preview
+                        <i class="fas fa-eye"></i> Preview
         </button>
                         <button class="btn btn-warning btn-sm btn-edit"
                                 data-id="' . $row->id . '"
@@ -67,7 +67,7 @@ if ($request->jenis && $request->jenis != 'all') {
                            <i class="fas fa-edit"></i> Edit
                         </button>
 
-                        <button class="btn btn-danger btn-sm btn-delete  bi-trash""
+                        <button class="btn btn-danger btn-sm btn-delete ""
                                 data-id="' . $row->id . '">
                            <i class="fas fa-trash"></i> Hapus
                         </button>

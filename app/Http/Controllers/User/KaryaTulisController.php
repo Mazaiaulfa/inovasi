@@ -20,16 +20,9 @@ class KaryaTulisController extends Controller
             $query = KaryaTulis::where('user_id', Auth::id())->latest();
 
             return Datatables::of($query)
-                ->addColumn('file', function ($item) {
-    if (!$item->file_ajukan) {
-        return '<span class="text-muted">Tidak ada file</span>';
-    }
-
-   return '<a href="' . asset($item->file_ajukan) . '" target="_blank" class="btn btn-info btn-sm">
-    Lihat File
-</a>';
+            ->addColumn('file_ajukan', function ($item) {
+            return asset('/' . $item->file_ajukan);
 })
-
 
                 ->addColumn('catatan', function ($item) {
                     return $item->catatan_judul ?? '-';
@@ -38,22 +31,23 @@ class KaryaTulisController extends Controller
                     return '
                     <div class="btn-group">
                         <a href="' . route('karya.edit', $item->id) . '" class="btn btn-primary btn-sm mr-2">
-                            Edit
+                            <i class="fas fa-edit"></i> Edit
                         </a>
                         <form action="' . route('karya.destroy', $item->id) . '" method="POST" style="display:inline;">
                             ' . csrf_field() . method_field('DELETE') . '
                             <button type="submit" class="btn btn-danger btn-sm">
-                                Hapus
+                                <i class="fas fa-trash"></i> Hapus
                             </button>
                         </form>
                     </div>';
                 })
-                ->rawColumns(['file', 'action'])
+                ->rawColumns(['action', 'file_ajukan'])
                 ->make(true);
         }
 
         return view('user.karya.index');
     }
+
 
     // =========================
     // SIMPAN DATA
