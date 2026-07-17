@@ -165,7 +165,7 @@
         </div>
     </header>
 
-{{-- <section class="pt-16 relative">
+<section class="pt-16 relative">
 
 <div class="relative overflow-hidden h-[90vh]">
 
@@ -253,7 +253,7 @@ class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full te
 class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
 </div>
 </div>
-</section> --}}
+</section>
 
     {{-- <!-- Hero Section -->
     <section id="hero" class="pt-24 pb-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
@@ -272,7 +272,7 @@ class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
             </div>
         </div>
     </section> --}}
-<section id="hero" class="pt-24 pb-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
+{{-- <section id="hero" class="pt-24 pb-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
 <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-10">
 
 <!-- TEXT -->
@@ -308,7 +308,7 @@ class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
             Pengumuman
         </span> --}}
 
-        <h2 class="text-2xl md:text-3xl font-semibold mb-3 leading-snug">
+        {{-- <h2 class="text-2xl md:text-3xl font-semibold mb-3 leading-snug">
             {{ $item->judul }}
         </h2>
 
@@ -322,9 +322,9 @@ class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
         </a>
     </div>
 </div>
-@endforeach
+@endforeach --}}
 
-</div>
+{{-- </div>
 
 <!-- PREV -->
 <button onclick="prevTextSlide()"
@@ -357,7 +357,7 @@ class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
 </div>
 
 </div>
-</section>
+</section> --}}
 <!-- resources/views/landing.blade.php -->
 {{-- <div class="relative">
 

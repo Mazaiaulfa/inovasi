@@ -12,6 +12,10 @@
     box-shadow:0 4px 20px rgba(0,0,0,.06);
 }
 
+/* ===========================
+   TABLE
+=========================== */
+
 .table-modern{
     width:100%;
     border-collapse:separate;
@@ -21,90 +25,71 @@
 .table-modern thead th{
     background:#f8fafc;
     color:#64748b;
-    font-size:15px;
+    font-size:14px;
     font-weight:700;
-    padding:18px;
+    padding:12px 16px;
     border-bottom:1px solid #e5e7eb;
     border-right:1px solid #edf2f7;
     vertical-align:middle;
+    white-space:nowrap;
 }
 
 .table-modern tbody td{
-    padding:18px;
+    padding:12px 16px;
     border-bottom:1px solid #edf2f7;
     border-right:1px solid #edf2f7;
-    vertical-align:top;
+    vertical-align:middle;
+    font-size:14px;
+}
+
+.table-modern tbody tr{
+    transition:.2s;
 }
 
 .table-modern tbody tr:hover{
-    background:#fafcff;
+    background:#f8fbff;
 }
 
 .table-modern th:first-child,
 .table-modern td:first-child{
-    width:70px;
+    width:60px;
+    text-align:center;
 }
+
+.table-modern td:last-child,
+.table-modern th:last-child{
+    text-align:center;
+}
+
+/* ===========================
+   STATUS
+=========================== */
 
 .badge-status{
     display:inline-block;
-    padding:10px 18px;
+    padding:6px 14px;
     border-radius:30px;
-    font-size:14px;
-    font-weight:700;
+    font-size:12px;
+    font-weight:600;
 }
 
 .status-success{
-    background:#22c55e;
-    color:#fff;
+    background:#dcfce7;
+    color:#15803d;
 }
 
 .status-warning{
-    background:#f59e0b;
-    color:#fff;
+    background:#fef3c7;
+    color:#b45309;
 }
 
 .status-secondary{
-    background:#94a3b8;
-    color:#fff;
-}
-
-.action-btn{
-    width:34px;
-    height:34px;
-    border:none;
-    border-radius:8px;
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-decoration:none;
-    transition:.2s;
-    margin:auto;
-}
-
-.action-btn i{
-    font-size:10px;
-}
-
-.action-btn:hover{
-    color:#fff;
-    transform:translateY(-2px);
-}
-
-.btn-view{
-    background:#38bdf8;
-}
-
-.btn-edit{
-    background:#f59e0b;
-}
-
-.btn-delete{
-    background:#ef4444;
+    background:#e2e8f0;
+    color:#475569;
 }
 
 .nilai-text{
-    color:#4f46e5;
+    color:#2563eb;
     font-weight:700;
 }
 
@@ -112,6 +97,10 @@
     color:#f59e0b;
     font-weight:600;
 }
+
+/* ===========================
+   TOP TOOLBAR
+=========================== */
 
 .top-toolbar{
     display:flex;
@@ -122,33 +111,130 @@
 
 .progress-card{
     background:#f8fafc;
-    border-radius:10px;
-    padding:12px 18px;
     border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:10px 16px;
+    font-size:14px;
+}
+
+/* ===========================
+   ACTION BUTTON
+=========================== */
+
+.action-group{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+}
+
+.action-btn,
+.btn-locked{
+    width:38px;
+    height:38px;
+    border-radius:10px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    transition:.2s ease;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.action-btn i,
+.btn-locked i{
+    font-size:16px;
+}
+
+.action-btn:hover{
+    transform:translateY(-2px);
+    color:#fff;
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
+}
+
+.btn-detail{
+    background:#3b82f6;
+    color:#fff;
+}
+
+.btn-detail:hover{
+    background:#2563eb;
+}
+
+.btn-view{
+    background:#22c55e;
+    color:#fff;
+}
+
+.btn-view:hover{
+    background:#16a34a;
+}
+
+.btn-edit{
+    background:#f59e0b;
+    color:#fff;
+}
+
+.btn-edit:hover{
+    background:#d97706;
 }
 
 .btn-locked{
-    width:34px;
-    height:34px;
-    border-radius:8px;
-    background:#475569;
+    background:#64748b;
     color:#fff;
     cursor:not-allowed;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:auto;
-    box-shadow:0 2px 8px rgba(71,85,105,.25);
 }
 
-.btn-locked i{
-    font-size:13px;
+/* ===========================
+   BUTTON SUBMIT
+=========================== */
+
+.btn-primary{
+    border-radius:8px;
+    padding:9px 18px;
+    font-weight:600;
 }
 
-.btn-locked:hover{
-    background:#475569;
-    color:#fff;
-    transform:none;
+.btn-primary i{
+    margin-right:5px;
+}
+
+/* ===========================
+   ALERT
+=========================== */
+
+.alert{
+    border:none;
+    border-radius:10px;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width:768px){
+
+    .table-modern thead th,
+    .table-modern tbody td{
+        padding:10px;
+        font-size:13px;
+    }
+
+    .action-group{
+        gap:6px;
+    }
+
+    .action-btn,
+    .btn-locked{
+        width:34px;
+        height:34px;
+    }
+
+    .action-btn i,
+    .btn-locked i{
+        font-size:14px;
+    }
+
 }
 </style>
 <?php $__env->stopPush(); ?>
@@ -170,7 +256,6 @@
 </div>
     <div class="card">
     <div class="card-body">
-
         <?php
             $belumDinilai = $peserta->where('nilai', null)->count();
             $totalPeserta = $peserta->count();
@@ -183,19 +268,7 @@
 
         <div class="top-toolbar">
 
-            <div class="progress-card">
-                <b>Progress:</b>
-                <?php echo e($sudahDinilai); ?>/<?php echo e($totalPeserta); ?>
 
-
-                &nbsp; | &nbsp;
-
-                <b style="color:#ef4444">
-                    Belum Dinilai:
-                    <?php echo e($belumDinilai); ?>
-
-                </b>
-            </div>
 
         </div>
 
@@ -282,27 +355,41 @@
 
                        <td>
 
-<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$sudahSubmitSemua): ?>
+<div class="action-group">
 
     
+    <a href="<?php echo e(route('juri.peserta.detail',$item->id)); ?>"
+       class="action-btn btn-detail"
+       data-toggle="tooltip"
+       title="Lihat Detail">
+
+        <i class="bi bi-eye"></i>
+
+    </a>
+
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(!$sudahSubmitSemua): ?>
 
     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(empty($item->nilai)): ?>
 
+        
         <a href="<?php echo e(route('juri.nilai.form',$item->id)); ?>"
            class="action-btn btn-view"
-           title="Nilai">
+           data-toggle="tooltip"
+           title="Mulai Penilaian">
 
-            <i class="fas fa-check"></i>
+            <i class="bi bi-clipboard-check"></i>
 
         </a>
 
     <?php else: ?>
 
+        
         <a href="<?php echo e(route('juri.nilai.form',$item->id)); ?>"
            class="action-btn btn-edit"
-           title="Edit">
+           data-toggle="tooltip"
+           title="Edit Penilaian">
 
-            <i class="fas fa-pen"></i>
+            <i class="bi bi-pencil-square"></i>
 
         </a>
 
@@ -311,16 +398,18 @@
 <?php else: ?>
 
     
-
     <a href="javascript:void(0)"
-       class="action-btn btn-locked locked-action"
+       class="btn-locked locked-action"
+       data-toggle="tooltip"
        title="Penilaian Terkunci">
 
-        <i class="fas fa-lock"></i>
+        <i class="bi bi-lock-fill"></i>
 
     </a>
 
 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
+</div>
 
 </td>
 

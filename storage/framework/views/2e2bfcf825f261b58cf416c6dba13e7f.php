@@ -19,49 +19,52 @@ body{
     background:var(--bg);
 }
 
+/* ================= HEADER ================= */
+
 .section-header{
-    margin-bottom:25px;
+    margin-bottom:18px;
 }
 
 .section-header h1{
-    font-size:28px;
+    font-size:24px;
     font-weight:700;
     color:var(--dark);
 }
 
-/* HERO */
+/* ================= HERO ================= */
+
 .hero-card{
     position:relative;
     overflow:hidden;
     border:none;
-    border-radius:24px;
+    border-radius:18px;
     background:linear-gradient(135deg,var(--primary),var(--secondary));
-    color:white;
-    padding:35px;
-    margin-bottom:25px;
-    box-shadow:0 15px 35px rgba(79,70,229,.25);
+    color:#fff;
+    padding:26px 30px;
+    margin-bottom:22px;
+    box-shadow:0 10px 25px rgba(79,70,229,.18);
 }
 
 .hero-card::before{
     content:'';
     position:absolute;
-    width:250px;
-    height:250px;
+    width:200px;
+    height:200px;
     border-radius:50%;
     background:rgba(255,255,255,.08);
-    top:-100px;
-    right:-80px;
+    top:-90px;
+    right:-70px;
 }
 
 .hero-card::after{
     content:'';
     position:absolute;
-    width:180px;
-    height:180px;
+    width:140px;
+    height:140px;
     border-radius:50%;
     background:rgba(255,255,255,.05);
-    bottom:-80px;
-    left:-50px;
+    bottom:-60px;
+    left:-30px;
 }
 
 .hero-content{
@@ -70,58 +73,60 @@ body{
 }
 
 .hero-title{
-    font-size:30px;
+    font-size:25px;
     font-weight:700;
-    margin-bottom:8px;
+    margin-bottom:6px;
 }
 
 .hero-subtitle{
+    font-size:14px;
     opacity:.9;
-    margin-bottom:20px;
+    margin-bottom:18px;
 }
 
 .progress-modern{
-    height:10px;
+    height:8px;
     border-radius:50px;
-    background:rgba(255,255,255,.2);
     overflow:hidden;
+    background:rgba(255,255,255,.2);
 }
 
 .progress-modern .bar{
     height:100%;
+    background:#fff;
     border-radius:50px;
-    background:white;
 }
 
 .hero-icon{
-    font-size:90px;
-    opacity:.15;
+    font-size:72px;
+    opacity:.12;
 }
 
-/* STAT */
+/* ================= STAT CARD ================= */
+
 .stat-card{
-    background:white;
+    background:#fff;
     border:none;
-    border-radius:22px;
-    padding:25px;
-    box-shadow:0 8px 25px rgba(0,0,0,.05);
-    transition:.3s;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 5px 18px rgba(0,0,0,.05);
+    transition:.25s;
     height:100%;
 }
 
 .stat-card:hover{
-    transform:translateY(-6px);
+    transform:translateY(-4px);
 }
 
 .stat-icon{
-    width:65px;
-    height:65px;
-    border-radius:18px;
+    width:55px;
+    height:55px;
+    border-radius:15px;
     display:flex;
-    align-items:center;
     justify-content:center;
-    font-size:24px;
-    margin-bottom:18px;
+    align-items:center;
+    font-size:20px;
+    margin-bottom:14px;
 }
 
 .icon-blue{
@@ -140,61 +145,76 @@ body{
 }
 
 .stat-title{
+    font-size:13px;
     color:#6b7280;
-    font-size:14px;
-    margin-bottom:6px;
+    margin-bottom:4px;
 }
 
 .stat-number{
-    font-size:34px;
+    font-size:28px;
     font-weight:700;
     color:#111827;
 }
 
-/* CHART */
+/* ================= CHART ================= */
+
 .chart-card{
     border:none;
-    border-radius:22px;
-    background:white;
-    box-shadow:0 8px 25px rgba(0,0,0,.05);
+    border-radius:18px;
+    background:#fff;
     overflow:hidden;
+    box-shadow:0 5px 18px rgba(0,0,0,.05);
 }
 
 .chart-card .card-header{
-    background:white;
+    background:#fff;
     border:none;
-    padding:25px 25px 0;
+    padding:18px 20px 0;
 }
 
 .chart-card .card-header h4{
-    font-size:18px;
-    font-weight:700;
-    color:#111827;
     margin:0;
+    font-size:16px;
+    font-weight:700;
 }
 
 .chart-card .card-body{
-    padding:20px 25px 25px;
+    padding:15px 20px 20px;
 }
 
 #progressChart,
 #nilaiChart{
-    min-height:300px;
+    min-height:250px;
 }
+
+/* ================= RESPONSIVE ================= */
 
 @media(max-width:768px){
 
-    .hero-title{
-        font-size:22px;
-    }
+.hero-card{
+    padding:22px;
+}
 
-    .hero-icon{
-        display:none;
-    }
+.hero-title{
+    font-size:20px;
+}
 
-    .stat-number{
-        font-size:28px;
-    }
+.hero-subtitle{
+    font-size:13px;
+}
+
+.hero-icon{
+    display:none;
+}
+
+.stat-number{
+    font-size:24px;
+}
+
+.stat-card{
+    padding:18px;
+}
+
 }
 </style>
 <?php $__env->stopPush(); ?>

@@ -165,95 +165,104 @@
         </div>
     </header>
 
+<section class="pt-16 relative">
 
+<div class="relative overflow-hidden h-[90vh]">
 
-    
-<section id="hero" class="pt-24 pb-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
-<div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-10">
+<div id="bannerSlider" class="relative w-full h-full">
 
-<!-- TEXT -->
-<div class="md:w-1/2 relative">
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $pengumuman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
 
-<div id="textSlider">
+<div class="banner-slide">
 
-<!-- DEFAULT SLIDE -->
-<div class="text-slide active">
-    <div class="bg-white/10 backdrop-blur-md p-5 rounded-xl shadow-md">
+    <!-- background -->
+    <div class="absolute inset-0 bg-cover bg-center"
+         style="background-image:url('<?php echo e(asset('img/slide'.(($key%6)+1).'.png')); ?>')">
+    </div>
 
-        <h2 class="text-2xl md:text-3xl font-semibold mb-3 leading-snug">
-            Sistem Pengelolaan Inovasi
-        </h2>
+    <!-- overlay -->
+    <div class="absolute inset-0 bg-black/40"></div>
 
-        <p class="mb-4 text-sm md:text-base text-white/80 leading-relaxed">
-            Daftarkan tim Anda, unggah proposal, dan pantau status verifikasi secara real-time dalam satu platform.
-        </p>
+    <!-- content -->
+    <div class="relative h-full flex items-center justify-center text-center text-white px-6">
 
-        <a href="<?php echo e(route('register')); ?>"
-           class="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm hover:bg-gray-100 transition">
-           <i class="fas fa-user-plus mr-1"></i>Daftar
-        </a>
+        <div class="max-w-3xl">
+
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->urgent): ?>
+            <div class="inline-block bg-red-500 px-4 py-1 rounded-full text-xs mb-5">
+                🔥 Pengumuman Penting
+            </div>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
+            <h2 class="text-4xl md:text-6xl font-bold mb-6">
+                <?php echo e($item->judul); ?>
+
+            </h2>
+
+            <p class="text-lg mb-8">
+                <?php echo e($item->ringkasan); ?>
+
+            </p>
+
+            <a href="<?php echo e(route('pengumuman.detail',$item->id)); ?>"
+               class="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-full">
+               Lihat Detail
+            </a>
+
+        </div>
 
     </div>
+
 </div>
-<!-- DATA SLIDE -->
-<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $pengumuman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-<div class="text-slide <?php echo e($index == 0 ? '' : ''); ?>">
-    <div class="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg">
 
-       
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
 
-        <h2 class="text-2xl md:text-3xl font-semibold mb-3 leading-snug">
-            <?php echo e($item->judul); ?>
+<div class="banner-slide">
 
-        </h2>
-
-        <p class="mb-4 text-sm md:text-base text-white/80 leading-relaxed">
-            <?php echo e($item->ringkasan); ?>
-
-        </p>
-
-        <a href="<?php echo e(route('pengumuman.detail',$item->id)); ?>"
-           class="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm hover:bg-gray-100 transition">
-           Detail
-        </a>
+    <div class="absolute inset-0 bg-cover bg-center"
+         style="background-image:url('<?php echo e(asset('img/slide1.png')); ?>')">
     </div>
-</div>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
+    <div class="absolute inset-0 bg-black/40"></div>
+
+    <div class="relative h-full flex items-center justify-center text-white">
+        <h2 class="text-5xl font-bold">
+            Selamat Datang di PIM Innovation Fest
+        </h2>
+    </div>
 
 </div>
 
-<!-- PREV -->
-<button onclick="prevTextSlide()"
-class="absolute left-0 md:-left-10 top-1/2 -translate-y-1/2
-       bg-white/90 hover:bg-white text-indigo-600
-       p-3 rounded-full shadow-lg transition hover:scale-110">
+<?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+
+</div>
+
+
+<!-- prev -->
+<button onclick="prevSlide()"
+class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full text-white text-xl z-20">
 ❮
 </button>
 
-</div>
-
-<!-- IMAGE -->
-<div class="md:w-1/2 relative">
-
-<img src="<?php echo e(asset('img/landing.png')); ?>"
-     class="rounded-lg shadow-lg animate-[float_4s_ease-in-out_infinite]">
-
-<!-- NEXT -->
-<button onclick="nextTextSlide()"
-class="absolute right-2 top-1/2 -translate-y-1/2
-       bg-white/90 hover:bg-white text-indigo-600
-       p-3 rounded-full shadow-lg transition hover:scale-110">
+<!-- next -->
+<button onclick="nextSlide()"
+class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full text-white text-xl z-20">
 ❯
 </button>
 
-<div id="textDots"
-class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+<!-- DOT INDICATOR -->
+<div id="sliderDots"
+class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
 </div>
-
-</div>
-
 </div>
 </section>
+
+    
+
+
+        
+
+
 <!-- resources/views/landing.blade.php -->
 
 

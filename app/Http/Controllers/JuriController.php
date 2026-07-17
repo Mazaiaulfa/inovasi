@@ -73,6 +73,24 @@ class JuriController extends Controller
         return view('juri.peserta.nilai', compact('peserta', 'kriteria'));
     }
 
+
+
+    public function detailPeserta($id)
+{
+    $juri = auth()->user();
+
+    // Pastikan peserta memang milik juri
+    if (!$juri->pesertaYangDinilai->contains('id', $id)) {
+        abort(403);
+    }
+
+    $peserta = User::with([
+        'karyaTulis.finalKarya',
+        'anggota'
+    ])->findOrFail($id);
+
+    return view('juri.peserta.detail', compact('peserta'));
+}
     // =========================
     // SIMPAN NILAI (DRAFT)
     // =========================

@@ -252,6 +252,8 @@ Route::get('/profile', [ProfileController::class, 'index'])
         ->name('submit');
         Route::post('/submit-semua', [JuriController::class, 'submitSemua'])
     ->name('submit.semua');
+     Route::get('/peserta/{id}', [JuriController::class, 'detailPeserta'])
+        ->name('peserta.detail');
     // Route::get('/nilai/{id}', [JuriController::class, 'penilaian'])->name('nilai');
     Route::get('/nilai/{id}', [NilaiController::class, 'create'])
     ->name('nilai.form'); // BUKAN juri.nilai.form
