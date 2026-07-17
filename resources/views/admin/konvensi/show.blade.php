@@ -22,7 +22,7 @@
 }
 
 .table-custom th {
-    background: #6c757d;
+    background: #071877;
     color: white;
     text-align: center;
 }
@@ -131,8 +131,8 @@
 {{-- 🔙 TOMBOL --}}
 {{-- ===================== --}}
 <div class="mt-4">
-    <a href="{{ route('admin.konvensi.index') }}" class="btn btn-secondary">
-        Kembali
+    <a href="{{ route('admin.konvensi.index') }}" class="btn btn-primary rounded-circle shadow-sm">
+         <i class="bi bi-arrow-left"></i>
     </a>
 </div>
 

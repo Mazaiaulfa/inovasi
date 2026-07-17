@@ -196,7 +196,7 @@
     </div>
 </div>
 <!-- DATA SLIDE -->
-<?php $__currentLoopData = $pengumuman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $pengumuman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 <div class="text-slide <?php echo e($index == 0 ? '' : ''); ?>">
     <div class="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg">
 
@@ -218,7 +218,7 @@
         </a>
     </div>
 </div>
-<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
 </div>
 
@@ -280,7 +280,7 @@ class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
             <!-- Timeline Points -->
             <div class="relative grid grid-cols-1 md:grid-cols-7 gap-8 items-center">
 
-                <?php $__currentLoopData = $timelines; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $timeline): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__currentLoopData = $timelines; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $timeline): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="text-center <?php echo e($index % 2 != 0 ? 'mt-10 md:mt-24' : ''); ?>">
                         <!-- Circle Number -->
                         <div class="w-12 h-12 mx-auto bg-blue-500 text-white flex items-center justify-center
@@ -299,21 +299,21 @@ class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
                         <p class="text-xs text-gray-600">
                             <?php echo e(\Carbon\Carbon::parse($timeline->tanggal_mulai)->format('d M')); ?>
 
-                            <?php if($timeline->tanggal_selesai): ?>
+                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($timeline->tanggal_selesai): ?>
                                 – <?php echo e(\Carbon\Carbon::parse($timeline->tanggal_selesai)->format('d M Y')); ?>
 
-                            <?php endif; ?>
+                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                         </p>
 
                         <!-- Optional Description -->
-                        <?php if($timeline->deskripsi): ?>
+                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($timeline->deskripsi): ?>
                             <p class="text-xs text-gray-500 mt-1">
                                 <?php echo e($timeline->deskripsi); ?>
 
                             </p>
-                        <?php endif; ?>
+                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                     </div>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             </div>
 

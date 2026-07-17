@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Exports\KonvensiExport;
+use App\Exports\RekapNilaiKonvensiExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Penilaian;
@@ -137,6 +138,13 @@ public function export()
     return Excel::download(new KonvensiExport, 'hasil-konvensi.xlsx');
 }
 
+public function exportRekap()
+{
+    return Excel::download(
+        new RekapNilaiKonvensiExport,
+        'Rekap_Nilai_Konvensi.xlsx'
+    );
+}
 public function publish()
 {
     \App\Models\Penilaian::where('status', '!=', 'published')

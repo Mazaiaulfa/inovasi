@@ -134,6 +134,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
      Route::get('/admin/profile', [ProfileController::class, 'index'])
         ->name('admin.profile.index');
 
+
+
+    Route::get(
+    '/konvensi/export-rekap',
+    [KonvensiController::class, 'exportRekap']
+)->name('admin.konvensi.export.rekap');
     Route::put('/admin/profile', [ProfileController::class, 'update'])
         ->name('admin.profile.update');
 
@@ -187,7 +193,6 @@ Route::prefix('admin/juri')
     Route::put('/update/{id}', [AdminJuriController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [AdminJuriController::class, 'destroy'])->name('destroy');
 
-
 });
 
 });
@@ -231,11 +236,16 @@ Route::middleware(['auth', 'role:juri'])
     ->name('juri.')
     ->group(function () {
 
-    Route::get('/', function () {
-        return view('juri.dashboard');
-    })->name('dashboard');
+    Route::get('/', [JuriController::class, 'dashboard'])
+    ->name('dashboard');
+Route::get('/profile', [ProfileController::class, 'index'])
+        ->name('profile.index');
 
+    Route::put('/profile', [ProfileController::class, 'update'])
+        ->name('profile.update');
 
+    Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->name('profile.destroy');
     Route::post('/penilaian', [JuriController::class, 'nilai'])->name('nilai');
     Route::get('/peserta', [JuriController::class, 'peserta'])->name('peserta');
     Route::post('/peserta/submit/{id}', [JuriController::class, 'submit'])

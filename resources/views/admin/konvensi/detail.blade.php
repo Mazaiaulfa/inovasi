@@ -68,7 +68,9 @@
 {{-- 🔥 RINGKASAN NILAI --}}
 {{-- ===================== --}}
 <div class="mb-3">
-    <b>Total Nilai:</b> {{ $penilaian->total_nilai }} <br>
+    <b>Total Nilai:</b>
+{{ rtrim(rtrim(number_format($penilaian->total_nilai, 2, '.', ''), '0'), '.') }}
+<br>
 
 
 
@@ -119,7 +121,7 @@ $class = strtolower($item);
 </td>
 
 <td class="text-center">
-    <b>{{ $nilaiDetail[$k->id] ?? '-' }}</b>
+    <b>{{ rtrim(rtrim(number_format($nilaiDetail[$k->id] ?? 0, 2, '.', ''), '0'), '.') }}</b>
 </td>
 
 </tr>
@@ -130,7 +132,9 @@ $class = strtolower($item);
 <tfoot>
 <tr>
     <th colspan="4" class="text-end">TOTAL</th>
-    <th>{{ $penilaian->total_nilai }}</th>
+    <th>
+    {{ rtrim(rtrim(number_format($penilaian->total_nilai, 2, '.', ''), '0'), '.') }}
+</th>
 </tr>
 </tfoot>
 
@@ -138,9 +142,13 @@ $class = strtolower($item);
 </div>
 
 <div class="mt-4">
-    <a href="{{ route('admin.nilai.show', $penilaian->karya_id) }}" class="btn btn-secondary">
-        Kembali
-    </a>
+    <a href="{{ route('admin.nilai.show', $penilaian->karya_id) }}"
+   class="btn btn-primary rounded-circle shadow-sm"
+   data-bs-toggle="tooltip"
+   title="Kembali"
+   style="width:45px;height:45px;display:flex;align-items:center;justify-content:center;">
+    <i class="bi bi-arrow-left"></i>
+</a>
 </div>
 
 </div>

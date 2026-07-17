@@ -145,18 +145,12 @@
 </li>
 <li class="{{ Request::is('juri/peserta*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ url('/juri/peserta') }}">
-        <i class="fas fa-star"></i> <span>Peserta</span>
-    </a>
-</li>
-
-<li class="{{ Request::is('juri/penilaian*') ? 'active' : '' }}">
-    <a class="nav-link" href="{{ url('/juri/penilaian') }}">
-        <i class="fas fa-star"></i> <span>Penilaian</span>
+        <i class="bi bi-clipboard-check-fill"></i> <span>Penilaian Peserta</span>
     </a>
 </li>
 
 <li class="{{ Request::is('juri/profile*') ? 'active' : '' }}">
-    <a class="nav-link" href="">
+    <a class="nav-link" href="{{ route('juri.profile.index') }}">
         <i class="fas fa-user-circle"></i>
         <span>Profile</span>
     </a>

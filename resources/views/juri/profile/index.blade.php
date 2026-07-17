@@ -1,6 +1,8 @@
-<?php $__env->startSection('title', 'Profile Saya'); ?>
+@extends('layouts.app')
 
-<?php $__env->startPush('style'); ?>
+@section('title', 'Profile Saya')
+
+@push('style')
 <style>
 :root{
     --primary:#4f46e5;
@@ -161,9 +163,9 @@
     }
 }
 </style>
-<?php $__env->stopPush(); ?>
+@endpush
 
-<?php $__env->startSection('main'); ?>
+@section('main')
 <div class="main-content">
     <section class="section">
 
@@ -188,20 +190,19 @@
 
                         <div class="form-section">
 
-                            <?php if(session('success')): ?>
+                            @if(session('success'))
                                 <div class="alert alert-success">
-                                    <?php echo e(session('success')); ?>
-
+                                    {{ session('success') }}
                                 </div>
-                            <?php endif; ?>
+                            @endif
 
-                            
+                            {{-- GANTI BAGIAN FORM EDIT PROFILE MENJADI INI --}}
 
-<form action="<?php echo e(route('user.profile.update')); ?>" method="POST">
-    <?php echo csrf_field(); ?>
-    <?php echo method_field('PUT'); ?>
+<form action="{{ route('user.profile.update') }}" method="POST">
+    @csrf
+    @method('PUT')
 
-    
+    {{-- Nama Gugus --}}
     <div class="form-group">
         <label class="section-title-small">
             Nama Gugus
@@ -210,11 +211,11 @@
             type="text"
             name="name"
             class="form-control"
-            value="<?php echo e(old('name', Auth::user()->name)); ?>"
+            value="{{ old('name', Auth::user()->name) }}"
             required>
     </div>
 
-    
+    {{-- Unit Kerja --}}
     <div class="form-group">
         <label class="section-title-small">
             Unit Kerja
@@ -223,11 +224,11 @@
             type="text"
             name="unit_kerja"
             class="form-control"
-            value="<?php echo e(old('unit_kerja', Auth::user()->unit_kerja)); ?>"
+            value="{{ old('unit_kerja', Auth::user()->unit_kerja) }}"
             required>
     </div>
 
-    
+    {{-- Email --}}
     <div class="form-group">
         <label class="section-title-small">
             Email
@@ -236,11 +237,11 @@
             type="email"
             name="email"
             class="form-control"
-            value="<?php echo e(old('email', Auth::user()->email)); ?>"
+            value="{{ old('email', Auth::user()->email) }}"
             required>
     </div>
 
-   
+   {{-- PASSWORD --}}
     <div class="form-group">
         <label class="section-title-small">
             Password Baru (Kosongkan jika tidak ingin mengganti password)
@@ -296,11 +297,11 @@
                             </div>
 
                             <form
-                                action="<?php echo e(route('user.profile.destroy')); ?>"
+                                action="{{ route('user.profile.destroy') }}"
                                 method="POST">
 
-                                <?php echo csrf_field(); ?>
-                                <?php echo method_field('DELETE'); ?>
+                                @csrf
+                                @method('DELETE')
 
                                 <div class="form-group">
                                     <label class="section-title-small">
@@ -336,6 +337,4 @@
 
     </section>
 </div>
-<?php $__env->stopSection(); ?>
-
-<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\laragon\www\inovasirev\resources\views/admin/profile/index.blade.php ENDPATH**/ ?>
+@endsection

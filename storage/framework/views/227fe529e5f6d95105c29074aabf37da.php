@@ -34,12 +34,12 @@
     </div>
 
     
-    <?php if(session('status')): ?>
+    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session('status')): ?>
         <div class="alert alert-success text-center">
             <?php echo e(session('status')); ?>
 
         </div>
-    <?php endif; ?>
+    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
     
     <form method="POST" action="<?php echo e(route('login')); ?>" class="needs-validation" novalidate>
@@ -57,7 +57,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" name="email"
                 value="<?php echo e(old('email')); ?>" required autofocus placeholder="Masukkan Email Team">
-            <?php $__errorArgs = ['email'];
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -66,7 +66,7 @@ $message = $__bag->first($__errorArgs[0]); ?>
             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
 
         
@@ -81,7 +81,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                 name="password" required placeholder="Masukkan Password">
-            <?php $__errorArgs = ['password'];
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -90,14 +90,14 @@ $message = $__bag->first($__errorArgs[0]); ?>
             <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>
+unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
 
         
         <div class="text-right mb-3">
-            <?php if(Route::has('password.request')): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Route::has('password.request')): ?>
                 <a href="<?php echo e(route('password.request')); ?>" class="text-small">Lupa Password?</a>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
         </div>
 
         
@@ -108,11 +108,11 @@ unset($__errorArgs, $__bag); ?>
 
     
     <div class="text-center mt-3">
-        <?php if(Route::has('register')): ?>
+        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Route::has('register')): ?>
             <a href="<?php echo e(route('register')); ?>" class="text-small text-primary">
                 <i class="fas fa-user-plus mr-1"></i> Belum Punya Akun?
             </a>
-        <?php endif; ?>
+        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
     </div>
 </div>
 <?php $__env->stopSection(); ?>

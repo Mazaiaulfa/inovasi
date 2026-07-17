@@ -16,6 +16,29 @@ class JuriController extends Controller
     // =========================
     // LIST PESERTA
     // =========================
+
+    public function dashboard()
+{
+    $juri = auth()->user();
+
+    // Peserta yang menjadi tanggung jawab juri
+    $pesertaIds = $juri->pesertaYangDinilai->pluck('id');
+
+    $totalPeserta = $pesertaIds->count();
+
+    // Yang sudah dinilai (submit atau draft)
+    $sudahDinilai = Penilaian::where('juri_id', $juri->id)
+        ->distinct('user_id')
+        ->count('user_id');
+
+    $belumDinilai = $totalPeserta - $sudahDinilai;
+
+    return view('juri.dashboard', compact(
+        'totalPeserta',
+        'sudahDinilai',
+        'belumDinilai'
+    ));
+}
     public function peserta()
     {
         $juri = auth()->user();
@@ -56,8 +79,8 @@ class JuriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required',
-            'nilai.*' => 'nullable|integer|min:1|max:10'
+        'user_id' => 'required',
+        'nilai.*' => 'nullable|numeric|min:1|max:10'
         ]);
 
         $karya = KaryaTulis::where('user_id', $request->user_id)->firstOrFail();
@@ -79,7 +102,7 @@ class JuriController extends Controller
 
         $penilaian->detail()->delete();
 
-        $total = 0;
+        $total = 0.0;
 
         foreach ($request->nilai as $kriteria_id => $nilai) {
 

@@ -48,7 +48,7 @@ class NilaiController extends Controller
     {
         $request->validate([
             'user_id' => 'required',
-            'nilai.*' => 'nullable|integer|min:1|max:10'
+            'nilai.*' => 'nullable|numeric|min:1|max:10'
         ]);
 
         // 🔥 ambil karya berdasarkan user
@@ -72,7 +72,7 @@ class NilaiController extends Controller
             return back()->with('error', 'Tidak bisa mengubah, sudah submit');
         }
 
-        $total = 0;
+        $total = 0.0;
 
         // 🔥 hapus detail lama (biar update bersih)
         $penilaian->detail()->delete();

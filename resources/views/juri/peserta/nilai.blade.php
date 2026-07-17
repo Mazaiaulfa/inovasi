@@ -120,14 +120,12 @@ $class = strtolower($item);
 <td class="text-wrap">{!! nl2br(e($k->skala_9_10)) !!}</td>
 
 <td class="text-center">
-    <input type="text"
-           inputmode="numeric"
-           pattern="[0-9]*"
-           maxlength="2"
-           class="form-control nilai"
-           name="nilai[{{ $k->id }}]"
-           value="{{ $nilaiLama[$k->id] ?? '' }}"
-           data-id="{{ $k->id }}">
+   <input type="text"
+       class="form-control nilai"
+       name="nilai[{{ $k->id }}]"
+       value="{{ isset($nilaiLama[$k->id]) ? (float)$nilaiLama[$k->id] : '' }}"
+       data-id="{{ $k->id }}"
+       placeholder="0-10">
 </td>
 
 </tr>
@@ -168,33 +166,51 @@ $class = strtolower($item);
 @push('scripts')
 <script>
 function hitung() {
+
     let total = 0;
 
-    document.querySelectorAll(".nilai").forEach(i => {
-        let val = parseInt(i.value);
-        if (!isNaN(val)) total += val;
+    document.querySelectorAll(".nilai").forEach(input => {
+
+        let val = parseFloat(input.value);
+
+        if (!isNaN(val)) {
+            total += val;
+        }
+
     });
 
-    document.getElementById("total").innerText = total;
+    document.getElementById("total").innerText =
+    total % 1 === 0 ? total : total.toFixed(2);
 }
 
-// VALIDASI INPUT AGAR TIDAK ANEH
 document.querySelectorAll(".nilai").forEach(input => {
 
     input.addEventListener("input", function () {
-        let val = this.value.replace(/[^0-9]/g, '');
 
-        if (val > 10) val = 10;
-        if (val < 1 && val !== '') val = 1;
+        let value = this.value;
 
-        this.value = val;
+        // hanya angka dan titik
+        value = value.replace(/[^0-9.]/g, '');
+
+        // hanya boleh satu titik
+        let parts = value.split('.');
+        if(parts.length > 2){
+            value = parts[0] + '.' + parts.slice(1).join('');
+        }
+
+        let angka = parseFloat(value);
+
+        if(!isNaN(angka) && angka > 10){
+            value = '10';
+        }
+
+        this.value = value;
 
         hitung();
     });
 
 });
 
-// AUTO HITUNG SAAT LOAD
 document.addEventListener("DOMContentLoaded", function () {
     hitung();
 });

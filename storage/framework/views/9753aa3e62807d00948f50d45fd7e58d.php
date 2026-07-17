@@ -15,7 +15,7 @@
             <li class="menu-header">Dashboard</li>
 
             
-            <?php if(Auth::user()->role === 'admin'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Auth::user()->role === 'admin'): ?>
             <li class="<?php echo e(Request::is('admin') ? 'active' : ''); ?>">
                 <a class="nav-link" href="<?php echo e(url('/admin')); ?>">
                     <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
@@ -141,18 +141,12 @@
 </li>
 <li class="<?php echo e(Request::is('juri/peserta*') ? 'active' : ''); ?>">
     <a class="nav-link" href="<?php echo e(url('/juri/peserta')); ?>">
-        <i class="fas fa-star"></i> <span>Peserta</span>
-    </a>
-</li>
-
-<li class="<?php echo e(Request::is('juri/penilaian*') ? 'active' : ''); ?>">
-    <a class="nav-link" href="<?php echo e(url('/juri/penilaian')); ?>">
-        <i class="fas fa-star"></i> <span>Penilaian</span>
+        <i class="bi bi-clipboard-check-fill"></i> <span>Penilaian Peserta</span>
     </a>
 </li>
 
 <li class="<?php echo e(Request::is('juri/profile*') ? 'active' : ''); ?>">
-    <a class="nav-link" href="">
+    <a class="nav-link" href="<?php echo e(route('juri.profile.index')); ?>">
         <i class="fas fa-user-circle"></i>
         <span>Profile</span>
     </a>
@@ -198,13 +192,13 @@
                 </a>
             </li>
 
-            <?php if(Auth::user()->jenis_peserta == 'GKM'): ?>
+            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(Auth::user()->jenis_peserta == 'GKM'): ?>
             <li class="<?php echo e(Request::is('user/anggota*') ? 'active' : ''); ?>">
                 <a class="nav-link" href="<?php echo e(route('anggota.index')); ?>">
                     <i class="fas fa-users"></i> <span>Tambah Anggota Team</span>
                 </a>
             </li>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
                     <li class="<?php echo e(Request::is('user/profile*') ? 'active' : ''); ?>">
             <a class="nav-link" href="<?php echo e(route('user.profile.index')); ?>">
@@ -212,7 +206,7 @@
                 <span>Profile</span>
             </a>
         </li>
-            <?php endif; ?>
+            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
             <li class="<?php echo e(Request::is('logout') ? 'active' : ''); ?>">
                 <a href="#" class="nav-link text-danger" data-toggle="modal" data-target="#logoutModal">

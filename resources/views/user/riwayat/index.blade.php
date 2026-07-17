@@ -2,6 +2,45 @@
 
 @section('title', 'Riwayat Pengajuan')
 
+
+@push('style')
+<style>
+    .table thead tr{
+    overflow:hidden;
+}
+
+.table thead th:first-child{
+    border-top-left-radius:12px;
+}
+
+.table thead th:last-child{
+    border-top-right-radius:12px;
+}
+
+.table thead th{
+    background:linear-gradient(135deg,#4f46e5,#6366f1) !important;
+    color:white !important;
+    border:none !important;
+    padding:15px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+}
+
+.table thead tr{
+    overflow:hidden;
+}
+
+.table thead th:first-child{
+    border-top-left-radius:12px;
+}
+
+.table thead th:last-child{
+    border-top-right-radius:12px;
+}
+</style>
+@endpush
 @section('main')
 <div class="main-content">
     <section class="section">
@@ -16,7 +55,7 @@
 
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
-                            <thead class="table-light">
+                            <thead class="">
                                 <tr>
                                     <th width="5%">No</th>
                                     <th>Judul Karya</th>

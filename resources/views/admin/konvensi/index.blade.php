@@ -82,20 +82,33 @@
 <div class="section-header">
     <h1>Konvensi Inovasi</h1>
 </div>
-
+<div class="alert alert-info mb-3">
+    <i class="fas fa-info-circle me-2"></i>
+    Verifikasi seluruh hasil konvensi sebelum melakukan finalisasi. Data yang telah difinalisasi tidak dapat diedit kembali.
+</div>
 <div class="card">
 <div class="card-body">
-
-<div class="mb-3 d-flex justify-content-end">
+<div class="alert alert-info mb-3" style="border-radius:10px;">
+    <i class="fas fa-file-excel me-2"></i>
+    Rekapitulasi nilai konvensi dapat diunduh melalui tombol
+    <b>Rekap Nilai Konvensi</b>. Pastikan seluruh penilaian telah selesai dan diverifikasi sebelum melakukan finalisasi.
+</div>
+<div class="mb-3 d-flex justify-content-end gap-3">
     <a href="{{ route('admin.konvensi.export') }}"
        class="btn btn-success btn-sm">
-        Export Excel
+       <i class="fas fa-file-excel"></i>
+        Data Konvensi
+    </a>
+
+    <a href="{{ route('admin.konvensi.export.rekap') }}"
+       class="btn btn-primary btn-sm">
+        <i class="fas fa-file-excel"></i>
+        Rekap Nilai Konvensi
     </a>
 </div>
 
 <div class="table-responsive">
 <table class="table-konvensi">
-
 <thead>
 <tr>
     <th>No</th>
