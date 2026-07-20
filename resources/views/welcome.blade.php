@@ -112,7 +112,47 @@
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
 }
+@keyframes floatCard {
+    0%,100%{
+        transform:translateY(0px);
+    }
+    50%{
+        transform:translateY(-10px);
+    }
+}
 
+.float1{
+    animation:floatCard 5s ease-in-out infinite;
+}
+
+.float2{
+    animation:floatCard 5s ease-in-out infinite .7s;
+}
+
+.float3{
+    animation:floatCard 5s ease-in-out infinite 1.4s;
+}
+
+.float4{
+    animation:floatCard 5s ease-in-out infinite 2.1s;
+}
+
+.benefit-card{
+    transition:all .35s ease;
+}
+
+.benefit-card:hover{
+    transform:translateY(-12px) scale(1.03);
+    box-shadow:0 20px 40px rgba(0,0,0,.18);
+}
+
+.benefit-card i{
+    transition:.35s;
+}
+
+.benefit-card:hover i{
+    transform:scale(1.2) rotate(-8deg);
+}
     </style>
 
 </head>
@@ -149,12 +189,6 @@
             </nav>
            <div class="flex items-center gap-3">
 
-    <!-- REGISTER -->
-    <a href="{{ route('register') }}"
-       class="bg-white text-indigo-600 border border-indigo-600 px-4 py-2 rounded-md hover:bg-indigo-50 hover-scale">
-        <i class="fas fa-user-plus mr-1"></i>Register
-    </a>
-
     <!-- LOGIN -->
     <a href="{{ route('login') }}"
        class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 hover-scale">
@@ -165,245 +199,139 @@
         </div>
     </header>
 
-<section class="pt-16 relative">
+<section id="hero"
+class="pt-24 min-h-screen bg-gradient-to-r from-indigo-600 via-indigo-500 to-blue-500 text-white flex items-center">
+    <div class="max-w-7xl mx-auto w-full px-6">
 
-<div class="relative overflow-hidden h-[90vh]">
+        <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-8">
 
-<div id="bannerSlider" class="relative w-full h-full">
+            {{-- LEFT --}}
+            <div>
 
-@forelse($pengumuman as $key => $item)
+               <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-xs font-medium">
+    <span class="w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse"></span>
+    IFEST Innovation
+</span>
 
-<div class="banner-slide">
+              <h1 class="mt-4 text-3xl lg:text-4xl font-extrabold leading-tight">
+    Kelola Inovasi dengan
+    <br>
+    <span class="text-yellow-300">Mudah & Terintegrasi</span>
+</h1>
 
-    <!-- background -->
-    <div class="absolute inset-0 bg-cover bg-center"
-         style="background-image:url('{{ asset('img/slide'.(($key%6)+1).'.png') }}')">
-    </div>
+                <p class="mt-4 text-white/85 text-sm leading-6 max-w-md">
+                    Daftarkan tim, unggah proposal, pantau proses verifikasi,
+                    hingga mengikuti konvensi inovasi dalam satu platform digital.
+                </p>
 
-    <!-- overlay -->
-    <div class="absolute inset-0 bg-black/40"></div>
-
-    <!-- content -->
-    <div class="relative h-full flex items-center justify-center text-center text-white px-6">
-
-        <div class="max-w-3xl">
-
-            @if($item->urgent)
-            <div class="inline-block bg-red-500 px-4 py-1 rounded-full text-xs mb-5">
-                🔥 Pengumuman Penting
-            </div>
-            @endif
-
-            <h2 class="text-4xl md:text-6xl font-bold mb-6">
-                {{ $item->judul }}
-            </h2>
-
-            <p class="text-lg mb-8">
-                {{ $item->ringkasan }}
-            </p>
-
-            <a href="{{ route('pengumuman.detail',$item->id) }}"
-               class="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 rounded-full">
-               Lihat Detail
-            </a>
-
-        </div>
-
-    </div>
-
-</div>
-
-@empty
-
-<div class="banner-slide">
-
-    <div class="absolute inset-0 bg-cover bg-center"
-         style="background-image:url('{{ asset('img/slide1.png') }}')">
-    </div>
-
-    <div class="absolute inset-0 bg-black/40"></div>
-
-    <div class="relative h-full flex items-center justify-center text-white">
-        <h2 class="text-5xl font-bold">
-            Selamat Datang di PIM Innovation Fest
-        </h2>
-    </div>
-
-</div>
-
-@endforelse
-
-</div>
-
-
-<!-- prev -->
-<button onclick="prevSlide()"
-class="absolute left-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full text-white text-xl z-20">
-❮
-</button>
-
-<!-- next -->
-<button onclick="nextSlide()"
-class="absolute right-6 top-1/2 -translate-y-1/2 bg-white/30 p-3 rounded-full text-white text-xl z-20">
-❯
-</button>
-
-<!-- DOT INDICATOR -->
-<div id="sliderDots"
-class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20">
-</div>
-</div>
-</section>
-
-    {{-- <!-- Hero Section -->
-    <section id="hero" class="pt-24 pb-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2" data-aos="fade-right">
-                <h2 class="text-4xl font-bold mb-4">Sistem Pengelolaan Inovasii</h2>
-                <p class="mb-6">Daftarkan tim Anda, unggah proposal, dan pantau status verifikasii secara real-time dalam
-                    satu platform.</p>
-                <a href="{{ route('register') }}"
-                    class="bg-white text-indigo-600 px-6 py-3 rounded-md font-medium hover:bg-gray-100 hover-scale">
-                    <i class="fas fa-user-plus mr-1 mt-5"></i>Daftar Sekarang
-                </a>
-            </div>
-            <div class="md:w-1/2 mt-6 md:mt-0" data-aos="fade-left">
-                <img src="{{ asset('img/landing.png') }}" alt="Ilustrasi Karya Tulis" class="rounded-lg shadow-lg">
-            </div>
-        </div>
-    </section> --}}
-{{-- <section id="hero" class="pt-24 pb-16 bg-gradient-to-r from-indigo-600 to-blue-500 text-white">
-<div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center gap-10">
-
-<!-- TEXT -->
-<div class="md:w-1/2 relative">
-
-<div id="textSlider">
-
-<!-- DEFAULT SLIDE -->
-<div class="text-slide active">
-    <div class="bg-white/10 backdrop-blur-md p-5 rounded-xl shadow-md">
-
-        <h2 class="text-2xl md:text-3xl font-semibold mb-3 leading-snug">
-            Sistem Pengelolaan Inovasi
-        </h2>
-
-        <p class="mb-4 text-sm md:text-base text-white/80 leading-relaxed">
-            Daftarkan tim Anda, unggah proposal, dan pantau status verifikasi secara real-time dalam satu platform.
-        </p>
-
-        <a href="{{ route('register') }}"
-           class="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm hover:bg-gray-100 transition">
-           <i class="fas fa-user-plus mr-1"></i>Daftar
-        </a>
-
-    </div>
-</div>
-<!-- DATA SLIDE -->
-@foreach($pengumuman as $index => $item)
-<div class="text-slide {{ $index == 0 ? '' : '' }}">
-    <div class="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-lg">
-
-       {{-- <span class="inline-block bg-yellow-400 text-black text-[10px] px-2 py-1 rounded-full mb-2">
-            Pengumuman
-        </span> --}}
-
-        {{-- <h2 class="text-2xl md:text-3xl font-semibold mb-3 leading-snug">
-            {{ $item->judul }}
-        </h2>
-
-        <p class="mb-4 text-sm md:text-base text-white/80 leading-relaxed">
-            {{ $item->ringkasan }}
-        </p>
-
-        <a href="{{ route('pengumuman.detail',$item->id) }}"
-           class="bg-white text-indigo-600 px-4 py-2 rounded-md text-sm hover:bg-gray-100 transition">
-           Detail
-        </a>
-    </div>
-</div>
-@endforeach --}}
-
-{{-- </div>
-
-<!-- PREV -->
-<button onclick="prevTextSlide()"
-class="absolute left-0 md:-left-10 top-1/2 -translate-y-1/2
-       bg-white/90 hover:bg-white text-indigo-600
-       p-3 rounded-full shadow-lg transition hover:scale-110">
-❮
-</button>
-
-</div>
-
-<!-- IMAGE -->
-<div class="md:w-1/2 relative">
-
-<img src="{{ asset('img/landing.png') }}"
-     class="rounded-lg shadow-lg animate-[float_4s_ease-in-out_infinite]">
-
-<!-- NEXT -->
-<button onclick="nextTextSlide()"
-class="absolute right-2 top-1/2 -translate-y-1/2
-       bg-white/90 hover:bg-white text-indigo-600
-       p-3 rounded-full shadow-lg transition hover:scale-110">
-❯
-</button>
-
-<div id="textDots"
-class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-</div>
-
-</div>
-
-</div>
-</section> --}}
-<!-- resources/views/landing.blade.php -->
-{{-- <div class="relative">
-
-    <!-- GARIS TENGAH -->
-    <div class="hidden md:block absolute top-6 left-0 w-full h-1 bg-gray-300"></div>
-
-    <!-- Timeline -->
-    <div class="flex flex-col md:flex-row justify-center items-start gap-10 relative">
-
-        @foreach($timelines as $index => $timeline)
-            <div class="text-center relative">
-
-                <!-- Circle -->
-                <div class="w-12 h-12 mx-auto bg-blue-500 text-white
-                            flex items-center justify-center
-                            rounded-full shadow-md text-sm relative z-10">
-                    {{ $timeline->urutan }}
+                <div class="mt-5">
+                    <a href="{{ route('register') }}"
+                        class="inline-flex items-center gap-2 bg-white text-indigo-600 font-semibold px-5 py-2 rounded-lg hover:bg-gray-100 transition">
+                        <i class="fas fa-user-plus"></i>
+                        Daftar Sekarang
+                    </a>
                 </div>
 
-                <!-- Title -->
-                <p class="mt-4 font-semibold text-blue-900">
-                    {{ $timeline->tahap }}
-                </p>
+                {{-- Benefit --}}
+                <div class="grid grid-cols-2 gap-4 mt-6">
 
-                <!-- Date -->
-                <p class="text-xs text-gray-600">
-                    {{ \Carbon\Carbon::parse($timeline->tanggal_mulai)->format('d M') }}
-                    @if($timeline->tanggal_selesai)
-                        – {{ \Carbon\Carbon::parse($timeline->tanggal_selesai)->format('d M Y') }}
-                    @endif
-                </p>
+    {{-- Card 1 --}}
+    <div class="benefit-card float1 bg-white rounded-2xl p-4 flex items-start gap-3 text-gray-800 shadow-lg">
 
-                <!-- Description -->
-                @if($timeline->deskripsi)
-                    <p class="text-xs text-gray-500 mt-1">
-                        {{ $timeline->deskripsi }}
-                    </p>
-                @endif
+        <div
+            class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+            <i class="fas fa-lightbulb"></i>
+        </div>
 
-            </div>
-        @endforeach
+        <div>
+            <h4 class="font-semibold text-sm">
+                Pengajuan Mudah
+            </h4>
+
+            <p class="text-xs text-gray-500 mt-1">
+                Submit inovasi secara online tanpa proses manual.
+            </p>
+        </div>
 
     </div>
 
-</div> --}}
+    {{-- Card 2 --}}
+    <div class="benefit-card float2 bg-white rounded-2xl p-4 flex items-start gap-3 text-gray-800 shadow-lg">
 
+        <div
+            class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0">
+            <i class="fas fa-chart-line"></i>
+        </div>
+
+        <div>
+            <h4 class="font-semibold text-sm">
+                Monitoring
+            </h4>
+
+            <p class="text-xs text-gray-500 mt-1">
+                Pantau progres verifikasi secara real-time.
+            </p>
+        </div>
+
+    </div>
+
+    {{-- Card 3 --}}
+    <div class="benefit-card float3 bg-white rounded-2xl p-4 flex items-start gap-3 text-gray-800 shadow-lg">
+
+        <div
+            class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 shrink-0">
+            <i class="fas fa-award"></i>
+        </div>
+
+        <div>
+            <h4 class="font-semibold text-sm">
+                Konvensi Digital
+            </h4>
+
+            <p class="text-xs text-gray-500 mt-1">
+                Penilaian juri dan rekapitulasi lebih efisien.
+            </p>
+        </div>
+
+    </div>
+
+    {{-- Card 4 --}}
+    <div class="benefit-card float4 bg-white rounded-2xl p-4 flex items-start gap-3 text-gray-800 shadow-lg">
+
+        <div
+            class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
+            <i class="fas fa-users"></i>
+        </div>
+
+        <div>
+            <h4 class="font-semibold text-sm">
+                Kolaborasi Tim
+            </h4>
+
+            <p class="text-xs text-gray-500 mt-1">
+                Kelola anggota dan dokumen dalam satu platform.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+</div>          {{-- RIGHT --}}
+            <div class="flex justify-center">
+
+                <img src="{{ asset('img/landing.png') }}"
+                    class="w-[80%] max-w-md animate-[float_4s_ease-in-out_infinite] drop-shadow-2xl"
+                    alt="Innovation">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- resources/views/landing.blade.php -->
+<div class="relative">
 <section id="timeline" class="py-20 bg-gray-100 overflow-hidden">
     <div class="max-w-6xl mx-auto px-6 text-center">
 
@@ -597,8 +525,6 @@ class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
             </div>
         </div>
     </section>
-
-
     <!-- Statistik Section -->
     <section id="statistik" class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-6" data-aos="fade-up">
@@ -608,7 +534,7 @@ class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
 
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-                {{-- Card Gugus --}}
+                <!-- Card Gugus -->
                 <div
                     class="bg-white shadow-lg rounded-xl p-6 text-center border border-gray-200 hover:shadow-xl transition">
                     <i class="fas fa-users text-blue-500 text-4xl mb-4"></i>

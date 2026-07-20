@@ -13,9 +13,6 @@ use Illuminate\Support\Facades\DB;
 
 class JuriController extends Controller
 {
-    // =========================
-    // LIST PESERTA
-    // =========================
 
     public function dashboard()
 {
@@ -135,7 +132,7 @@ class JuriController extends Controller
             ]);
         }
 
-        // ✅ hanya simpan total
+        //hanya simpan total
         $penilaian->update([
             'total_nilai' => $total
         ]);

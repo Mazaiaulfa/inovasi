@@ -14,10 +14,8 @@
         <div class="section-header">
             <h1>Daftar Peserta</h1>
         </div>
-
     </section>
 </div>
-
 @endsection
 
 @push('scripts')

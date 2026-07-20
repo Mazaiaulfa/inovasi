@@ -50,7 +50,7 @@
             <li
                 class="nav-item dropdown {{ Request::is('admin/user*') || Request::is('admin/rekap*') ? 'active' : '' }}">
                 <a href="#" class="nav-link has-dropdown">
-                    <i class="fa-solid fa-chart-simple"></i> <span>Rekap</span>
+                    <i class="fa-solid fa-chart-simple"></i> Rekap
                 </a>
                 <ul class="dropdown-menu">
                     {{-- <li class="{{ Request::is('admin/rekap') ? 'active' : '' }}">
@@ -60,7 +60,7 @@
                     </li> --}}
                     <li class="{{ Request::is('admin/history') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ url('/admin/history') }}">
-                                    <i class="fas fa-clipboard-list"></i> History Inovasi
+                                    <i class="fas fa-clipboard-list"></i>History Inovasi
                                 </a>
                             </li>
                 </ul>
@@ -82,52 +82,36 @@
                             <i class="fas fa-user-friends"></i> Anggota Team
                         </a>
                     </li>
+
+                    <li class="{{ Request::is('admin/juri*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.juri.index') }}">
+                <i class="fas fa-user-check"></i> Penetapan Juri
+            </a>
+        </li>
                     <li class="{{ Request::is('admin/tahapan') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ url('/admin/tahapan') }}">
                             <i class="fas fa-layer-group"></i> Tahapan
                         </a>
                     </li>
-                </ul>
-            </li>
 
-        <li class="nav-item dropdown {{ Request::is('admin/juri*') || Request::is('admin/konvensi*') || Request::is('admin/kriteria*') ? 'active' : '' }}">
-    <a href="#" class="nav-link has-dropdown">
-        <i class="fas fa-gavel"></i>
-        <span>Manajemen Penilaian</span>
-    </a>
-    <ul class="dropdown-menu">
-
-        {{-- Penetapan Juri --}}
-        <li class="{{ Request::is('admin/juri*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.juri.index') }}">
-                <i class="fas fa-user-check"></i> Penetapan Juri
-            </a>
-        </li>
-
-        {{-- Konvensi --}}
-        <li class="{{ Request::is('admin/konvensi*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.konvensi.index') }}">
-                <i class="fas fa-bullhorn"></i> Konvensi
-            </a>
-        </li>
-
-        {{-- Kelola Kriteria --}}
-        <li class="{{ Request::is('admin/kriteria*') ? 'active' : '' }}">
+                     <li class="{{ Request::is('admin/kriteria*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.kriteria.index') }}">
-                <i class="fas fa-list"></i> Kelola Kriteria
+                <i class="fas fa-list"></i>Kriteria Penilaian
             </a>
         </li>
-
-    </ul>
-</li>
-
-            {{-- Kelola Pengumuman --}}
-            <li class="{{ Request::is('admin/pengumuman*') ? 'active' : '' }}">
+        <li class="{{ Request::is('admin/pengumuman*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.pengumuman.index') }}">
-                    <i class="fas fa-bullhorn"></i> <span>Kelola Pengumuman</span>
+                    <i class="fas fa-calendar-alt"></i> Timeline
                 </a>
             </li>
 
+                </ul>
+            </li>
+<li class="{{ Request::is('admin/konvensi*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.konvensi.index') }}">
+                <i class="fas fa-award"></i> Konvensi
+            </a>
+        </li>
 <li class="{{ Request::is('admin/profile*') ? 'active' : '' }}">
     <a class="nav-link" href="{{ route('admin.profile.index') }}">
         <i class="fas fa-user-circle"></i>
